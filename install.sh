@@ -8,12 +8,21 @@ read -n 1 -p "Symlinking into home directory, this overwrites files. Proceed? " 
 
 echo "\ninstalling..."
 
+# Home directory dotfiles
 dotfiles_dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 dotfiles=".bash_profile .gitconfig"
 
 for dotfile in $dotfiles; do
-    echo ${dotfiles_dir}/${dotfile}
+    # echo ${dotfiles_dir}/${dotfile}
     ln -svf ${dotfiles_dir}/${dotfile} ~
+done
+
+# Vscode settings - go in Application Support on MacOS
+vscodefiles="settings.json keybindings.json snippets"
+vscode_dir=$HOME/Library/Application\ Support/Code/User
+for vscodefile in $vscodefiles; do
+    # echo ${dotfiles_dir}/vscode/${vscodefile}
+    ln -svf ${dotfiles_dir}/vscode/${vscodefile} "$vscode_dir"
 done
 
 bluetext "\nYou should probably set username and email in ~/.gitconfig.local"

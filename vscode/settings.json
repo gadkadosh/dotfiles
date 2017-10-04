@@ -1,0 +1,15 @@
+// Place your settings in this file to overwrite the default settings
+{
+    "editor.multiCursorModifier": "ctrlCmd",
+    "window.zoomLevel": 0,
+    "workbench.startupEditor": "newUntitledFile",
+    "python.linting.enabledWithoutWorkspace": false,
+    "workbench.iconTheme": "vscode-great-icons",
+    "liveServer.settings.donotShowInfoMsg": true,
+    "files.insertFinalNewline": true,
+    "css.validate": false,
+    "scss.validate": false,
+    "less.validate": false,
+    "editor.snippetSuggestions": "top",
+    "workbench.colorTheme": "One Dark Pro Vivid"
+}
