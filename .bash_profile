@@ -20,12 +20,6 @@ parse_git_branch() {
     git branch 2> /dev/null | sed -e "/^[^*]/ d" -e "s/* \(.*\)/${reset}on ${bold}${violet}\1 $(parse_git_dirty)/"
 }
 
-get_git_info() {
-    status=$(git status -sb 2> /dev/null)
-    branch=$(echo $status | sed "s/## \([[:alnum:]][[:alnum:]]*\).*/${reset}on ${bold}${violet}\1/")
-    echo $branch
-}
-
 # battery
 battery() {
     battstat=$(pmset -g batt)
