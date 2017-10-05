@@ -10,7 +10,7 @@ echo "\ninstalling..."
 
 # Home directory dotfiles
 dotfiles_dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-dotfiles=".bash_profile .inputrc .gitconfig"
+dotfiles=".zshrc .bash_profile .inputrc .gitconfig"
 
 for dotfile in $dotfiles; do
     # echo ${dotfiles_dir}/${dotfile}
