@@ -10,7 +10,7 @@ echo "\ninstalling..."
 
 # Home directory dotfiles
 dotfiles_dir=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
-dotfiles=".bash_profile .gitconfig"
+dotfiles=".bash_profile .inputrc .gitconfig"
 
 for dotfile in $dotfiles; do
     # echo ${dotfiles_dir}/${dotfile}
@@ -25,4 +25,5 @@ for vscodefile in $vscodefiles; do
     ln -svf ${dotfiles_dir}/vscode/${vscodefile} "$vscode_dir"
 done
 
-bluetext "\nYou should probably set username and email in ~/.gitconfig.local"
+bluetext "\nBrewfile is available to install all Homebrew packages"
+bluetext "You should probably set username and email in ~/.gitconfig.local"
