@@ -11,5 +11,7 @@
     "scss.validate": false,
     "less.validate": false,
     "editor.snippetSuggestions": "top",
-    "workbench.colorTheme": "One Dark Pro"
+    "workbench.colorTheme": "One Dark Pro",
+    "window.nativeTabs": true,
+    "editor.fontSize": 13
 }
