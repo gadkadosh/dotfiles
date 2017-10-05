@@ -103,6 +103,7 @@ alias less="less -r"
 
 alias gs="git status -sb"
 
+alias dotfiles="cd ~/dotfiles"
 alias desktop="cd ~/Desktop"
 alias downloads="cd ~/Downloads"
 alias dropbox="cd ~/Dropbox"
