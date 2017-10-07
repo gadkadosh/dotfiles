@@ -24,7 +24,6 @@ link_file() {
 
 install_dotfiles() {
 	bluetext 'Installing dotfiles'
-    echo
 	find -H "$DOTFILES_DIR" -maxdepth 3 -name '*.symlink' -not -path '*.git*' |
 		while read -r src; do
 			dst="$HOME/.$(basename "${src%.*}")"
@@ -34,15 +33,16 @@ install_dotfiles() {
 
 setup_vscode() {
     if test "$(which code)"; then
+        bluetext "Setting up VSCode"
         if [ "$(uname -s)" = "Darwin" ]; then
             VSCODE_HOME="$HOME/Library/Application Support/Code"
         else
             VSCODE_HOME="$HOME/.config/Code"
         fi
-
-        ln -svf "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_HOME/User/settings.json"
-        ln -svf "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_HOME/User/keybindings.json"
-        ln -svf "$DOTFILES_DIR/vscode/snippets" "$VSCODE_HOME/User/snippets"
+        
+        link_file "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_HOME/User/settings.json"
+        link_file "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_HOME/User/keybindings.json"
+        link_file "$DOTFILES_DIR/vscode/snippets" "$VSCODE_HOME/User/snippets"
 
         # from `code --list-extensions`
         modules="
@@ -67,7 +67,7 @@ setup_vscode() {
 }
 
 setup_gitconfig() {
-	bluetext 'Setup gitconfig'
+	bluetext 'Setting up gitconfig'
     GITCONFIG_LOCAL="$HOME/.gitconfig.local"
 	# if there is no user.email, we'll assume it's a new machine/setup and ask it
 	if [ -z "$(git config --get --file ${GITCONFIG_LOCAL} user.email)" ]; then
@@ -80,17 +80,19 @@ setup_gitconfig() {
 		git config --file ${GITCONFIG_LOCAL} user.email "$user_email"
 	else
 		# otherwise this gitconfig was already made by the dotfiles
-		bluetext "already set up"
+		echo "already set up"
 	fi
 }
 
-read -n 1 -p "Symlinking into home directory, this overwrites files. Proceed? " yn
-echo
+read -n 1 -p "Proceed with installing dotfiles and configurations? " yn
 [[ $yn != [Yy] ]] && echo "\nExiting..." && exit
+echo
 
 install_dotfiles
 setup_gitconfig
+setup_vscode
 
 # a few messages
-bluetext "\nBrewfile is available to install all Homebrew packages"
+echo
+bluetext "Brewfile is available to install all Homebrew packages"
 # bluetext "You should probably set username and email in ~/.gitconfig.local"
