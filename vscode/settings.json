@@ -4,7 +4,7 @@
     "window.zoomLevel": 0,
     "workbench.startupEditor": "newUntitledFile",
     "python.linting.enabledWithoutWorkspace": false,
-    "workbench.iconTheme": "vscode-great-icons",
+    "workbench.iconTheme": "vscode-icons",
     "liveServer.settings.donotShowInfoMsg": true,
     "files.insertFinalNewline": true,
     "css.validate": false,
