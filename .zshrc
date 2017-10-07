@@ -4,6 +4,7 @@ eval "$(rbenv init - --no-rehash)"
 
 export CLICOLOR=1
 export EDITOR=code
+export LESS="-R -M"
 
 if [[ ! -f ~/.antigen/antigen.zsh ]]; then
     mkdir -v ~/.antigen
@@ -13,11 +14,16 @@ source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
 antigen bundle z
-antigen bundle colored-man-pages
+# antigen bundle colored-man-pages
+# antigen bundle zlsun/solarized-man
+antigen bundle zuxfoucault/colored-man-pages_mod
 # antigen bundle git
 antigen bundle gem
+antigen bundle web-search
 # antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
+# antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zdharma/fast-syntax-highlighting
+antigen bundle zdharma/history-search-multi-word
 # antigen bundle zsh-users/zsh-history-substring-search
 
 antigen bundle mafredri/zsh-async
@@ -45,7 +51,8 @@ alias gs="git status -sb"
 
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
-alias emptytrash="rm -rf ~/.Trash/*"
+# alias emptytrash="rm -rf ~/.Trash/*"
+alias emptytrash="trash -e"
 alias zshrc="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
 alias battery="pmset -g batt"
