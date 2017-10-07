@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+eval "$(rbenv init - --no-rehash)"
+
 export CLICOLOR=1
 export EDITOR=code
 
@@ -10,9 +12,10 @@ fi
 source ~/.antigen/antigen.zsh
 
 antigen use oh-my-zsh
+antigen bundle z
 antigen bundle colored-man-pages
 # antigen bundle git
-antigen bundle z
+antigen bundle gem
 # antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
 # antigen bundle zsh-users/zsh-history-substring-search
@@ -46,3 +49,11 @@ alias emptytrash="rm -rf ~/.Trash/*"
 alias zshrc="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
 alias battery="pmset -g batt"
+
+# IP addresses
+alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
+alias localip="ipconfig getifaddr en0"
+alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+# Show active network interfaces
+alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
