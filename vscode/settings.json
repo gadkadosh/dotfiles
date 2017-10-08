@@ -24,5 +24,34 @@
             "before": ["j", "k"],
             "after": ["<esc>"]
         }
-    ]
+    ],
+    "vim.otherModesKeyBindingsNonRecursive": [
+        {
+            "before":["<C-n>"],
+            "after":[],
+            "commands": [
+                {
+                    "command": ":nohl",
+                    "args": []
+                }
+            ]
+        }
+    ],
+    "vim.hlsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.statusBarColorControl": true,
+    "vim.statusBarColors" : {
+        "normal": "#005f5f",
+        "insert": "#5f0000",
+        "visual": "#5f00af",
+        "visualline": "#005f87",
+        "visualblock": "#86592d",
+        "replace": "#000000"
+    },
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#005f5f",
+        "statusBar.noFolderBackground": "#005f5f",
+        "statusBar.debuggingBackground": "#005f5f"
+    },
+    "editor.lineNumbers": "on"
 }
