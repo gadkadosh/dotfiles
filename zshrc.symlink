@@ -2,10 +2,6 @@
 
 eval "$(rbenv init - --no-rehash)"
 
-export CLICOLOR=1
-export EDITOR=code
-export LESS="-R -M"
-
 if [[ ! -f ~/.antigen/antigen.zsh ]]; then
     mkdir -v ~/.antigen
     curl -L git.io/antigen > ~/.antigen/antigen.zsh
@@ -24,6 +20,10 @@ antigen bundle mafredri/zsh-async
 antigen bundle sindresorhus/pure
 
 antigen apply
+
+export LSCOLORS=gxfxcxdxbxegedabagacad
+export EDITOR=code
+export LESS="-R -M"
 
 alias c="clear"
 alias h="history"
