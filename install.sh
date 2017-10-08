@@ -85,7 +85,7 @@ setup_gitconfig() {
 	fi
 }
 
-read -n 1 -p "Proceed with installing dotfiles and configurations? " yn
+read -n 1 -p "Proceed with installing dotfiles and configurations? [yN]" yn
 [[ $yn != [Yy] ]] && echo "\nExiting..." && exit
 echo
 
