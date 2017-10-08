@@ -59,6 +59,7 @@ setup_vscode() {
             robertohuertasm.vscode-icons
             shinnn.stylelint
             streetsidesoftware.code-spell-checker
+            vscodevim.vim
             zhuangtongfa.Material-theme
             "
         for module in $modules; do
@@ -90,6 +91,7 @@ setup_homebrew() {
         bluetext "Brew is already installed, updating..."
     else
         read -n 1 -p "Would you like to install Homebrew? [yN] " brew_yn
+        echo
         # Install Homebrew
         [[ $brew_yn != [Yy] ]] && return 0
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -98,7 +100,10 @@ setup_homebrew() {
     brew update
     
     read -n 1 -p "Would you like to install packages from Brewfile? [yN] " packages_yn
-    [[ $packages_yn = [Yy] ]] && echo "Installing packages..." && brew bundle
+    echo
+    [[ $packages_yn != [Yy] ]] && return 0
+    echo "Installing packages..."
+    brew bundle
 }
 
 read -n 1 -p "Proceed with installing dotfiles and configurations? [yN] " yn
@@ -109,3 +114,7 @@ install_dotfiles
 setup_gitconfig
 setup_vscode
 setup_homebrew
+
+echo
+bluetext "For vscode vim usability, I might want to run:"
+echo "defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false"

@@ -13,5 +13,16 @@
     "editor.snippetSuggestions": "top",
     "workbench.colorTheme": "One Dark Pro",
     "window.nativeTabs": true,
-    "editor.fontSize": 13
+    "editor.fontSize": 13,
+    "vim.disableAnnoyingNeovimMessage": true,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "j"],
+            "after": ["<esc>"]
+        },
+        {
+            "before": ["j", "k"],
+            "after": ["<esc>"]
+        }
+    ]
 }
