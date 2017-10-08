@@ -1,6 +1,16 @@
 filetype plugin indent on
+set autoindent
+
 syntax on
 set encoding=utf-8
+set hls
+set is
+set showcmd
+set ruler
+
+set background=dark
+let g:solarized_termcolors=256
+colorscheme solarized
 
 inoremap jj <esc>
 inoremap jk <esc>
