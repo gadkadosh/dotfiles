@@ -85,15 +85,27 @@ setup_gitconfig() {
 	fi
 }
 
-read -n 1 -p "Proceed with installing dotfiles and configurations? [yN]" yn
+setup_homebrew() {
+    if test ! "$(which brew)"; then
+        bluetext "Brew is already installed, updating..."
+    else
+        read -n 1 -p "Would you like to install Homebrew? [yN] " brew_yn
+        # Install Homebrew
+        [[ $brew_yn != [Yy] ]] && return 0
+        /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    fi
+
+    brew update
+    
+    read -n 1 -p "Would you like to install packages from Brewfile? [yN] " packages_yn
+    [[ $packages_yn = [Yy] ]] && echo "Installing packages..." && brew bundle
+}
+
+read -n 1 -p "Proceed with installing dotfiles and configurations? [yN] " yn
 [[ $yn != [Yy] ]] && echo "\nExiting..." && exit
 echo
 
 install_dotfiles
 setup_gitconfig
 setup_vscode
-
-# a few messages
-echo
-bluetext "Brewfile is available to install all Homebrew packages"
-# bluetext "You should probably set username and email in ~/.gitconfig.local"
+setup_homebrew
