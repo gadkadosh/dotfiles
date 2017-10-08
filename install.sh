@@ -58,6 +58,7 @@ setup_vscode() {
             ritwickdey.LiveServer
             robertohuertasm.vscode-icons
             shinnn.stylelint
+            streetsidesoftware.code-spell-checker
             zhuangtongfa.Material-theme
             "
         for module in $modules; do
