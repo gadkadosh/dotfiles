@@ -49,17 +49,6 @@ battery() {
 bold=$(tput bold)
 reset=$(tput sgr0)
 
-# Colors
-# red=$(tput setaf 160)
-# green=$(tput setaf 28) #28,64
-# light_green=$(tput setaf 34) #40
-# yellow=$(tput setaf 178) #3
-# blue=$(tput setaf 12) #33
-# orange=$(tput setaf 166)
-# cyan=$(tput setaf 37)
-# purple=$(tput setaf 135) #125
-# violet=$(tput setaf 141) #61
-
 # Solarized colors
 black=$(tput setaf 0)
 blue=$(tput setaf 33)
@@ -72,18 +61,11 @@ violet=$(tput setaf 61)
 white=$(tput setaf 15)
 yellow=$(tput setaf 136)
 
-# customizations
-# PS1="\n$PROMPT_BOLD$PROMPT_GREEN\u@\h:$PROMPT_BLUE\W$ $PROMPT_RESET"
-# PS1="$PROMPT_BOLD$PROMPT_GREEN\u@\h:$PROMPT_BLUE\W$ $PROMPT_RESET"
-# PS1="\[${green}\]\u@\h: $PROMPT_BOLD$PROMPT_BLUE\w$PROMPT_LIGHT_GREEN\$(parse_git_branch)\n$PROMPT_BLUE$ $PROMPT_RESET"
-# PS1="\[${bold}\]\[${green}\]\u\[${reset}\] in \[${bold}\]\[${blue}\]\W\[${light_green}\] \$(parse_git_branch)\n\[${reset}\]$ "
-# PS1="\[${bold}\]\[${light_green}\]\u\[${reset}\] at \[${bold}\]\[${purple}\]\h\[${reset}\] in \[${bold}\]\[${blue}\]\W \$(parse_git_branch)\n\[${reset}\]$ "
 PS1="\[${bold}\]\[${green}\]\u\[${reset}\] at \[${bold}\]\[${purple}\]\h\[${reset}\] in \[${bold}\]\[${blue}\]\W \$(parse_git_branch)\n\[${reset}\]$ "
 
 export PS1
 export CLICOLOR=1
 export LSCOLORS=Exfxcxdxbxegedabagacad
-# export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 export GREP_OPTIONS='--color=always'
 
 alias c="clear"
