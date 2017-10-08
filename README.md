@@ -1,5 +1,8 @@
 # dotfiles
-These are just my dotfiles. There are tons of great dotfiles and systems for managing them around. For now I chose my own simple solution.
+These are my dotfiles and config files. I'm using MacOS, Visual Studio Code and ZSH with Antigen on Terminal.app (yes...!).
+There are tons of great dotfiles and systems for managing them around. 
+My solution is simple and does what I want and need. Influenced by some repositories like: [carlos' dotfiles](https://github.com/caarlos0/dotfiles), who himself advocates for sharing dotfiles, and has written some great [blog articles and documents](https://github.com/caarlos0/dotfiles/blob/master/docs/PHILOSOPHY.md) about it.
 
-Currently I have .bash_profile and .gitconfig, and I use MacOS.
-There's a small shell script to automatically create symlinks in the home directory.
+The **install&#46;sh** script links all **.symlink** files, as well as vscode's files, to the home directory, installs vscode extensions and prompts for gitconfig user/email - which are saved in **.gitconfig.local** and included in the main **.gitconfig**.
+
+[**Antigen**](http://antigen.sharats.me) is a very nice tool and zsh is great. I'm still experimenting with different plugins, and while I don't experience any slowness at all, I will probably try one of the alternatives soon enough.
