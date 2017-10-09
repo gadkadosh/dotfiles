@@ -1,19 +1,19 @@
 // Place your settings in this file to overwrite the default settings
 {
+    "editor.fontSize": 13,
     "editor.multiCursorModifier": "ctrlCmd",
+    "editor.renderIndentGuides": false,
     "window.zoomLevel": 0,
-    "workbench.startupEditor": "newUntitledFile",
-    "python.linting.enabledWithoutWorkspace": false,
+    "workbench.colorTheme": "One Dark Pro",
     "workbench.iconTheme": "vscode-icons",
+    "workbench.startupEditor": "newUntitledFile",
     "liveServer.settings.donotShowInfoMsg": true,
+    "files.trimTrailingWhitespace": true,
     "files.insertFinalNewline": true,
     "css.validate": false,
     "scss.validate": false,
     "less.validate": false,
     "editor.snippetSuggestions": "top",
-    "workbench.colorTheme": "One Dark Pro",
-    "window.nativeTabs": true,
-    "editor.fontSize": 13,
     "vim.disableAnnoyingNeovimMessage": true,
     "vim.insertModeKeyBindings": [
         {
@@ -37,21 +37,5 @@
             ]
         }
     ],
-    "vim.hlsearch": true,
-    "vim.useSystemClipboard": true,
-    "vim.statusBarColorControl": true,
-    "vim.statusBarColors" : {
-        "normal": "#005f5f",
-        "insert": "#5f0000",
-        "visual": "#5f00af",
-        "visualline": "#005f87",
-        "visualblock": "#86592d",
-        "replace": "#000000"
-    },
-    "workbench.colorCustomizations": {
-        "statusBar.background": "#005f5f",
-        "statusBar.noFolderBackground": "#005f5f",
-        "statusBar.debuggingBackground": "#005f5f"
-    },
-    "editor.lineNumbers": "on"
+    "vim.hlsearch": true
 }
