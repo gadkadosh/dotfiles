@@ -32,7 +32,7 @@ install_dotfiles() {
 }
 
 setup_vscode() {
-    if test "$(which code)"; then
+    if test "$(command -v code)"; then
         bluetext "Setting up VSCode"
         if [ "$(uname -s)" = "Darwin" ]; then
             VSCODE_HOME="$HOME/Library/Application Support/Code"
@@ -87,11 +87,10 @@ setup_gitconfig() {
 }
 
 setup_homebrew() {
-    if test ! "$(which brew)"; then
+    if [ $(command -v brew) ]; then
         bluetext "Brew is already installed, updating..."
     else
-        read -n 1 -p "Would you like to install Homebrew? [yN] " brew_yn
-        echo
+        read -p "Would you like to install Homebrew? [yN] " brew_yn
         # Install Homebrew
         [[ $brew_yn != [Yy] ]] && return 0
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -99,16 +98,15 @@ setup_homebrew() {
 
     brew update
     
-    read -n 1 -p "Would you like to install packages from Brewfile? [yN] " packages_yn
     echo
+    read -p "Would you like to install packages from Brewfile? [yN] " packages_yn
     [[ $packages_yn != [Yy] ]] && return 0
     echo "Installing packages..."
     brew bundle
 }
 
-read -n 1 -p "Proceed with installing dotfiles and configurations? [yN] " yn
+read -p "Proceed with installing dotfiles and configurations? [yN] " yn
 [[ $yn != [Yy] ]] && echo "\nExiting..." && exit
-echo
 
 install_dotfiles
 setup_gitconfig
