@@ -31,43 +31,6 @@ install_dotfiles() {
 		done
 }
 
-setup_vscode() {
-    if test "$(command -v code)"; then
-        bluetext "Setting up VSCode"
-        if [ "$(uname -s)" = "Darwin" ]; then
-            VSCODE_HOME="$HOME/Library/Application Support/Code"
-        else
-            VSCODE_HOME="$HOME/.config/Code"
-        fi
-        
-        link_file "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_HOME/User/settings.json"
-        link_file "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_HOME/User/keybindings.json"
-        link_file "$DOTFILES_DIR/vscode/snippets" "$VSCODE_HOME/User/snippets"
-
-        # from `code --list-extensions`
-        modules="
-            EditorConfig.EditorConfig
-            Zignd.html-css-class-completion
-            christian-kohler.path-intellisense
-            coderfee.open-html-in-browser
-            dbaeumer.vscode-eslint
-            donjayamanne.githistory
-            donjayamanne.python
-            emmanuelbeziat.vscode-great-icons
-            qinjia.view-in-browser
-            ritwickdey.LiveServer
-            robertohuertasm.vscode-icons
-            shinnn.stylelint
-            streetsidesoftware.code-spell-checker
-            vscodevim.vim
-            zhuangtongfa.Material-theme
-            "
-        for module in $modules; do
-            code --install-extension "$module" || true
-        done
-    fi
-}
-
 setup_gitconfig() {
 	bluetext 'Setting up gitconfig'
     GITCONFIG_LOCAL="$HOME/.gitconfig.local"
@@ -86,6 +49,31 @@ setup_gitconfig() {
 	fi
 }
 
+setup_vscode() {
+    if [ ! $(command -v code) ]; then
+        return 0
+    fi
+
+    bluetext "Setting up VSCode"
+    if [ "$(uname -s)" = "Darwin" ]; then
+        VSCODE_HOME="$HOME/Library/Application Support/Code"
+    else
+        VSCODE_HOME="$HOME/.config/Code"
+    fi
+
+    link_file "$DOTFILES_DIR/vscode/settings.json" "$VSCODE_HOME/User/settings.json"
+    link_file "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_HOME/User/keybindings.json"
+    link_file "$DOTFILES_DIR/vscode/snippets" "$VSCODE_HOME/User/snippets"
+
+    read -p "Install VSCode extensions? [yN] " vscode_ext_yn
+    [[ $vscode_ext_yn != [Yy] ]] && return 0
+
+    while read extension; do
+        code --install-extension "$extension"
+    done < $DOTFILES_DIR/vscode/extensions-list
+}
+
+
 setup_homebrew() {
     if [ $(command -v brew) ]; then
         bluetext "Brew is already installed, updating..."
@@ -97,7 +85,7 @@ setup_homebrew() {
     fi
 
     brew update
-    
+
     echo
     read -p "Would you like to install packages from Brewfile? [yN] " packages_yn
     [[ $packages_yn != [Yy] ]] && return 0
