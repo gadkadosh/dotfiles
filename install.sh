@@ -65,6 +65,12 @@ setup_vscode() {
     link_file "$DOTFILES_DIR/vscode/keybindings.json" "$VSCODE_HOME/User/keybindings.json"
     link_file "$DOTFILES_DIR/vscode/snippets" "$VSCODE_HOME/User/snippets"
 
+    [[ ! -e "$DOTFILES_DIR/vscode/extensions-list" ]] && return 0
+
+    install_vscode_extenstions
+}
+
+install_vscode_extenstions() {
     read -p "Install VSCode extensions? [yN] " vscode_ext_yn
     [[ $vscode_ext_yn != [Yy] ]] && return 0
 
@@ -72,7 +78,6 @@ setup_vscode() {
         code --install-extension "$extension"
     done < $DOTFILES_DIR/vscode/extensions-list
 }
-
 
 setup_homebrew() {
     if [ $(command -v brew) ]; then
