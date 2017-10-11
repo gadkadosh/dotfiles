@@ -24,6 +24,8 @@ antigen apply
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export EDITOR=code
 export LESS="-R -M"
+# Stops Homebrew from using my GitHub accound and returning errors
+export HOMEBREW_NO_GITHUB_API=1
 
 alias c="clear"
 alias h="history"
