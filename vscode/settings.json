@@ -37,5 +37,8 @@
             ]
         }
     ],
-    "vim.hlsearch": true
+    "vim.hlsearch": true,
+    "terminal.integrated.fontSize": 13,
+    "editor.cursorBlinking": "solid",
+    "editor.lineNumbers": "relative"
 }
