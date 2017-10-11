@@ -14,12 +14,14 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 set number
+set relativenumber
 
 set background=dark
 let g:solarized_termcolors=256
 colorscheme solarized
 
+:let mapleader = ","
 inoremap jj <esc>
 inoremap jk <esc>
-map <C-n> :noh<CR>
-map <C-m> :set relativenumber!<CR>
+map <silent> <C-n> :noh<CR>
+map <silent> <Leader>r :set relativenumber!<CR>
