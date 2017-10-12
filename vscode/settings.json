@@ -2,9 +2,7 @@
 {
     "editor.fontSize": 13,
     "editor.multiCursorModifier": "ctrlCmd",
-    "editor.renderIndentGuides": false,
-    "window.zoomLevel": 0,
-    "workbench.colorTheme": "One Dark Pro",
+    "editor.renderIndentGuides": true,
     "workbench.iconTheme": "vscode-icons",
     "workbench.startupEditor": "newUntitledFile",
     "liveServer.settings.donotShowInfoMsg": true,
@@ -37,11 +35,11 @@
             ]
         }
     ],
-    "vim.hlsearch": true,
     "terminal.integrated.fontSize": 13,
     "editor.cursorBlinking": "solid",
     "editor.lineNumbers": "relative",
-    "window.titleBarStyle": "custom",
     "window.title": "${rootPath}${separator}${activeEditorShort}${separator}${rootName}",
-    "window.newWindowDimensions": "inherit"
+    "window.newWindowDimensions": "inherit",
+    "vim.hlsearch": true,
+    "vim.cmdLineInitialColon": true
 }
