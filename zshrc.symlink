@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
 
+# rbenv setup.
+# --no-hash makes it quicker and it's enough to run after installations
 eval "$(rbenv init - --no-rehash)"
 
+# Installs antigen if it's not found
 if [[ ! -f ~/.antigen/antigen.zsh ]]; then
     mkdir -v ~/.antigen
     curl -L git.io/antigen > ~/.antigen/antigen.zsh
@@ -23,7 +26,11 @@ antigen apply
 
 export LSCOLORS=gxfxcxdxbxegedabagacad
 export EDITOR=code
-export LESS="-R -M"
+# R: raw output, to allow ANSI colors
+# M: verbose prompt, line numbers/ percentage
+export LESS="-iRM"
+# Options for grep
+export GREP_OPTIONS="-i"
 # Stops Homebrew from using my GitHub accound and returning errors
 export HOMEBREW_NO_GITHUB_API=1
 
@@ -55,6 +62,11 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# Global aliases
+alias -g G="|grep"
+alias -g L="|less"
+alias -g Y="|yank"
 
 # Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
 compresspdf() {
