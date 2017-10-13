@@ -1,3 +1,5 @@
+-- Modified from https://github.com/wincent/wincent.git
+
 -- 12x12 grid allows for halves and thirds
 hs.grid.setGrid('12x12')
 hs.grid.MARGINX = 0
@@ -24,7 +26,8 @@ local grid = {
     bottomRight = '6,6 6x6',
     bottomLeft = '0,6 6x6',
     fullScreen = '0,0 12x12',
-    centeredLarge = '2,2 8x8',
+    centeredLarge = '1,1 10x10',
+    centeredMedium = '2,2 8x8',
     centeredSmall = '3,3 6x6',
 }
 
@@ -46,7 +49,7 @@ local keyBindings = {
     {
         meta = ctrlalt,
         key = "down",
-        chain = { grid.leftHalf, grid.leftThird, grid.leftTwoThirds }
+        chain = { grid.bottomHalf, grid.bottomThird, grid.bottomTwoThirds }
     },
     {
         meta = ctrlalt,
@@ -61,28 +64,58 @@ local keyBindings = {
     {
         meta = ctrlaltcmd,
         key = "down",
-        chain = { grid.fullScreen, grid.centeredLarge, grid.centeredSmall }
+        chain = { grid.fullScreen, grid.centeredLarge, grid.centeredMedium, grid.centeredSmall }
     }
 }
 
--- local lastMovements = nil
-
 chain = (function(movements)
-    local sequenceIndex = 1
     local cycleLength = #movements
+    local sequenceIndex = 1
+    local timeInterval = 2
 
     return function()
         local win = hs.window.frontmostWindow()
-        if lastMovements ~= movements then
+        local id = win:id()
+        local now = hs.timer.secondsSinceEpoch()
+
+        if
+            lastMovements ~= movements or
+            lastWindow ~= id or
+            now - timeInterval > lastTime
+            then
             sequenceIndex = 1
         end
+
         hs.grid.set(win, movements[sequenceIndex])
+        lastWindow = id
         lastMovements = movements
         sequenceIndex = sequenceIndex % cycleLength + 1
+        lastTime = now
     end
 end)
 
-
 for i, val in pairs(keyBindings) do
     hs.hotkey.bind(val.meta, val.key, chain(val.chain))
+end
+
+-- Move windows
+-- left
+
+local movOffset = 20
+local moveMeta = ctrlaltcmdshift
+
+local movBindings = {
+    { key = "Left", axis = "x", change = -movOffset },
+    { key = "Right", axis = "x", change = movOffset },
+    { key = "Up", axis = "y", change = -movOffset },
+    { key = "Down", axis = "y", change = movOffset },
+}
+
+for i, val in pairs(movBindings) do
+    hs.hotkey.bind(moveMeta, val.key, function()
+        local win = hs.window.frontmostWindow()
+        local f = win:frame()
+        f[val.axis] = f[val.axis] + val.change
+        win:setFrame(f)
+    end)
 end

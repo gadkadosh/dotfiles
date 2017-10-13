@@ -19,9 +19,6 @@ require('launchApps')
 -- Window management
 require('winManagement')
 
--- Move windows with keys
-require('winMov')
-
 -- Displays what's in the clipboard
 require('clipboard')
 
