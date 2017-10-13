@@ -1,11 +1,16 @@
 
--- For Miro's position module
-hyper = {"shift", "alt", "cmd"}
--- hyper = {"ctrl", "alt", "cmd"}
-hypershift = {"ctrl", "alt", "cmd", "shift"}
+ctrlaltcmd = {"ctrl", "alt", "cmd"}
+ctrlaltcmdshift = {"ctrl", "alt", "cmd", "shift"}
+appLaunchMeta = {"alt", "shift"}
 
 -- Shortcuts for opening/switching to apps
 require('launchApps')
+
+-- Window management
+require('winManagement')
+
+-- Move windows with keys
+require('winMov')
 
 -- Displays what's in the clipboard
 require('clipboard')
@@ -14,26 +19,18 @@ require('clipboard')
 require('homeWifi')
 
 -- Maps fn + hjkl to arrow keys
--- require('hjklArrows')
-
--- Miro's position module, better than what I started writing at winManagement.lua
-require('position')
-
--- Move windows with keys
-require('winMov')
+-- require('fnMeta.lua')
 
 -- Disable the annoyind Cmd+I shortcut in Safari, which keeps firing up Mail.app
 -- require('disableKeys')
 
 -- Cmd+Alt+Ctrl+R: Reload Hammerspoon config
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "R", function()
+hs.hotkey.bind(ctrlaltcmd, "R", function()
     hs.reload()
 end)
 hs.alert.show("Config reloaded")
 
 -- Cmd+Alt+Ctrl+E: Toggle Hammerspoon console
-hs.hotkey.bind({"cmd", "alt", "ctrl"}, "E", function()
+hs.hotkey.bind(ctrlaltcmd, "E", function()
     hs.toggleConsole()
 end)
-
--- hs.loadSpoon(FnMate)
