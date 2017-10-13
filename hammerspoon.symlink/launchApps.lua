@@ -6,6 +6,7 @@ appShortcuts = {
     {key = "k", id = "com.microsoft.VSCode"},
     {key = "l", id = "Finder"},
     {key = "m", id = "Messages"},
+    {key = "n", id = "Activity Monitor"},
     {key = "p", id = "Spotify"},
 }
 
