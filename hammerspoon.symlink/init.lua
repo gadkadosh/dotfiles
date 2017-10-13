@@ -26,7 +26,7 @@ require('clipboard')
 require('homeWifi')
 
 -- Maps fn + hjkl to arrow keys
- require('fnMeta')
+require('fnMeta')
 
 -- Disable the annoyind Cmd+I shortcut in Safari, which keeps firing up Mail.app
 require('disableKeys')
