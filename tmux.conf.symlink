@@ -1,0 +1,86 @@
+# Bindings:
+# - to see current bindings:
+#   tmux list-keys
+
+# Remap prefix to Control + a
+unbind C-b
+set -g prefix C-a
+bind C-a send-prefix
+
+# Rename the terminal
+set -g set-titles on
+
+# #T      = standard window title (last command, see ~/.bash_profile)
+# #H      = long hostname
+# #h      = short hostname
+# #S      = session name
+# #W      = tmux window name
+# #I      = tmux window index number
+# #P      = tmux pane index number
+set -g set-titles-string "#T : #h > #S > #W"
+
+# Show bells in window titles.
+set -g window-status-bell-style fg=yellow,bold,underscore
+
+# Status bar customization
+set -g status-interval 30
+set -g status-bg blue
+set -g status-fg white
+set -g status-right '#(who | cut -d" " -f1)@#h - %a %d %b %R'
+
+# Reload coniguration
+unbind r
+bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
+
+# Vim-like key bindings for pane navigation (default uses cursor keys).
+unbind h
+bind h select-pane -L
+unbind j
+bind j select-pane -D
+unbind k
+bind k select-pane -U
+unbind l
+bind l select-pane -R
+
+# Resizing (mouse also works).
+unbind Left
+bind -r Left resize-pane -L 5
+unbind Right
+bind -r Right resize-pane -R 5
+unbind Down
+bind -r Down resize-pane -D 5
+unbind Up
+bind -r Up resize-pane -U 5
+
+# Mouse scrolling with a saner rate of 1
+bin -Tcopy-mode WheelUpPane send -N1 -X scroll-up
+bin -Tcopy-mode WheelDownPane send -N1 -X scroll-down
+
+# Intuitive window-splitting keys.
+bind | split-window -h -c '#{pane_current_path}' # normally prefix-%
+bind \ split-window -h -c '#{pane_current_path}' # normally prefix-%
+bind - split-window -v -c '#{pane_current_path}' # normally prefix-"
+bind _ split-window -v -c '#{pane_current_path}' # normally prefix-"
+
+# Automatically renumber window numbers on closing a pane (tmux >= 1.7).
+set -g renumber-windows on
+
+# Highlight active window.
+set -w -g window-status-current-bg yellow
+
+# Mouse can be used to select panes, select windows (by clicking on the status
+# bar), resize panes. For default bindings see `tmux list-keys`.
+set -g mouse on
+
+# Slightly more useful width in "main-vertical" layout; enough room for 3-digit
+# line number gutter in Vim + 80 columns of text + 1 column breathing room
+# (default looks to be about 79).
+set -w -g main-pane-width 85
+
+set -g default-terminal "screen-256color"
+
+set -g history-limit 10000
+
+# Start window and pane numbering at 1, (0 is too hard to reach).
+set -g base-index 1
+set -g pane-base-index 1

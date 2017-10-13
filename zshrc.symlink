@@ -68,6 +68,7 @@ alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'
 alias -g G="|grep"
 alias -g L="|less"
 alias -g Y="|yank"
+alias -g C="|lolcat"
 
 # Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
 compresspdf() {
@@ -77,3 +78,14 @@ compresspdf() {
 o() {
     open ${1:-"."}
 }
+
+# Start tmux
+if [[ "$TERM" != "screen" ]] && 
+    [[ "$SSH_CONNECTION" == "" ]] &&
+    [[ -z "$TMUX" ]]; then
+    # Attempt to discover a detached session and attach 
+    # it, else create a new session
+
+    SESSION_NAME=base
+    tmux new -A -s $SESSION_NAME
+fi
