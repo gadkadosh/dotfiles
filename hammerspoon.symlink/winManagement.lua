@@ -111,11 +111,15 @@ local movBindings = {
     { key = "Down", axis = "y", change = movOffset },
 }
 
-for i, val in pairs(movBindings) do
-    hs.hotkey.bind(moveMeta, val.key, function()
+local movWindow = function(binding)
+    return (function()
         local win = hs.window.frontmostWindow()
         local f = win:frame()
-        f[val.axis] = f[val.axis] + val.change
+        f[binding.axis] = f[binding.axis] + binding.change
         win:setFrame(f)
     end)
+end
+
+for i, val in pairs(movBindings) do
+    hs.hotkey.bind(moveMeta, val.key, movWindow(val), nil, movWindow(val))
 end
