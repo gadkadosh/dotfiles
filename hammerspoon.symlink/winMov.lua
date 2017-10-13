@@ -1,8 +1,5 @@
-
-local moveMeta = {"cmd", "alt", "ctrl", "shift"}
-
 -- Move window left
-hs.hotkey.bind(moveMeta, "Left", function()
+hs.hotkey.bind(ctrlaltcmdshift, "Left", function()
     local window = hs.window.focusedWindow()
     local f = window:frame()
     f.x = f.x - 20
@@ -10,7 +7,7 @@ hs.hotkey.bind(moveMeta, "Left", function()
 end)
 
 -- Move window to the right
-hs.hotkey.bind(moveMeta, "Right", function()
+hs.hotkey.bind(ctrlaltcmdshift, "Right", function()
     local window = hs.window.focusedWindow()
     local f = window:frame()
     f.x = f.x + 20
@@ -18,7 +15,7 @@ hs.hotkey.bind(moveMeta, "Right", function()
 end)
 
 -- Move window to the up
-hs.hotkey.bind(moveMeta, "Up", function()
+hs.hotkey.bind(ctrlaltcmdshift, "Up", function()
     local window = hs.window.focusedWindow()
     local f = window:frame()
     f.y = f.y - 20
@@ -26,7 +23,7 @@ hs.hotkey.bind(moveMeta, "Up", function()
 end)
 
 -- Move window to the down
-hs.hotkey.bind(moveMeta, "Down", function()
+hs.hotkey.bind(ctrlaltcmdshift, "Down", function()
     local window = hs.window.focusedWindow()
     local f = window:frame()
     f.y = f.y + 20
