@@ -1,6 +1,6 @@
 
 -- Catch fn-hjkl keys and converts them to arrow keys.
-function catcher(event)
+catcher = function(event)
     if event:getFlags()['fn'] and event:getCharacters() == "h" then
        return true, {hs.eventtap.event.newKeyEvent({}, "left", true)}
     end
@@ -16,4 +16,4 @@ function catcher(event)
     return false
 end
 
-local tapper = hs.eventtap.new({hs.eventtap.event.types.keyDown}, catcher):start()
+tapper = hs.eventtap.new({hs.eventtap.event.types.keyDown}, catcher):start()
