@@ -1,17 +1,17 @@
 " Colors {{{
 
-colorscheme badwolf         " color scheme/theme
-" colorscheme molokai         " color scheme/theme
-syntax enable               " enable syntax processing/highlighting
+colorscheme badwolf         " Color scheme/theme
+" colorscheme molokai         " Color scheme/theme
+syntax enable               " Enable syntax processing/highlighting
 
 " }}}
 
 " Indentation {{{
 
-set shiftwidth=4            " actual number of spaces for each indentation step
-set tabstop=4               " number of visual spaces per TAB
-set softtabstop=4           " number of spaces in tab when editing
-set expandtab               " tabs are spaces
+set shiftwidth=4            " Actual number of spaces for each indentation step
+set tabstop=4               " Number of visual spaces per TAB
+set softtabstop=4           " Number of spaces in tab when editing
+set expandtab               " Tabs are spaces
 
 set autoindent
 set smartindent
@@ -20,68 +20,71 @@ set smartindent
 
 " UI Layout {{{
 
-set number                  " show line numbers
-set relativenumber          " relative line numbers, together they are hybrid
+set number                  " Show line numbers
+set relativenumber          " Relative line numbers, together they are hybrid
 
-set showcmd                 " show command in bottom bar
-set cursorline              " highlight current line
+set showcmd                 " Show command in bottom bar
+set cursorline              " Highlight current line
 
-filetype indent on          " load filetype-specific indent files, also enables filetype detection
+filetype indent on          " Load filetype-specific indent files, also enables filetype detection
 
-set wildmenu                " visual autocompletion for command line
+set wildmenu                " Visual autocompletion for command line
 
-set lazyredraw              " redraw only when we need, not in the middle of macros (faster)
+set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
 
-set showmatch               " highlight matching [{()}]
+set showmatch               " Highlight matching [{()}]
 
-" Start scrolling before reaching the first or last lines
-set scrolloff=3
+set scrolloff=3             " Start scrolling before reaching the first or last lines
+
+set laststatus=2            " Always show status line
+" f - short filename, l/L current line in total, p - percentage through file
+set statusline=%f\ %m%r%=%l/%L\ (%c)\ %p%%
 
 " }}}
 
 " Search {{{
 
-set incsearch               " search as characters are being typed
-set hlsearch                " keep highlighting matches of last search
-                            " turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
+set incsearch               " Search as characters are being typed
+set hlsearch                " Keep highlighting matches of last search
 
 " }}}
 
 " Folding {{{
 
-set foldenable              " enable folding
-set foldlevelstart=10       " open most folds by default
-set foldmethod=indent       " fold based on indent level
-nnoremap <space> za
+set foldenable              " Enable folding
+set foldlevelstart=10       " Open most folds by default
+set foldmethod=indent       " Fold based on indent level
 
 " }}}
 
 " Shortcuts {{{
 
-" mapping for getting back to normal mode from insert mode
+" Alternative mappings for <esc>
 inoremap jj <esc>
 inoremap jk <esc>           
+
+nnoremap <space> za         " Quick folding with <space>
 
 " move vertically by visual line (when lines are wrapping)
 " nnoremap j gj
 " nnoremap k gk
 
-" nnoremap B ^                " move to beginning of line
-" nnoremap E $                " move to end of line
+" nnoremap B ^                " Move to beginning of line
+" nnoremap E $                " Move to end of line
 
-nnoremap gV `[v`]           " highlight last inserted text
+nnoremap gV `[v`]           " Highlight last inserted text
 
 " }}}
 
 " Leader shortcuts {{{
 
-let mapleader=","           " leader mapping
+let mapleader=","                           " Leader mapping
 
+nnoremap <leader><space> :nohlsearch<CR>    " Hide search highlights
 
-nnoremap <leader>ev :vsp $MYVIMRC<CR>       " edit .vimrc
-nnoremap <leader>ez :vsp ~/.zshrc<CR>       " edit .zshrc
-nnoremap <leader>sv :source $MYVIMRC<CR>    " source .vimrc
+nnoremap <leader>ev :vsp $MYVIMRC<CR>       " Edit .vimrc
+nnoremap <leader>ez :vsp ~/.zshrc<CR>       " Edit .zshrc
+nnoremap <leader>sv :source $MYVIMRC<CR>    " Source .vimrc
 
 nnoremap <leader>r :set relativenumber!<CR>
 
@@ -89,7 +92,7 @@ nnoremap <leader>r :set relativenumber!<CR>
 
 " Tmux {{{
 
-" allow cursor change in tmux mode - this doesn't work in Terminal.app anyways
+" Allow cursor change in tmux mode - this doesn't work in Terminal.app anyways
 " if exists('$TMUX')
 "     let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
 "     let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
