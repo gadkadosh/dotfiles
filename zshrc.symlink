@@ -25,7 +25,8 @@ antigen bundle sindresorhus/pure
 antigen apply
 
 export LSCOLORS=gxfxcxdxbxegedabagacad
-export EDITOR=code
+# export EDITOR=code
+export EDITOR=vim
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/ percentage
 export LESS="-iRM"
