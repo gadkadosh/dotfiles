@@ -63,6 +63,12 @@ set foldmethod=indent       " Fold based on indent level
 inoremap jj <esc>
 inoremap jk <esc>           
 
+" Easier navigation between windows
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
 nnoremap <space> za         " Quick folding with <space>
 
 " move vertically by visual line (when lines are wrapping)
