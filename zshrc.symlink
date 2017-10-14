@@ -1,8 +1,11 @@
 #!/usr/bin/env zsh
 
-# rbenv setup.
+# rbenv setup {{{
 # --no-hash makes it quicker and it's enough to run after installations
 eval "$(rbenv init - --no-rehash)"
+# }}}
+
+# Antige {{{
 
 # Installs antigen if it's not found
 if [[ ! -f ~/.antigen/antigen.zsh ]]; then
@@ -24,6 +27,10 @@ antigen bundle sindresorhus/pure
 
 antigen apply
 
+# }}}
+
+# Exports {{{
+
 export LSCOLORS=gxfxcxdxbxegedabagacad
 # export EDITOR=code
 export EDITOR=vim
@@ -35,27 +42,37 @@ export GREP_OPTIONS="-i"
 # Stops Homebrew from using my GitHub accound and returning errors
 export HOMEBREW_NO_GITHUB_API=1
 
-alias c="clear"
-alias h="history"
-alias hg="history | grep"
-alias j="jobs -l"
-alias u="users"
+# }}}
 
+# Aliases {{{
+
+# Shortcuts
+alias c=clear
+alias h=history
+alias u=users
+alias v=vim
+alias t=tmux
+
+# File management
 alias la="ls -a"
 alias ll="ls -lh"
 alias lla="ls -lha"
 alias mkdir="mkdir -pv"
 alias du="du -h"
 
+# Git
 alias gs="git status -sb"
 
+# MacOs
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
 alias emptytrash="trash -e"
+alias battery="pmset -g batt"
+
+# Editing
 alias zshrc="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
 alias todo="$EDITOR ~/todo"
-alias battery="pmset -g batt"
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
@@ -70,23 +87,37 @@ alias -g G="|grep"
 alias -g L="|less"
 alias -g Y="|yank"
 alias -g C="|lolcat"
+alias -g H="|head"
+alias -g T="|tail"
+
+# }}}
+
+# Functions {{{
 
 # Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
 compresspdf() {
     \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
 }
 
+tmux() {
+    if [[ "$TERM" != "screen" ]] && 
+        [[ "$SSH_CONNECTION" == "" ]] &&
+            [[ -z "$TMUX" ]]; then
+        # Attempt to discover a detached session and attach 
+        # it, else create a new session
+
+        SESSION_NAME=base
+        tmux new -A -s $SESSION_NAME
+    fi
+}
+
 o() {
     open ${1:-"."}
 }
 
-# Start tmux
-if [[ "$TERM" != "screen" ]] && 
-    [[ "$SSH_CONNECTION" == "" ]] &&
-    [[ -z "$TMUX" ]]; then
-    # Attempt to discover a detached session and attach 
-    # it, else create a new session
+# }}}
 
-    SESSION_NAME=base
-    tmux new -A -s $SESSION_NAME
-fi
+# Start tmux
+tmux
+
+# vim:foldmethod=marker:foldlevel=0
