@@ -3,20 +3,20 @@
 #   tmux list-keys
 
 # Remap prefix to Control + a
-unbind C-b
 set -g prefix C-a
+unbind C-b
 bind C-a send-prefix
 
 # Rename the terminal
 set -g set-titles on
 
-# #T      = standard window title (last command, see ~/.bash_profile)
-# #H      = long hostname
-# #h      = short hostname
-# #S      = session name
-# #W      = tmux window name
-# #I      = tmux window index number
-# #P      = tmux pane index number
+# T: standard window title (last command, see ~/.bash_profile)
+# H: long hostname
+# h: short hostname
+# S: session name
+# W: tmux window name
+# I: tmux window index number
+# P: tmux pane index number
 set -g set-titles-string "#T : #h > #S > #W"
 
 # Show bells in window titles.
@@ -44,19 +44,19 @@ bind l select-pane -R
 
 # Resizing (mouse also works).
 unbind Left
-bind -r Left resize-pane -L 5
+bind -r Left resize-pane -L 2
 unbind Right
-bind -r Right resize-pane -R 5
+bind -r Right resize-pane -R 2
 unbind Down
-bind -r Down resize-pane -D 5
+bind -r Down resize-pane -D 2
 unbind Up
-bind -r Up resize-pane -U 5
+bind -r Up resize-pane -U 2
 
 # Mouse scrolling with a saner rate of 1
 bin -Tcopy-mode WheelUpPane send -N1 -X scroll-up
 bin -Tcopy-mode WheelDownPane send -N1 -X scroll-down
 
-# Intuitive window-splitting keys.
+# Intuitive vertical and horizontal window-splitting keys.
 bind | split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind \ split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind - split-window -v -c '#{pane_current_path}' # normally prefix-"
@@ -65,22 +65,29 @@ bind _ split-window -v -c '#{pane_current_path}' # normally prefix-"
 # Automatically renumber window numbers on closing a pane (tmux >= 1.7).
 set -g renumber-windows on
 
-# Highlight active window.
-set -w -g window-status-current-bg yellow
+# Highlight color for the active window marking in the status line
+set -w -g window-status-current-bg magenta
 
 # Mouse can be used to select panes, select windows (by clicking on the status
 # bar), resize panes. For default bindings see `tmux list-keys`.
 set -g mouse on
 
-# Slightly more useful width in "main-vertical" layout; enough room for 3-digit
-# line number gutter in Vim + 80 columns of text + 1 column breathing room
-# (default looks to be about 79).
-set -w -g main-pane-width 85
-
+# Allows 256 colors terminfo inside tmux. Could be tmux-256color, but that seems not to work yet in Terminal.app
 set -g default-terminal "screen-256color"
 
+# How far back to allow scrolling
 set -g history-limit 10000
 
 # Start window and pane numbering at 1, (0 is too hard to reach).
 set -g base-index 1
 set -g pane-base-index 1
+
+# tmux creates a delay for the escape key, disable it
+set -s escape-time 0
+
+# Differentiate the focused pane
+set -g window-style 'bg=colour234'
+set -g window-active-style 'bg=colour232'
+
+# This disables the border color changing with active pane
+set -g pane-active-border-fg 8
