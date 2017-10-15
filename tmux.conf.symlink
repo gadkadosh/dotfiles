@@ -1,3 +1,5 @@
+# Bindings {{{
+
 # Bindings:
 # - to see current bindings:
 #   tmux list-keys
@@ -7,30 +9,9 @@ set -g prefix C-a
 unbind C-b
 bind C-a send-prefix
 
-# Rename the terminal
-set -g set-titles on
-
-# T: standard window title (last command, see ~/.bash_profile)
-# H: long hostname
-# h: short hostname
-# S: session name
-# W: tmux window name
-# I: tmux window index number
-# P: tmux pane index number
-set -g set-titles-string "#T : #h > #S > #W"
-
-# Show bells in window titles.
-set -g window-status-bell-style fg=yellow,bold,underscore
-
-# Status bar customization
-set -g status-interval 30
-set -g status-bg blue
-set -g status-fg white
-set -g status-right '#(who | cut -d" " -f1)@#h - %a %d %b %R'
-
 # Reload coniguration
-unbind r
-bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
+    unbind r
+    bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
 
 # Vim-like key bindings for pane navigation (default uses cursor keys).
 unbind h
@@ -52,25 +33,15 @@ bind -r Down resize-pane -D 2
 unbind Up
 bind -r Up resize-pane -U 2
 
-# Mouse scrolling with a saner rate of 1
-bin -Tcopy-mode WheelUpPane send -N1 -X scroll-up
-bin -Tcopy-mode WheelDownPane send -N1 -X scroll-down
-
 # Intuitive vertical and horizontal window-splitting keys.
 bind | split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind \ split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind - split-window -v -c '#{pane_current_path}' # normally prefix-"
 bind _ split-window -v -c '#{pane_current_path}' # normally prefix-"
 
-# Automatically renumber window numbers on closing a pane (tmux >= 1.7).
-set -g renumber-windows on
+# }}}
 
-# Highlight color for the active window marking in the status line
-set -w -g window-status-current-bg magenta
-
-# Mouse can be used to select panes, select windows (by clicking on the status
-# bar), resize panes. For default bindings see `tmux list-keys`.
-set -g mouse on
+# UI {{{
 
 # Allows 256 colors terminfo inside tmux. Could be tmux-256color, but that seems not to work yet in Terminal.app
 set -g default-terminal "screen-256color"
@@ -78,16 +49,77 @@ set -g default-terminal "screen-256color"
 # How far back to allow scrolling
 set -g history-limit 10000
 
+# Automatically renumber window numbers on closing a pane (tmux >= 1.7).
+set -g renumber-windows on
+
 # Start window and pane numbering at 1, (0 is too hard to reach).
 set -g base-index 1
 set -g pane-base-index 1
 
-# tmux creates a delay for the escape key, disable it
-set -s escape-time 0
+# Rename the terminal
+set -g set-titles on
+
+# T: standard window title (last command, see ~/.bash_profile)
+# H: long hostname
+# h: short hostname
+# S: session name
+# W: tmux window name
+# I: tmux window index number
+# P: tmux pane index number
+set -g set-titles-string "#T : #h > #S > #W"
 
 # Differentiate the focused pane
-set -g window-style 'bg=colour234'
+set -g window-style 'bg=colour235'
 set -g window-active-style 'bg=colour232'
 
 # This disables the border color changing with active pane
 set -g pane-active-border-fg 8
+
+# }}}
+
+# Status line {{{
+
+# Status bar customization
+set -g status-interval 30
+set -g status-bg "#5F64BC"
+set -g status-fg white
+set -g status-left '#[fg=yellow][#S] § '
+set -g status-right '#(who | cut -d" " -f1)@#h - #[fg=yellow]%H:%M' 
+
+# Highlight color for the active window marking in the status line
+set -w -g window-status-current-bg "#BC6E62"
+
+# Show bells in window titles.
+set -g window-status-bell-style fg=yellow,bold,underscore
+
+# }}}
+
+# Mouse support {{{
+
+# Mouse can be used to select panes, select windows (by clicking on the status
+# bar), resize panes. For default bindings see `tmux list-keys`.
+set -g mouse on
+
+# Stay in copy mode on drag end.
+# (Would use `bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X
+# stop-selection` but it is a bit glitchy.)
+unbind-key -T copy-mode-vi MouseDragEnd1Pane
+
+# Scroll 1 lines at a time instead of default 5; don't extend dragged selections.
+bind-key -T copy-mode-vi WheelUpPane select-pane\; send-keys -t{mouse} -X clear-selection\; send-keys -t{mouse} -X -N 1 scroll-up
+bind-key -T copy-mode-vi WheelDownPane select-pane\; send-keys -t{mouse} -X clear-selection\; send-keys -t{mouse} -X -N 1 scroll-down
+
+# Make double and triple click work outside of copy mode (already works inside it with default bindings).
+bind-key -T root DoubleClick1Pane if-shell -Ft{mouse} '#{alternate_on}' "send-keys -M" "copy-mode -t{mouse}; send-keys -t{mouse} -X select-word"
+bind-key -T root TripleClick1Pane if-shell -Ft{mouse} '#{alternate_on}' "send-keys -M" "copy-mode -t{mouse}; send-keys -t{mouse} -X select-line"
+
+# }}}
+
+# Misc {{{
+
+# tmux creates a delay for the escape key, disable it
+set -s escape-time 0
+
+# }}}
+
+# vim:foldmethod=marker:foldlevel=0
