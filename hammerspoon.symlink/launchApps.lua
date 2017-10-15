@@ -1,20 +1,21 @@
 
 -- Setup keybindings for starting apps
 appShortcuts = {
-    { key = "h", id = "Safari", start = true },
-    { key = "j", id = "Terminal", start = true },
-    { key = "k", id = "Visual Studio Code", start = false },
-    { key = "l", id = "Finder", start = true },
-    { key = "m", id = "Messages", start = true },
-    { key = "n", id = "Activity Monitor", start = true },
-    { key = "p", id = "Spotify", start = true },
+    { key = "h", app = "Safari", start = true },
+    { key = "j", app = "Terminal", start = true },
+    { key = "k", app = "com.microsoft.VSCode", start = false },
+    { key = "f", app = "Finder", start = true },
+    { key = "m", app = "Messages", start = true },
+    { key = "n", app = "Activity Monitor", start = true },
+    { key = "p", app = "Spotify", start = true },
 }
 
 toggleApp = function(binding)
     return function()
-        app = hs.application.find(binding.id)
+        hs.application.enableSpotlightForNameSearches(true)
 
         -- If it is running and is frontmost, hide
+        app = hs.application.find(binding.app)
         if app and app:isFrontmost() then
             app:hide()
             return
@@ -25,13 +26,13 @@ toggleApp = function(binding)
             return
         end
 
-        -- Else, if not frontmost or not running, refocus or open
-        if not hs.application.launchOrFocus(binding.id) then
-            hs.application.launchOrFocusByBundleID(binding.id)
+       --  -- Else, if not frontmost or not running, refocus or open
+        if not hs.application.launchOrFocus(binding.app) then
+            hs.application.launchOrFocusByBundleID(binding.app)
         end
     end
 end
 
-for i, val in ipairs(appShortcuts) do
-    hs.hotkey.bind(appLaunchMeta, val.key, toggleApp(val))
+for i, binding in ipairs(appShortcuts) do
+    hs.hotkey.bind(appLaunchMeta, binding.key, toggleApp(binding))
 end
