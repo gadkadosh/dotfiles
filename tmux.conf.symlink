@@ -94,7 +94,7 @@ set -g window-status-bell-style fg=yellow,bold,underscore
 
 # }}}
 
-# Mouse support {{{
+# Mouse and system clipboard support {{{
 
 # Mouse can be used to select panes, select windows (by clicking on the status
 # bar), resize panes. For default bindings see `tmux list-keys`.
@@ -106,12 +106,17 @@ set -g mouse on
 unbind-key -T copy-mode-vi MouseDragEnd1Pane
 
 # Scroll 1 lines at a time instead of default 5; don't extend dragged selections.
-bind-key -T copy-mode-vi WheelUpPane select-pane\; send-keys -t{mouse} -X clear-selection\; send-keys -t{mouse} -X -N 1 scroll-up
-bind-key -T copy-mode-vi WheelDownPane select-pane\; send-keys -t{mouse} -X clear-selection\; send-keys -t{mouse} -X -N 1 scroll-down
+#bind-key -T copy-mode-vi WheelUpPane select-pane\; send-keys -t{mouse} -X clear-selection\; send-keys -t{mouse} -X -N 1 scroll-up
+#bind-key -T copy-mode-vi WheelDownPane select-pane\; send-keys -t{mouse} -X clear-selection\; send-keys -t{mouse} -X -N 1 scroll-down
 
-# Make double and triple click work outside of copy mode (already works inside it with default bindings).
-bind-key -T root DoubleClick1Pane if-shell -Ft{mouse} '#{alternate_on}' "send-keys -M" "copy-mode -t{mouse}; send-keys -t{mouse} -X select-word"
-bind-key -T root TripleClick1Pane if-shell -Ft{mouse} '#{alternate_on}' "send-keys -M" "copy-mode -t{mouse}; send-keys -t{mouse} -X select-line"
+# This seems to do the job instead of the two last lines, let's see
+bind-key -T copy-mode-vi WheelUpPane send -X scroll-up
+bind-key -T copy-mode-vi WheelDownPane send -X scroll-down
+
+# Vi mode selection and system clipboard
+set -g mode-keys vi
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
+bind-key -T copy-mode-vi enter send-keys -X copy-pipe-and-cancel "pbcopy"
 
 # }}}
 
