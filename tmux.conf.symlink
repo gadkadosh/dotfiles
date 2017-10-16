@@ -39,6 +39,9 @@ bind \ split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind - split-window -v -c '#{pane_current_path}' # normally prefix-"
 bind _ split-window -v -c '#{pane_current_path}' # normally prefix-"
 
+# Quickly switch back to last window
+bind -r C-a last-window
+
 # }}}
 
 # UI {{{
@@ -69,7 +72,7 @@ set -g set-titles on
 set -g set-titles-string "#T : #h > #S > #W"
 
 # Differentiate the focused pane
-set -g window-style 'bg=colour235'
+set -g window-style 'bg=colour234'
 set -g window-active-style 'bg=colour232'
 
 # This disables the border color changing with active pane
