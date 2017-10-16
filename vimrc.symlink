@@ -69,11 +69,10 @@ set foldmethod=indent       " Fold based on indent level
 
 " }}}
 
-" Shortcuts {{{
+" Mappings {{{
 
 set ttimeoutlen=1           " This fixes the <esc> delay issue
                             " It might cause problems for other key bindings, beware
-
 " Alternative mappings for <esc>
 inoremap jj <esc>
 inoremap jk <esc>           
@@ -94,6 +93,10 @@ nnoremap <space> za         " Quick folding with <space>
 " nnoremap E $                " Move to end of line
 
 nnoremap gV `[v`]           " Highlight last inserted text
+
+" Store relative line number jumps in the jumplist if they exceed a threshold.
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
 " }}}
 
