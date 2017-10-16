@@ -29,4 +29,4 @@ require('homeWifi')
 require('fnMeta')
 
 -- Disable the annoyind Cmd+I shortcut in Safari, which keeps firing up Mail.app
-require('disableKeys')
+require('appWatcher')
