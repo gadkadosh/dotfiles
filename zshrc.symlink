@@ -129,6 +129,13 @@ o() {
 # Load fzf tab completion and key bindings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Use fzf to cd
+fd() {
+    local dir
+    dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print | sed '1d;s#^./##' |
+    fzf --height 20 --reverse --query "$1" --select-1 --exit-0) && cd "$dir"
+}
+
 # Combine z and fzf
 unalias z 2> /dev/null
 z() {
