@@ -1,7 +1,46 @@
+" vim-plug and plugin settings {{{
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/plugged')
+
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
+
+call plug#end()
+
+" Customize fzf colors
+let g:fzf_colors =  {
+  \ 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" }}}
+
 " Colors {{{
 
 colorscheme badwolf         " Color scheme/theme
 " colorscheme molokai         " Color scheme/theme
+
+" Disable background to be consistent with tmux active panes
+" Not sure why, this doesn't work when I put it at the top
+hi NonText ctermbg=NONE
+hi Normal guibg=NONE ctermbg=NONE
 
 syntax enable               " Enable syntax processing/highlighting
 
@@ -71,6 +110,8 @@ set foldmethod=indent       " Fold based on indent level
 
 " Mappings {{{
 
+let mapleader=","                           " Leader mapping
+
 set ttimeoutlen=1           " This fixes the <esc> delay issue
                             " It might cause problems for other key bindings, beware
 " Alternative mappings for <esc>
@@ -89,20 +130,14 @@ nnoremap <space> za         " Quick folding with <space>
 " nnoremap j gj
 " nnoremap k gk
 
-" nnoremap B ^                " Move to beginning of line
-" nnoremap E $                " Move to end of line
-
-nnoremap gV `[v`]           " Highlight last inserted text
-
 " Store relative line number jumps in the jumplist if they exceed a threshold.
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
-" }}}
-
-" Leader shortcuts {{{
-
-let mapleader=","                           " Leader mapping
+" fzf mappings
+nnoremap <silent> <C-t> :Files<CR>
+nnoremap <silent> <Leader>C :Colors<CR>
+nnoremap <silent> <Leader><Enter> :Buffers<CR>
 
 nnoremap <leader><space> :nohlsearch<CR>    " Hide search highlights
 
@@ -113,11 +148,7 @@ nnoremap <leader>o :Explore<CR>             " Open netrw
 
 nnoremap <leader>r :set relativenumber!<CR>
 
-" }}}
-
-" Commands {{{
-  
-"Map Q and W typos to q and w respectively 
+" Map commands Q and W typos to q and w respectively 
 cnoremap Q q
 cnoremap W w
 
@@ -152,17 +183,5 @@ endif
 
 " }}} 
 
-" Netrw {{{
-
-let g:netrw_banner = 0
-let g:netrw_liststyle = 3
-
-" }}}
-
-" Disable background to be consistent with tmux active panes
-" Not sure why, this doesn't work when I put it at the top
-hi NonText ctermbg=NONE
-hi Normal guibg=NONE ctermbg=NONE
-
 set modelines=1
-" vim:foldmethod=marker:foldlevel=0
+" vim: foldmethod=marker foldlevel=0

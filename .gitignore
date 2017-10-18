@@ -1,4 +1,6 @@
 .DS_Store
 
 vim.symlink/tmp
+vim.symlink/autoload
+vim.symlink/plugged
 vim.symlink/.netrwhist
