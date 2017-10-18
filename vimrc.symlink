@@ -11,6 +11,9 @@ call plug#begin('~/.vim/plugged')
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'sgur/vim-editorconfig'
+Plug 'flazz/vim-colorschemes'
 
 call plug#end()
 
@@ -135,9 +138,9 @@ nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
 " fzf mappings
-nnoremap <silent> <C-t> :Files<CR>
-nnoremap <silent> <Leader>C :Colors<CR>
-nnoremap <silent> <Leader><Enter> :Buffers<CR>
+nnoremap <silent> <leader>t :Files<CR>
+nnoremap <silent> <leader>c :Colors<CR>
+nnoremap <silent> <leader><enter> :Buffers<CR>
 
 nnoremap <leader><space> :nohlsearch<CR>    " Hide search highlights
 
@@ -147,10 +150,6 @@ nnoremap <leader>sv :source $MYVIMRC<CR>    " Source .vimrc
 nnoremap <leader>o :Explore<CR>             " Open netrw
 
 nnoremap <leader>r :set relativenumber!<CR>
-
-" Map commands Q and W typos to q and w respectively 
-cnoremap Q q
-cnoremap W w
 
 " }}}
 
