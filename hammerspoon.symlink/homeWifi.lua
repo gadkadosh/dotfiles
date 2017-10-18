@@ -1,6 +1,4 @@
-
 -- Sets volume to 0 when outside of home
-wifiWatcher = nil
 homeSSID = "gkad"
 lastSSID = hs.wifi.currentNetwork()
 
