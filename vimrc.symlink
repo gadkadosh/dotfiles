@@ -100,6 +100,8 @@ endif
 
 set incsearch               " Search as characters are being typed
 set hlsearch                " Keep highlighting matches of last search
+set ignorecase              " Case insensitive search
+set smartcase               " If uppercase letters are included in the search switch to case sensitive
 
 " }}}
 
