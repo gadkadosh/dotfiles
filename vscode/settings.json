@@ -1,6 +1,6 @@
 // Place your settings in this file to overwrite the default settings
 {
-    "editor.fontSize": 13,
+    "editor.fontSize": 14,
     "editor.multiCursorModifier": "ctrlCmd",
     "editor.renderIndentGuides": true,
     "workbench.iconTheme": "vscode-icons",
@@ -25,11 +25,21 @@
     ],
     "vim.otherModesKeyBindingsNonRecursive": [
         {
-            "before":["<C-n>"],
+            "before":["<leader>", "<space>"],
             "after":[],
             "commands": [
                 {
                     "command": ":nohl",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "before":["<leader>", "t"],
+            "after":[],
+            "commands": [
+                {
+                    "command": "workbench.action.quickOpen",
                     "args": []
                 }
             ]
@@ -41,5 +51,10 @@
     "window.title": "${rootPath}${separator}${activeEditorShort}${separator}${rootName}",
     "window.newWindowDimensions": "inherit",
     "vim.hlsearch": true,
-    "vim.cmdLineInitialColon": true
+    "vim.cmdLineInitialColon": true,
+    "vim.leader": ",",
+    "editor.minimap.enabled": false,
+    "workbench.activityBar.visible": false,
+    "editor.wordWrap": "on",
+    "workbench.colorTheme": "Monokai Dimmed"
 }
