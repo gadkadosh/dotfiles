@@ -1,11 +1,13 @@
 " vim-plug and plugin settings {{{
 
+" download vim-plug if it's not installed already
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+" Start vim-plug and list plugins
 call plug#begin('~/.vim/plugged')
 
 Plug '/usr/local/opt/fzf'
@@ -38,10 +40,8 @@ let g:fzf_colors =  {
 " Colors {{{
 
 colorscheme badwolf         " Color scheme/theme
-" colorscheme molokai         " Color scheme/theme
 
 " Disable background to be consistent with tmux active panes
-" Not sure why, this doesn't work when I put it at the top
 hi NonText ctermbg=NONE
 hi Normal guibg=NONE ctermbg=NONE
 
@@ -75,23 +75,28 @@ set wildmenu                " Visual autocompletion for command line
 
 set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
 
-" set showmatch               " Highlight matching [{()}]
+set showmatch               " Highlight matching [{()}]
 packadd! matchit
 
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 
 set laststatus=2            " Always show status line
+
 " f - short filename, l/L current line in total, p - percentage through file
 set statusline=%f\ %m%r%=%l/%L\ (%c)\ %p%%
 
-" use a solid | cursor in insert mode
-let &t_SI = "\<Esc>[6 q"
+" special characters for formatting. set list to enable (<leader>l)
+set listchars=nbsp:⦸
+set listchars+=tab:▷┅
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=trail:•
 
-" use a solid rectangle cursor otherwise
-let &t_EI = "\<Esc>[2 q"
+let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
+let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
 
 if exists('&belloff')
-    set belloff=all                     " never ring the bell for any reason
+    set belloff=all         " never ring the bell for any reason
 endif
 
 " }}}
@@ -115,13 +120,13 @@ set foldmethod=indent       " Fold based on indent level
 
 " Mappings {{{
 
-let mapleader=","                           " Leader mapping
+let mapleader=","           " Leader mapping
 
 set ttimeoutlen=1           " This fixes the <esc> delay issue
-                            " It might cause problems for other key bindings, beware
+
 " Alternative mappings for <esc>
 inoremap jj <esc>
-inoremap jk <esc>           
+inoremap jk <esc>
 
 " Easier navigation between windows
 nnoremap <C-h> <C-w>h
@@ -129,7 +134,8 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-nnoremap <space> za         " Quick folding with <space>
+" Quick folding with <space>
+nnoremap <space> za
 
 " move vertically by visual line (when lines are wrapping)
 " nnoremap j gj
@@ -144,15 +150,29 @@ nnoremap <silent> <leader>t :Files<CR>
 nnoremap <silent> <leader>c :Colors<CR>
 nnoremap <silent> <leader><enter> :Buffers<CR>
 
-nnoremap <leader><space> :nohlsearch<CR>    " Hide search highlights
+" Hide search highlights
+nnoremap <leader><space> :nohlsearch<CR>
 
-nnoremap <leader>ev :vsp $MYVIMRC<CR>       " Edit .vimrc
-nnoremap <leader>ez :vsp ~/.zshrc<CR>       " Edit .zshrc
-nnoremap <leader>sv :source $MYVIMRC<CR>    " Source .vimrc
-nnoremap <leader>o :Explore<CR>             " Open netrw
+" Edit .vimrc
+nnoremap <leader>ev :vsp $MYVIMRC<CR>
 
+" Edit .zshrc
+nnoremap <leader>ez :vsp ~/.zshrc<CR>
+
+" Source .vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
+" Toggle relative line numbers
 nnoremap <leader>r :set relativenumber!<CR>
 
+" Enable special characters
+nnoremap <leader>l :set list!<CR>
+
+" <Leader><Leader> -- Open last buffer.
+nnoremap <Leader><Leader> <C-^>
+
+" Make current buffer/window full screen
+nnoremap <Leader>o :only<CR>
 " }}}
 
 " Backups {{{
@@ -182,7 +202,7 @@ if has('mksession')
     set viewdir=~/.vim/tmp/view         " Override ~/.vim/view default
 endif
 
-" }}} 
+" }}}
 
 set modelines=1
 " vim: foldmethod=marker foldlevel=0
