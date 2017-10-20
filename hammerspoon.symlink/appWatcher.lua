@@ -1,7 +1,5 @@
 -- eventually I would put a few defaults here
-layoutStore = {
-
-}
+layoutStore = {}
 
 -- When changing keyboard layout save it for the current frontmost app
 hs.keycodes.inputSourceChanged(function()

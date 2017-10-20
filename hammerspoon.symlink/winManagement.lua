@@ -34,6 +34,7 @@ local grid = {
 -- The keybindings
 local ctrlalt = {"ctrl", "alt"}
 local ctrlaltcmd = {"ctrl", "alt", "cmd"}
+local switchMeta = {"cmd", "ctrl"}
 
 local keyBindings = {
     {
@@ -99,8 +100,6 @@ for i, val in pairs(keyBindings) do
 end
 
 -- Move windows
--- left
-
 local movOffset = 20
 local moveMeta = ctrlaltcmdshift
 
@@ -123,3 +122,13 @@ end
 for i, val in pairs(movBindings) do
     hs.hotkey.bind(moveMeta, val.key, movWindow(val), nil, movWindow(val))
 end
+
+-- Switch windows
+hs.hotkey.bind(switchMeta, "Left", hs.window.focusWindowWest)
+hs.hotkey.bind(switchMeta, "h", hs.window.focusWindowWest)
+hs.hotkey.bind(switchMeta, "Up", hs.window.focusWindowNorth)
+hs.hotkey.bind(switchMeta, "k", hs.window.focusWindowNorth)
+hs.hotkey.bind(switchMeta, "Right", hs.window.focusWindowEast)
+hs.hotkey.bind(switchMeta, "l", hs.window.focusWindowEast)
+hs.hotkey.bind(switchMeta, "Down", hs.window.focusWindowSouth)
+hs.hotkey.bind(switchMeta, "j", hs.window.focusWindowSouth)
