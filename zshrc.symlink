@@ -73,7 +73,7 @@ alias battery="pmset -g batt"
 # Editing
 alias zshrc="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
-alias todo="$EDITOR ~/todo"
+alias todo="$EDITOR ~/todo.md"
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
