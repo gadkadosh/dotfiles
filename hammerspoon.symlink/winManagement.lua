@@ -124,11 +124,34 @@ for i, val in pairs(movBindings) do
 end
 
 -- Switch windows
-hs.hotkey.bind(switchMeta, "Left", hs.window.focusWindowWest)
-hs.hotkey.bind(switchMeta, "h", hs.window.focusWindowWest)
+hs.hotkey.bind(switchMeta, "Left", function()
+    if not hs.window.focusWindowWest() then
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Left', true):post()
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Left', false):post()
+    end
+end)
+hs.hotkey.bind(switchMeta, "h", function()
+    if not hs.window.focusWindowWest() then
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Left', true):post()
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Left', false):post()
+    end
+end)
+
 hs.hotkey.bind(switchMeta, "Up", hs.window.focusWindowNorth)
 hs.hotkey.bind(switchMeta, "k", hs.window.focusWindowNorth)
-hs.hotkey.bind(switchMeta, "Right", hs.window.focusWindowEast)
-hs.hotkey.bind(switchMeta, "l", hs.window.focusWindowEast)
+
+hs.hotkey.bind(switchMeta, "Right", function()
+    if not hs.window.focusWindowEast() then
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Right', true):post()
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Right', false):post()
+    end
+end)
+hs.hotkey.bind(switchMeta, "l", function()
+    if not hs.window.focusWindowEast() then
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Right', true):post()
+        hs.eventtap.event.newKeyEvent({'ctrl'}, 'Right', false):post()
+    end
+end)
+
 hs.hotkey.bind(switchMeta, "Down", hs.window.focusWindowSouth)
 hs.hotkey.bind(switchMeta, "j", hs.window.focusWindowSouth)
