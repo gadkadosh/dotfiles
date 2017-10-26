@@ -62,14 +62,14 @@ set -g pane-base-index 1
 # Rename the terminal
 set -g set-titles on
 
-# T: standard window title (last command, see ~/.bash_profile)
-# H: long hostname
-# h: short hostname
-# S: session name
-# W: tmux window name
-# I: tmux window index number
-# P: tmux pane index number
-set -g set-titles-string "#T : #h > #S > #W"
+# #T: standard window title (last command, see ~/.bash_profile)
+# #H: long hostname
+# #h: short hostname
+# #S: session name
+# #W: tmux window name
+# #I: tmux window index number
+# #P: tmux pane index number
+set -g set-titles-string "(#h) #T [#S]"
 
 # Differentiate the focused pane
 set -g window-style 'bg=colour234'
