@@ -69,7 +69,7 @@ set -g set-titles on
 # #W: tmux window name
 # #I: tmux window index number
 # #P: tmux pane index number
-set -g set-titles-string "(#h) #T [#S]"
+set -g set-titles-string "[#S] (#h) #T"
 
 # Differentiate the focused pane
 set -g window-style 'bg=colour234'
