@@ -14,13 +14,13 @@ if [[ ! -f ~/.antigen/antigen.zsh ]]; then
 fi
 source ~/.antigen/antigen.zsh
 
-antigen use oh-my-zsh
-antigen bundle z
-antigen bundle zuxfoucault/colored-man-pages_mod
-antigen bundle gem
+# antigen use oh-my-zsh
+antigen bundle rupa/z
+# antigen bundle gem
 antigen bundle web-search
+# antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zdharma/fast-syntax-highlighting
-antigen bundle zdharma/history-search-multi-word
+# antigen bundle zdharma/history-search-multi-word
 
 antigen bundle mafredri/zsh-async
 antigen bundle sindresorhus/pure
@@ -29,18 +29,68 @@ antigen apply
 
 # }}}
 
-# Exports {{{
+# Globals {{{
 
-export LSCOLORS=gxfxcxdxbxegedabagacad
-# export EDITOR=code
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=10000
+export SAVEHIST=10000
+
+export CLICOLOR=true
+export LSCOLORS=Exfxcxdxbxegedabagacad
 export EDITOR=vim
+
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/ percentage
 export LESS="-iRM"
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+
 # Options for grep
 export GREP_OPTIONS="-i"
+
 # Stops Homebrew from using my GitHub accound and returning errors
 export HOMEBREW_NO_GITHUB_API=1
+
+# }}}
+
+# Bindkey {{{
+
+bindkey -e                                      # emacs style bindings
+bindkey ' ' magic-space                         # magic space for history expansion
+bindkey '^r' history-incremental-search-backward
+bindkey '^?' backward-delete-char               # delete key
+bindkey '^[[A' history-search-backward          # Up key, substring history search
+bindkey '^[[B' history-search-forward           # Down key, substring history search
+
+# }}}
+
+# Options {{{
+
+setopt appendhistory
+setopt autocd
+setopt autopushd
+setopt correct
+setopt correctall
+setopt extendedhistory
+setopt histexpiredupsfirst
+setopt histfindnodups
+setopt histignoredups
+setopt histignorespace
+setopt histverify
+setopt incappendhistory
+setopt interactivecomments
+setopt pushdignoredups
+setopt sharehistory
+
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' menu select
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01'
+zstyle ':completion:*:*:*:*:processes' command "ps -u `whoami` -o pid,user,comm -w -w"
 
 # }}}
 
@@ -55,6 +105,7 @@ alias t=tmux
 alias vimr="vim -M"
 
 # File management
+alias -- -="cd -"
 alias la="ls -a"
 alias ll="ls -lh"
 alias lla="ls -lha"
@@ -100,6 +151,7 @@ compresspdf() {
     \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
 }
 
+# open the detached session or start a new one
 tmux() {
     if [[ -n "$@" ]]; then
         command tmux "$@"
@@ -118,8 +170,29 @@ tmux() {
     fi
 }
 
+# Colors for man pages
+# man() {
+#     LESS_TERMCAP_md=$'\e[01;31m' \
+#         LESS_TERMCAP_me=$'\e[0m' \
+#         LESS_TERMCAP_se=$'\e[0m' \
+#         LESS_TERMCAP_so=$'\e[01;44;33m' \
+#         LESS_TERMCAP_ue=$'\e[0m' \
+#         LESS_TERMCAP_us=$'\e[01;32m' \
+#         command man "$@"
+# }
+
+# Find in current directory shortcut
+f() {
+    find . -iname "*${1}*"
+}
+
+# Shortcut for opening a file or the current directory in macOS Finder
 o() {
     open ${1:-"."}
+}
+
+history_stats() {
+    fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n20
 }
 
 # }}}

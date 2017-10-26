@@ -40,7 +40,7 @@ bind - split-window -v -c '#{pane_current_path}' # normally prefix-"
 bind _ split-window -v -c '#{pane_current_path}' # normally prefix-"
 
 # Quickly switch back to last window
-bind -r C-a last-window
+bind -r Space last-window
 
 # }}}
 
