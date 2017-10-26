@@ -16,6 +16,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'sgur/vim-editorconfig'
 Plug 'flazz/vim-colorschemes'
+Plug 'christoomey/vim-tmux-navigator'
 
 call plug#end()
 
