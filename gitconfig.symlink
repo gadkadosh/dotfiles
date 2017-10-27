@@ -4,3 +4,5 @@
 	ui = true
 [alias]
     co = checkout
+[diff]
+	tool = vimdiff

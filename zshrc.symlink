@@ -14,13 +14,11 @@ if [[ ! -f ~/.antigen/antigen.zsh ]]; then
 fi
 source ~/.antigen/antigen.zsh
 
-antigen bundle rupa/z
+antigen bundle rupa/z                           # Frecency based directory switching
 antigen bundle gem
-antigen bundle web-search
 antigen bundle zdharma/fast-syntax-highlighting
-# async support for pure theme
-antigen bundle mafredri/zsh-async
-antigen bundle sindresorhus/pure
+antigen bundle mafredri/zsh-async               # async support for pure theme
+antigen bundle sindresorhus/pure                # My prefered minimal theme
 
 antigen apply
 
@@ -60,8 +58,16 @@ bindkey -e                                      # emacs style bindings
 bindkey ' ' magic-space                         # magic space for history expansion
 bindkey '^r' history-incremental-search-backward
 bindkey '^?' backward-delete-char               # delete key
-bindkey '^[[A' history-search-backward          # Up key, substring history search
-bindkey '^[[B' history-search-forward           # Down key, substring history search
+bindkey '^u' backward-kill-line                 # delete from cursor to beginning
+
+# Up/Down arrows history search
+autoload history-search-end
+zle -N history-beginning-search-backward-end \
+    history-search-end
+zle -N history-beginning-search-forward-end \
+    history-search-end
+bindkey '^[[A' history-beginning-search-backward-end
+bindkey '^[[B' history-beginning-search-forward-end
 
 # }}}
 
@@ -153,6 +159,18 @@ alias -g C="|lolcat"
 alias -g H="|head"
 alias -g T="|tail"
 
+# Websearch from commandline
+# alias baidu='web_search baidu'
+alias bing='web_search bing'
+# alias ddg='web_search duckduckgo'
+# alias ecosia='web_search ecosia'
+alias github='web_search github'
+# alias goodreads='web_search goodreads'
+alias google='web_search google'
+# alias sp='web_search startpage'
+# alias yahoo='web_search yahoo'
+# alias yandex='web_search yandex'
+
 # }}}
 
 # Functions {{{
@@ -162,7 +180,7 @@ compresspdf() {
     \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
 }
 
-# open the detached session or start a new one
+# Open the detached session or start a new one
 tmux() {
     if [[ -n "$@" ]]; then
         command tmux "$@"
@@ -181,17 +199,6 @@ tmux() {
     fi
 }
 
-# Colors for man pages
-# man() {
-#     LESS_TERMCAP_md=$'\e[01;31m' \
-#         LESS_TERMCAP_me=$'\e[0m' \
-#         LESS_TERMCAP_se=$'\e[0m' \
-#         LESS_TERMCAP_so=$'\e[01;44;33m' \
-#         LESS_TERMCAP_ue=$'\e[0m' \
-#         LESS_TERMCAP_us=$'\e[01;32m' \
-#         command man "$@"
-# }
-
 # Find in current directory shortcut
 f() {
     find . -iname "*${1}*"
@@ -202,8 +209,49 @@ o() {
     open ${1:-"."}
 }
 
+# Get statistics on most commonly used commands
 history_stats() {
     fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n20
+}
+
+# Web searching from the command line, taken from oh-my-zsh
+function web_search() {
+    emulate -L zsh
+
+    # define search engine URLS
+    typeset -A urls
+    urls=(
+        google      "https://www.google.com/search?q="
+        bing        "https://www.bing.com/search?q="
+        yahoo       "https://search.yahoo.com/search?p="
+        duckduckgo  "https://www.duckduckgo.com/?q="
+        startpage   "https://www.startpage.com/do/search?q="
+        yandex      "https://yandex.ru/yandsearch?text="
+        github      "https://github.com/search?q="
+        baidu       "https://www.baidu.com/s?wd="
+        ecosia      "https://www.ecosia.org/search?q="
+        goodreads   "https://www.goodreads.com/search?q="
+    )
+
+    # check whether the search engine is supported
+    if [[ -z "$urls[$1]" ]]; then
+        echo "Search engine $1 not supported."
+        return 1
+    fi
+
+    # search or go to main page depending on number of arguments passed
+    if [[ $# -gt 1 ]]; then
+        # build search url:
+        # join arguments passed with '+', then append to search engine URL
+        url="${urls[$1]}${(j:+:)@[2,-1]}"
+    else
+        # build main page url:
+        # split by '/', then rejoin protocol (1) and domain (2) parts with '//'
+        url="${(j://:)${(s:/:)urls[$1]}[1,2]}"
+    fi
+
+    # for macOS
+    open "$url"
 }
 
 # }}}

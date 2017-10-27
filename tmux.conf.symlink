@@ -37,7 +37,6 @@ bind -r Up resize-pane -U 2
 bind | split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind \ split-window -h -c '#{pane_current_path}' # normally prefix-%
 bind - split-window -v -c '#{pane_current_path}' # normally prefix-"
-bind _ split-window -v -c '#{pane_current_path}' # normally prefix-"
 
 # Quickly switch back to last window
 bind -r Space last-window
@@ -48,6 +47,9 @@ bind -n C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iq v
 bind -n C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-k) || tmux select-pane -U"
 bind -n C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys C-l) || tmux select-pane -R"
 bind -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iq vim && tmux send-keys 'C-\\') || tmux select-pane -l"
+
+bind C-l send-keys 'C-l'        # Restore C-l with prefix C-l
+bind C-k send-keys 'C-k'        # Restore C-k with prefix C-k
 
 # }}}
 

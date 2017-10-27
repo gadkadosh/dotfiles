@@ -40,7 +40,7 @@ let g:fzf_colors =  {
 
 " Colors {{{
 
-colorscheme badwolf         " Color scheme/theme
+colorscheme dracula         " Color scheme/theme
 
 " Disable background to be consistent with tmux active panes
 hi NonText ctermbg=NONE
@@ -82,6 +82,9 @@ packadd! matchit
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 
 set laststatus=2            " Always show status line
+
+set splitbelow              " Default to new splits below and to the right
+set splitright
 
 " f - short filename, l/L current line in total, p - percentage through file
 set statusline=%f\ %m%r%=%l/%L\ (%c)\ %p%%
