@@ -15,10 +15,9 @@ fi
 source ~/.antigen/antigen.zsh
 
 antigen bundle rupa/z                           # Frecency based directory switching
-antigen bundle gem
-antigen bundle zdharma/fast-syntax-highlighting
 antigen bundle mafredri/zsh-async               # async support for pure theme
 antigen bundle sindresorhus/pure                # My prefered minimal theme
+antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
 
 antigen apply
 
@@ -31,7 +30,6 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 export CLICOLOR=true
-export LSCOLORS=Exfxcxdxbxegedabagacad
 export EDITOR=vim
 
 # R: raw output, to allow ANSI colors
@@ -54,18 +52,17 @@ export HOMEBREW_NO_GITHUB_API=1
 
 # Bindkey {{{
 
-bindkey -e                                      # emacs style bindings
-bindkey ' ' magic-space                         # magic space for history expansion
+bindkey -e                                      # Emacs style bindings
+bindkey ' ' magic-space                         # Magic space for history expansion
 bindkey '^r' history-incremental-search-backward
-bindkey '^?' backward-delete-char               # delete key
-bindkey '^u' backward-kill-line                 # delete from cursor to beginning
+bindkey "^[[3~" delete-char                     # Delete key
+bindkey '^u' backward-kill-line                 # Delete from cursor to beginning
+bindkey '^[[Z' reverse-menu-complete            # Shift-tab for moving backwards in menus
 
 # Up/Down arrows history search
 autoload history-search-end
-zle -N history-beginning-search-backward-end \
-    history-search-end
-zle -N history-beginning-search-forward-end \
-    history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
 bindkey '^[[A' history-beginning-search-backward-end
 bindkey '^[[B' history-beginning-search-forward-end
 
@@ -76,8 +73,6 @@ bindkey '^[[B' history-beginning-search-forward-end
 setopt appendhistory
 setopt autocd
 setopt autopushd
-setopt correct
-setopt correctall
 setopt extendedhistory
 setopt histexpiredupsfirst
 setopt histfindnodups
@@ -89,7 +84,8 @@ setopt interactivecomments
 setopt pushdignoredups
 setopt sharehistory
 
-zstyle ":completion:*" list-colors ""
+# zstyle ":completion:*" list-colors ""
+zstyle ":completion:*" list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
 zstyle ":completion:*" menu select
 zstyle ":completion:*:*:kill:*:processes" list-colors "=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01"
@@ -148,6 +144,9 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
+# Small python webserver
+alias small-server="python -m SimpleHTTPServer 3000 ."
+
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 
@@ -160,16 +159,9 @@ alias -g H="|head"
 alias -g T="|tail"
 
 # Websearch from commandline
-# alias baidu='web_search baidu'
 alias bing='web_search bing'
-# alias ddg='web_search duckduckgo'
-# alias ecosia='web_search ecosia'
 alias github='web_search github'
-# alias goodreads='web_search goodreads'
 alias google='web_search google'
-# alias sp='web_search startpage'
-# alias yahoo='web_search yahoo'
-# alias yandex='web_search yandex'
 
 # }}}
 
@@ -177,7 +169,8 @@ alias google='web_search google'
 
 # Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
 compresspdf() {
-    \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
+    \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} \
+        -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
 }
 
 # Open the detached session or start a new one
@@ -189,11 +182,9 @@ tmux() {
 
     if [[ "$TERM" != "screen" ]] && 
         [[ "$SSH_CONNECTION" == "" ]] &&
-            [[ -z "$TMUX" ]]; then
-        # Attempt to discover a detached session and attach 
-        # it, else create a new session
-
-
+        [[ -z "$TMUX" ]]; then
+    # Attempt to discover a detached session and attach 
+    # it, else create a new session
         SESSION_NAME=base
         command tmux new -A -s $SESSION_NAME
     fi
@@ -211,7 +202,9 @@ o() {
 
 # Get statistics on most commonly used commands
 history_stats() {
-    fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " CMD[a]/count*100 "% " a;}' | grep -v "./" | column -c3 -s " " -t | sort -nr | nl |  head -n20
+    fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " \
+        CMD[a]/count*100 "% " a;}' | grep -v "./" | \
+        column -c3 -s " " -t | sort -nr | nl |  head -n20
 }
 
 # Web searching from the command line, taken from oh-my-zsh
@@ -262,17 +255,37 @@ function web_search() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Use fzf to cd
+# Direct descendents
 fd() {
     local dir
-    dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print | sed '1d;s#^./##' |
-    fzf --height 20 --reverse --query "$1" --select-1 --exit-0) && cd "$dir"
+    dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print |
+        sed '1d;s#^./##' |
+        fzf --height 20 --reverse --query "$1" --select-1 --exit-0) && cd "$dir"
+}
+
+# Whole tree
+fcd() {
+    local dir
+    dir=$(find ${1:-*} -path '*/\.*' -prune \
+        -o -type d -print 2>/dev/null | fzf +m) &&
+        cd "$dir"
+}
+
+# Including hidden directories
+fcda() {
+    local dir
+    dir=$(find ${1:-.} -type d 2>/dev/null |
+        fzf +m) && cd "$dir"
 }
 
 # Combine z and fzf
 unalias z 2> /dev/null
 z() {
     [ $# -gt 0 ] && _z "$*" && return
-    cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+    cd "$(_z -l 2>&1 |
+        fzf --height 40% --nth 2.. --reverse --inline-info +s --tac \
+        --query "${*##-* }" |
+        sed 's/^[0-9,.]* *//')"
 }
 
 # }}}
