@@ -10,14 +10,15 @@ endif
 " Start vim-plug and list plugins
 call plug#begin('~/.vim/plugged')
 
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'sgur/vim-editorconfig'
-Plug 'flazz/vim-colorschemes'
-Plug 'christoomey/vim-tmux-navigator'
+Plug '/usr/local/opt/fzf'                   " Fzf is installed locally through brew
+Plug 'christoomey/vim-tmux-navigator'       " Easy navigation between vim and tmux
+Plug 'flazz/vim-colorschemes'               " Collection of colorschemes
+Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
+Plug 'sgur/vim-editorconfig'                " Editorconfig support
+Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
+Plug 'tpope/vim-surround'                   " Surround objects with (,[,{,' etc.
 
+" End vim-plug listing
 call plug#end()
 
 " Customize fzf colors
@@ -67,8 +68,12 @@ set smartindent
 set number                  " Show line numbers
 set relativenumber          " Relative line numbers, together they are hybrid
 
+set backspace=indent,eol,start  " Make backspace less limited
+
 set showcmd                 " Show command in bottom bar
 set cursorline              " Highlight current line
+
+set clipboard=unnamed       " macOS clipboard
 
 filetype indent on          " Load filetype-specific indent files, also enables filetype detection
 
@@ -137,6 +142,10 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
+" Accept completion with Enter
+imap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+smap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Quick folding with <space>
 nnoremap <space> za
