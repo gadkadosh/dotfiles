@@ -84,12 +84,17 @@ setopt interactivecomments
 setopt pushdignoredups
 setopt sharehistory
 
-# zstyle ":completion:*" list-colors ""
+# Completion colors: empty string ("") would use the shell's defaults ($LSCOLORS),
+# but zsh doesn't support BSD style $LSCOLORS so here is the equivalent in Linux style $LS_COLORS
 zstyle ":completion:*" list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+# Case insensitive autocomplete
 zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
+# Show a menu for completions
 zstyle ":completion:*" menu select
+# Kill processes autocomplete
 zstyle ":completion:*:*:kill:*:processes" list-colors "=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01"
 zstyle ":completion:*:*:*:*:processes" command "ps -u `whoami` -o pid,user,comm -w -w"
+# Users autocomplete, hide irrelelvant users
 zstyle ":completion:*:*:*:users" ignored-patterns \
     adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
     clamav daemon dbus distcache dnsmasq dovecot fax ftp games gdm \
@@ -99,7 +104,7 @@ zstyle ":completion:*:*:*:users" ignored-patterns \
     operator pcap polkitd postfix postgres privoxy pulse pvm quagga radvd \
     rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
     usbmux uucp vcsa wwwrun xfs "_*"
-# disable named-directories autocompletion
+# Disable named-directories autocompletion
 zstyle ":completion:*:cd:*" tag-order local-directories directory-stack path-directories
 
 # }}}

@@ -3,6 +3,8 @@
 [color]
 	ui = true
 [alias]
+    br = branch
     co = checkout
+    st = status
 [diff]
 	tool = vimdiff
