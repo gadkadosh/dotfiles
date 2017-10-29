@@ -11,12 +11,14 @@ endif
 call plug#begin('~/.vim/plugged')
 
 Plug '/usr/local/opt/fzf'                   " Fzf is installed locally through brew
-Plug 'christoomey/vim-tmux-navigator'       " Easy navigation between vim and tmux
 Plug 'flazz/vim-colorschemes'               " Collection of colorschemes
 Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
 Plug 'sgur/vim-editorconfig'                " Editorconfig support
 Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
 Plug 'tpope/vim-surround'                   " Surround objects with (,[,{,' etc.
+" YouCompleteMe
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
 
 " End vim-plug listing
 call plug#end()
@@ -43,9 +45,15 @@ let g:fzf_colors =  {
 
 colorscheme dracula         " Color scheme/theme
 
-" Disable background to be consistent with tmux active panes
-hi NonText ctermbg=NONE
-hi Normal guibg=NONE ctermbg=NONE
+" Customize highlight colors with autocmd to override colorschemes
+augroup Colors
+    autocmd!
+    " Disable background to be consistent with tmux active panes
+    autocmd ColorScheme * highlight NonText ctermbg=NONE
+    autocmd ColorScheme * highlight Normal ctermbg=NONE
+    " Customize the current statusline to be more discernible in Dracula colorscheme
+    autocmd ColorScheme * highlight StatusLine ctermbg=176
+augroup END
 
 syntax enable               " Enable syntax processing/highlighting
 
@@ -70,10 +78,14 @@ set relativenumber          " Relative line numbers, together they are hybrid
 
 set backspace=indent,eol,start  " Make backspace less limited
 
+set linebreak               " Wordwrapping not in the middle of words
+
 set showcmd                 " Show command in bottom bar
 set cursorline              " Highlight current line
 
 set clipboard=unnamed       " macOS clipboard
+set ttymouse=sgr            " Fast modern mouse draggin
+set mouse=a                 " Enable mouse support
 
 filetype indent on          " Load filetype-specific indent files, also enables filetype detection
 
@@ -86,17 +98,45 @@ packadd! matchit
 
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 
-set laststatus=2            " Always show status line
-
 set splitbelow              " Default to new splits below and to the right
 set splitright
 
-" f - short filename, l/L current line in total, p - percentage through file
-set statusline=%f\ %m%r%=%l/%L\ (%c)\ %p%%
+set laststatus=2            " Always show status line
+
+" Statusline
+" Function to pad the column line for less jittery movement
+function! Statusline_col()
+    let l:curCol=virtcol('.')
+
+    if len(l:curCol) < 2
+        let l:curCol=' '.l:curCol
+    endif
+    
+    return l:curCol
+endfunction
+
+set statusline=\            " Space
+set statusline+=\           " Space
+set statusline+=%f          " Short filename
+set statusline+=\           " Space
+set statusline+=%m          " Modified flag
+set statusline+=%r          " Readonly flag
+set statusline+=%=          " Split point to right side
+set statusline+=%y          " Filetype
+set statusline+=\           " Space
+set statusline+=Ln\ %l/%L   " Line number / Total lines
+set statusline+=\ :\        " Separator
+set statusline+=Col\        " Column number
+set statusline+=%{Statusline_col()}
+set statusline+=\ ☰\        " Separator
+set statusline+=%p%%        " Percent through file
+set statusline+=\           " Space
+set statusline+=\           " Space
 
 " special characters for formatting. set list to enable (<leader>l)
 set listchars=nbsp:⦸
 set listchars+=tab:▷┅
+set listchars+=eol:¬
 set listchars+=extends:»
 set listchars+=precedes:«
 set listchars+=trail:•
@@ -180,6 +220,9 @@ nnoremap <leader>r :set relativenumber!<CR>
 
 " Enable special characters
 nnoremap <leader>l :set list!<CR>
+
+" Enable spellchecking
+nnoremap <leader>s :set spell!<CR>
 
 " <Leader><Leader> -- Open last buffer.
 nnoremap <Leader><Leader> <C-^>
