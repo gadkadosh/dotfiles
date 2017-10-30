@@ -82,7 +82,7 @@ set -g window-active-style 'bg=colour232'
 set -g status-interval 30
 set -g status-bg "#6A6FC6"
 set -g status-fg white
-set -g status-left '#[fg=#EEEEEE][#S]#[fg=#BBBBBB] § '
+set -g status-left '#[fg=#EEEEEE][#S]#[fg=#BBBBBB] ⧉ '
 set -g status-right '#[fg=#EEEEEE]#(who | cut -d" " -f1)@#h #[fg=#BBBBBB]- #[fg=#EEEEEE]%H:%M' 
 
 # Highlight color for the active window marking in the status line
