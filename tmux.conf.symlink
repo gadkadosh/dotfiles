@@ -45,8 +45,8 @@ bind -r Space last-window
 
 # UI {{{
 
-# Allows 256 colors terminfo inside tmux. Could be tmux-256color, but that seems not to work yet in Terminal.app
-set -g default-terminal "screen-256color"
+# This requires compiling terminfo files with tic
+set -g default-terminal "tmux-256color"
 
 # How far back to allow scrolling
 set -g history-limit 10000
