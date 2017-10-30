@@ -16,15 +16,24 @@ Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
 Plug 'sgur/vim-editorconfig'                " Editorconfig support
 Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
 Plug 'tpope/vim-surround'                   " Surround objects with (,[,{,' etc.
-" YouCompleteMe
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
 
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py' } " YouCompleteMe
+Plug 'SirVer/UltiSnips'                     " Text/Code snippets
+Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
 " End vim-plug listing
 call plug#end()
 
+" UltiSnips Directors
+" let g:ycm_key_list_stop_completion = ['<Enter>']
+let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips'
+
+" YouCompleteMe and UltiSnips compatibility.
+let g:UltiSnipsExpandTrigger = '<Tab>'
+let g:UltiSnipsJumpForwardTrigger = '<Tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
+
 " Customize fzf colors
-let g:fzf_colors =  {
+let g:fzf_colors = {
   \ 'fg':      ['fg', 'Normal'],
   \ 'bg':      ['bg', 'Normal'],
   \ 'hl':      ['fg', 'Comment'],
@@ -45,15 +54,22 @@ let g:fzf_colors =  {
 
 colorscheme dracula         " Color scheme/theme
 
-" Customize highlight colors with autocmd to override colorschemes
+" Customize colorschemes
 augroup Colors
     autocmd!
-    " Disable background to be consistent with tmux active panes
-    autocmd ColorScheme * highlight NonText ctermbg=NONE
-    autocmd ColorScheme * highlight Normal ctermbg=NONE
-    " Customize the current statusline to be more discernible in Dracula colorscheme
-    autocmd ColorScheme * highlight StatusLine ctermbg=176
+    autocmd ColorScheme * call Custom_highlight()
 augroup END
+
+" Customize highlight colors with autocmd to override colorschemes
+function! Custom_highlight()
+    " Customize the current statusline to be more discernible in dracula colorscheme
+    if g:colors_name == 'dracula'
+        highlight StatusLine ctermbg=176
+    endif
+    " Disable background to be consistent with tmux active panes
+    " highlight NonText ctermbg=NONE
+    " highlight Normal ctermbg=NONE
+endfunction
 
 syntax enable               " Enable syntax processing/highlighting
 
@@ -81,7 +97,14 @@ set backspace=indent,eol,start  " Make backspace less limited
 set linebreak               " Wordwrapping not in the middle of words
 
 set showcmd                 " Show command in bottom bar
-set cursorline              " Highlight current line
+set cursorline              " Highlight current line, see next few line
+
+" Show/hide cursorline for current window only
+augroup Focus
+    autocmd!
+    autocmd WinEnter * setlocal cursorline
+    autocmd WinLeave * setlocal nocursorline
+augroup END
 
 set clipboard=unnamed       " macOS clipboard
 set ttymouse=sgr            " Fast modern mouse draggin
@@ -107,31 +130,29 @@ set laststatus=2            " Always show status line
 " Function to pad the column line for less jittery movement
 function! Statusline_col()
     let l:curCol=virtcol('.')
-
     if len(l:curCol) < 2
-        let l:curCol=' '.l:curCol
+        return ' ' . l:curCol
     endif
-    
     return l:curCol
 endfunction
 
-set statusline=\            " Space
-set statusline+=\           " Space
-set statusline+=%f          " Short filename
-set statusline+=\           " Space
-set statusline+=%m          " Modified flag
-set statusline+=%r          " Readonly flag
-set statusline+=%=          " Split point to right side
-set statusline+=%y          " Filetype
-set statusline+=\           " Space
-set statusline+=Ln\ %l/%L   " Line number / Total lines
-set statusline+=\ :\        " Separator
-set statusline+=Col\        " Column number
-set statusline+=%{Statusline_col()}
-set statusline+=\ ☰\        " Separator
-set statusline+=%p%%        " Percent through file
-set statusline+=\           " Space
-set statusline+=\           " Space
+setlocal statusline=\            " Space
+setlocal statusline+=\           " Space
+setlocal statusline+=%f          " Short filename
+setlocal statusline+=\           " Space
+setlocal statusline+=%m          " Modified flag
+setlocal statusline+=%r          " Readonly flag
+setlocal statusline+=%=          " Split point to right side
+setlocal statusline+=%y          " Filetype
+setlocal statusline+=\           " Space
+setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
+setlocal statusline+=\ :\        " Separator
+setlocal statusline+=Col\        " Column number
+setlocal statusline+=%{Statusline_col()}
+setlocal statusline+=\ ☰\        " Separator
+setlocal statusline+=%p%%        " Percent through file
+setlocal statusline+=\           " Space
+setlocal statusline+=\           " Space
 
 " special characters for formatting. set list to enable (<leader>l)
 set listchars=nbsp:⦸
@@ -184,8 +205,8 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Accept completion with Enter
-imap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-smap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+" imap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+" smap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Quick folding with <space>
 nnoremap <space> za
