@@ -62,9 +62,12 @@ augroup END
 
 " Customize highlight colors with autocmd to override colorschemes
 function! Custom_highlight()
-    " Customize the current statusline to be more discernible in dracula colorscheme
+    " Customize dracula colorscheme
     if g:colors_name == 'dracula'
+        " Pink statusline
         highlight StatusLine ctermbg=176
+        " Comments in italics
+        highlight Comment cterm=italic
     endif
     " Disable background to be consistent with tmux active panes
     " highlight NonText ctermbg=NONE
@@ -136,23 +139,51 @@ function! Statusline_col()
     return l:curCol
 endfunction
 
-setlocal statusline=\            " Space
-setlocal statusline+=\           " Space
-setlocal statusline+=%f          " Short filename
-setlocal statusline+=\           " Space
-setlocal statusline+=%m          " Modified flag
-setlocal statusline+=%r          " Readonly flag
-setlocal statusline+=%=          " Split point to right side
-setlocal statusline+=%y          " Filetype
-setlocal statusline+=\           " Space
-setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
-setlocal statusline+=\ :\        " Separator
-setlocal statusline+=Col\        " Column number
-setlocal statusline+=%{Statusline_col()}
-setlocal statusline+=\ ☰\        " Separator
-setlocal statusline+=%p%%        " Percent through file
-setlocal statusline+=\           " Space
-setlocal statusline+=\           " Space
+augroup Statusline
+    autocmd!
+    autocmd BufEnter,WinEnter * call Focus_statusline()
+    autocmd WinLeave * call Blur_statusline()
+augroup END
+
+function! Focus_statusline()
+    setlocal statusline=\            " Space
+    setlocal statusline+=\           " Space
+    setlocal statusline+=%f          " Short filename
+    setlocal statusline+=\           " Space
+    setlocal statusline+=%m          " Modified flag
+    setlocal statusline+=%r          " Readonly flag
+    setlocal statusline+=%=          " Split point to right side
+    setlocal statusline+=%y          " Filetype
+    setlocal statusline+=\           " Space
+    setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
+    setlocal statusline+=\ :\        " Separator
+    setlocal statusline+=Col\        " Column number
+    setlocal statusline+=%{Statusline_col()}
+    setlocal statusline+=\ ◼\        " Separator ☲
+    setlocal statusline+=%p%%        " Percent through file
+    setlocal statusline+=\           " Space
+    setlocal statusline+=\           " Space
+endfunction
+
+function! Blur_statusline()
+    setlocal statusline=\            " Space
+    setlocal statusline+=\           " Space
+    setlocal statusline+=%f          " Short filename
+    setlocal statusline+=\           " Space
+    setlocal statusline+=%m          " Modified flag
+    setlocal statusline+=%r          " Readonly flag
+    setlocal statusline+=%=          " Split point to right side
+    " setlocal statusline+=%y          " Filetype
+    " setlocal statusline+=\           " Space
+    " setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
+    " setlocal statusline+=\ :\        " Separator
+    " setlocal statusline+=Col\        " Column number
+    " setlocal statusline+=%{Statusline_col()}
+    " setlocal statusline+=\ ◼\        " Separator ☲
+    " setlocal statusline+=%p%%        " Percent through file
+    " setlocal statusline+=\           " Space
+    " setlocal statusline+=\           " Space
+endfunction
 
 " special characters for formatting. set list to enable (<leader>l)
 set listchars=nbsp:⦸
@@ -217,7 +248,7 @@ nnoremap <space> za
 
 " Store relative line number jumps in the jumplist if they exceed a threshold.
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
-nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
+nnoremap <expr> j (v:count > 6 ? "m'" . v:count : '') . 'j'
 
 " fzf mappings
 nnoremap <silent> <leader>t :Files<CR>
