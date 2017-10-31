@@ -1,6 +1,6 @@
 " vim-plug and plugin settings {{{
 
-" download vim-plug if it's not installed already
+" Download vim-plug if it's not installed already
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
                 \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -10,27 +10,64 @@ endif
 " Start vim-plug and list plugins
 call plug#begin('~/.vim/plugged')
 
-Plug '/usr/local/opt/fzf'                   " Fzf is installed locally through brew
-Plug 'flazz/vim-colorschemes'               " Collection of colorschemes
-Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
-Plug 'sgur/vim-editorconfig'                " Editorconfig support
-Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
-Plug 'tpope/vim-surround'                   " Surround objects with (,[,{,' etc.
+" Colorschemes
+Plug 'dracula/vim'
+Plug 'tomasr/molokai'
+Plug 'sjl/badwolf'
+Plug 'AlessandroYorba/Sierra'
 
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' } " YouCompleteMe
+" Utilities
+Plug '/usr/local/opt/fzf'                   " Fzf is installed locally through brew
+Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
+Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
+Plug 'tpope/vim-surround'                   " Surround objects with ([{' etc.
+Plug 'tpope/vim-fugitive'
+
+" Deoplete
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'wokalski/autocomplete-flow'
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+
 Plug 'SirVer/UltiSnips'                     " Text/Code snippets
 Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
+
 " End vim-plug listing
 call plug#end()
 
-" UltiSnips Directors
-" let g:ycm_key_list_stop_completion = ['<Enter>']
+" Start deoplete
+let g:deoplete#enable_at_startup = 1
+" let g:deoplete#sources#ternjs#docs = 1
+" let g:deoplete#sources#ternjs#types = 1
+
+" Map tab when completion is open
+inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+autocmd FileType html,css imap <Leader><Tab> <plug>(emmet-expand-abbr)
+
+" UltiSnips settings
 let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips'
 
-" YouCompleteMe and UltiSnips compatibility.
-let g:UltiSnipsExpandTrigger = '<Tab>'
+let g:UltiSnipsExpandTrigger = '<nop>'
 let g:UltiSnipsJumpForwardTrigger = '<Tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
+
+" Map Enter to expanding snippet when completion is open
+function! ExpandSnippetOrCarriageReturn()
+    let snippet = UltiSnips#ExpandSnippetOrJump()
+    if g:ulti_expand_or_jump_res > 0
+        return snippet
+    else
+        return "\<CR>"
+    endif
+endfunction
+
+inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 
 " Customize fzf colors
 let g:fzf_colors = {
@@ -57,18 +94,20 @@ colorscheme dracula         " Color scheme/theme
 " Customize colorschemes
 augroup Colors
     autocmd!
-    autocmd ColorScheme * call Custom_highlight()
+    autocmd ColorScheme * call CustomHighlights()
 augroup END
 
 " Customize highlight colors with autocmd to override colorschemes
-function! Custom_highlight()
+function! CustomHighlights()
     " Customize dracula colorscheme
     if g:colors_name == 'dracula'
         " Pink statusline
-        highlight StatusLine ctermbg=176
+        highlight StatusLine ctermbg=176 
         " Comments in italics
         highlight Comment cterm=italic
     endif
+    
+    " highlight User1 
     " Disable background to be consistent with tmux active panes
     " highlight NonText ctermbg=NONE
     " highlight Normal ctermbg=NONE
@@ -92,6 +131,8 @@ set smartindent
 
 " UI Layout {{{
 
+set hidden                  " Allow hidden Buffers
+
 set number                  " Show line numbers
 set relativenumber          " Relative line numbers, together they are hybrid
 
@@ -110,8 +151,11 @@ augroup Focus
 augroup END
 
 set clipboard=unnamed       " macOS clipboard
-set ttymouse=sgr            " Fast modern mouse draggin
+
 set mouse=a                 " Enable mouse support
+if !has('nvim')
+    set ttymouse=sgr        " Fast modern mouse draggin
+endif
 
 filetype indent on          " Load filetype-specific indent files, also enables filetype detection
 
@@ -120,16 +164,32 @@ set wildmenu                " Visual autocompletion for command line
 set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
 
 set showmatch               " Highlight matching [{()}]
-packadd! matchit
 
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 
 set splitbelow              " Default to new splits below and to the right
 set splitright
+" special characters for formatting. set list to enable (<leader>l)
+set listchars=nbsp:⦸
+set listchars+=tab:▷┅
+set listchars+=eol:¬
+set listchars+=extends:»
+set listchars+=precedes:«
+set listchars+=trail:•
+
+let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
+let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
+
+if exists('&belloff')
+    set belloff=all         " never ring the bell for any reason
+endif
+
+" }}}
+
+" Statusline {{{
 
 set laststatus=2            " Always show status line
 
-" Statusline
 " Function to pad the column line for less jittery movement
 function! Statusline_col()
     let l:curCol=virtcol('.')
@@ -149,7 +209,7 @@ function! Focus_statusline()
     setlocal statusline=\            " Space
     setlocal statusline+=\           " Space
     setlocal statusline+=%f          " Short filename
-    setlocal statusline+=\           " Space
+    setlocal statusline+=%*          " Space
     setlocal statusline+=%m          " Modified flag
     setlocal statusline+=%r          " Readonly flag
     setlocal statusline+=%=          " Split point to right side
@@ -157,7 +217,7 @@ function! Focus_statusline()
     setlocal statusline+=\           " Space
     setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
     setlocal statusline+=\ :\        " Separator
-    setlocal statusline+=Col\        " Column number
+    setlocal statusline+=Col\        " Column number (padded)
     setlocal statusline+=%{Statusline_col()}
     setlocal statusline+=\ ◼\        " Separator ☲
     setlocal statusline+=%p%%        " Percent through file
@@ -172,33 +232,7 @@ function! Blur_statusline()
     setlocal statusline+=\           " Space
     setlocal statusline+=%m          " Modified flag
     setlocal statusline+=%r          " Readonly flag
-    setlocal statusline+=%=          " Split point to right side
-    " setlocal statusline+=%y          " Filetype
-    " setlocal statusline+=\           " Space
-    " setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
-    " setlocal statusline+=\ :\        " Separator
-    " setlocal statusline+=Col\        " Column number
-    " setlocal statusline+=%{Statusline_col()}
-    " setlocal statusline+=\ ◼\        " Separator ☲
-    " setlocal statusline+=%p%%        " Percent through file
-    " setlocal statusline+=\           " Space
-    " setlocal statusline+=\           " Space
 endfunction
-
-" special characters for formatting. set list to enable (<leader>l)
-set listchars=nbsp:⦸
-set listchars+=tab:▷┅
-set listchars+=eol:¬
-set listchars+=extends:»
-set listchars+=precedes:«
-set listchars+=trail:•
-
-let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
-let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
-
-if exists('&belloff')
-    set belloff=all         " never ring the bell for any reason
-endif
 
 " }}}
 
@@ -235,10 +269,6 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" Accept completion with Enter
-" imap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-" smap <expr> <buffer> <silent> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
-
 " Quick folding with <space>
 nnoremap <space> za
 
@@ -251,9 +281,11 @@ nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 6 ? "m'" . v:count : '') . 'j'
 
 " fzf mappings
-nnoremap <silent> <leader>t :Files<CR>
-nnoremap <silent> <leader>c :Colors<CR>
-nnoremap <silent> <leader><enter> :Buffers<CR>
+nnoremap <leader><enter> :Buffers<CR>
+nnoremap <leader>a :Ag<CR>
+nnoremap <leader>c :Colors<CR>
+nnoremap <leader>h :Helptags<CR>
+nnoremap <leader>t :Files<CR>
 
 " Hide search highlights
 nnoremap <leader><space> :nohlsearch<CR>
@@ -300,10 +332,12 @@ else
     set directory+=.
 endif
 
-if exists('$SUDO_USER')
-    set viminfo=                        " Don't create root-owned files
-else
-    set viminfo+=n~/.vim/tmp/viminfo    " Override ~/.viminfo default
+if has('viminfo')
+    if exists('$SUDO_USER')
+        set viminfo=                        " Don't create root-owned files
+    else
+        set viminfo+=n~/.vim/tmp/viminfo    " Override ~/.viminfo default
+    endif
 endif
 
 if has('mksession')
