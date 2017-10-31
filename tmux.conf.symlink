@@ -1,8 +1,7 @@
 # Bindings {{{
 
-# Bindings:
-# - to see current bindings:
-#   tmux list-keys
+# to see current bindings:
+# `tmux list-keys`
 
 # Remap prefix to Control + a
 set -g prefix C-a
@@ -10,8 +9,8 @@ unbind C-b
 bind C-a send-prefix
 
 # Reload coniguration
-    unbind r
-    bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
+unbind r
+bind r source-file ~/.tmux.conf \; display-message "~/.tmux.conf reloaded"
 
 # Vim-like key bindings for pane navigation (default uses cursor keys).
 unbind h
