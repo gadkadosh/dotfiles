@@ -89,7 +89,9 @@ setup_homebrew() {
         /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     fi
 
-    brew update
+    # Update Homebrew?
+    read -p "Should I update Homebrew? [yN] " brew_update_yn
+    [[ $brew_update_yn == [Yy] ]] && brew update
 
     echo
     read -p "Would you like to install packages from Brewfile? [yN] " packages_yn

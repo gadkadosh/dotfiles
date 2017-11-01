@@ -4,7 +4,10 @@
 	ui = true
 [alias]
     br = branch
+    ci = commit
     co = checkout
     st = status
 [diff]
-	tool = vimdiff
+    tool = vimdiff
+[difftool "vimdiff"]
+	path = nvim

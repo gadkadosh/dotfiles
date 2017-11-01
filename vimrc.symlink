@@ -25,11 +25,11 @@ Plug 'tpope/vim-fugitive'
 
 " Deoplete
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'wokalski/autocomplete-flow'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
