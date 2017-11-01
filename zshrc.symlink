@@ -118,6 +118,7 @@ alias h=history
 alias j=z
 alias u=users
 alias t=tmux
+alias vim=nvim
 alias vimr="vim -M"
 
 # File management

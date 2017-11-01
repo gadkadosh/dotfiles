@@ -47,6 +47,9 @@ bind -r Space last-window
 # This requires compiling terminfo files with tic
 set -g default-terminal "tmux-256color"
 
+# For True Color support, works in iTerm, doesn't work in Terminal.app
+# set -ga terminal-overrides ",xterm-256color:Tc"
+
 # How far back to allow scrolling
 set -g history-limit 10000
 
