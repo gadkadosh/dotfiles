@@ -17,6 +17,7 @@ source ~/.antigen/antigen.zsh
 antigen bundle rupa/z                           # Frecency based directory switching
 antigen bundle mafredri/zsh-async               # async support for pure theme
 antigen bundle sindresorhus/pure                # My prefered minimal theme
+antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
 antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
 
 antigen apply
