@@ -7,7 +7,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Start vim-plug and list plugins
+" Start vim-plug and list plugins {{{
 call plug#begin('~/.vim/plugged')
 
 " Colorschemes
@@ -23,7 +23,7 @@ Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
 Plug 'tpope/vim-surround'                   " Surround objects with ([{' etc.
 Plug 'tpope/vim-fugitive'
 
-" Deoplete
+" Completion
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -37,18 +37,13 @@ Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 Plug 'SirVer/UltiSnips'                     " Text/Code snippets
 Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
 
-" End vim-plug listing
 call plug#end()
+" End vim-plug listing }}}
 
 " Start deoplete
 let g:deoplete#enable_at_startup = 1
 " let g:deoplete#sources#ternjs#docs = 1
 " let g:deoplete#sources#ternjs#types = 1
-
-" Map tab when completion is open
-inoremap <expr><Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr><S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
-autocmd FileType html,css imap <Leader><Tab> <plug>(emmet-expand-abbr)
 
 " UltiSnips settings
 let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips'
@@ -264,6 +259,13 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" Map tab when completion is open
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+
+" Emmet expansion in HTML and CSS
+autocmd FileType html,css imap <leader><Tab> <plug>(emmet-expand-abbr)
+
 " Quick folding with <space>
 nnoremap <space> za
 
@@ -271,16 +273,14 @@ nnoremap <space> za
 " nnoremap j gj
 " nnoremap k gk
 
-" Store relative line number jumps in the jumplist if they exceed a threshold.
-nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
-nnoremap <expr> j (v:count > 6 ? "m'" . v:count : '') . 'j'
-
 " fzf mappings
 nnoremap <leader><enter> :Buffers<CR>
 nnoremap <leader>a :Ag<CR>
 nnoremap <leader>c :Colors<CR>
-nnoremap <leader>h :Helptags<CR>
 nnoremap <leader>t :Files<CR>
+nnoremap <leader>/ :History/<CR>
+nnoremap <leader>: :History:<CR>
+nnoremap <leader>? :Helptags<CR>
 
 " Hide search highlights
 nnoremap <leader><space> :nohlsearch<CR>
@@ -303,11 +303,12 @@ nnoremap <leader>l :set list!<CR>
 " Enable spellchecking
 nnoremap <leader>s :set spell!<CR>
 
-" <Leader><Leader> -- Open last buffer.
-nnoremap <Leader><Leader> <C-^>
+" <leader><leader> -- Open last buffer.
+nnoremap <leader><leader> <C-^>
 
 " Make current buffer/window full screen
-nnoremap <Leader>o :only<CR>
+nnoremap <leader>o :only<CR>
+
 " }}}
 
 " Backups {{{
@@ -341,5 +342,4 @@ endif
 
 " }}}
 
-set modelines=1
 " vim: foldmethod=marker foldlevel=0
