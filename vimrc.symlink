@@ -54,8 +54,8 @@ autocmd FileType html,css imap <Leader><Tab> <plug>(emmet-expand-abbr)
 let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips'
 
 let g:UltiSnipsExpandTrigger = '<nop>'
-let g:UltiSnipsJumpForwardTrigger = '<Tab>'
-let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
+" let g:UltiSnipsJumpForwardTrigger = '<Tab>'
+" let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
 
 " Map Enter to expanding snippet when completion is open
 function! ExpandSnippetOrCarriageReturn()
@@ -107,7 +107,6 @@ function! CustomHighlights()
         highlight Comment cterm=italic
     endif
     
-    " highlight User1 
     " Disable background to be consistent with tmux active panes
     " highlight NonText ctermbg=NONE
     " highlight Normal ctermbg=NONE
@@ -199,40 +198,36 @@ function! Statusline_col()
     return l:curCol
 endfunction
 
+" Get current git branch
+function! Statusline_branch()
+    if exists('b:git_dir')
+        return  '[' . fugitive#head(7) . ']'
+    endif
+    return ''
+endfunction
+
+let g:base_statusline='  %f '        " Short filename
+let g:base_statusline.='%{Statusline_branch()} ' " Git branch (uses fugitive)
+let g:base_statusline.='%m'         " Modified flag
+let g:base_statusline.='%r'         " Readonly flag
+
+function! Active_statusline()
+    let &l:statusline=g:base_statusline
+    let &l:statusline.='%='         " Split point to right side
+    let &l:statusline.='%y '        " Filetype
+    let &l:statusline.='Ln %l/%L'   " Line number / Total lines
+    let &l:statusline.=' : '        " Separator
+    let &l:statusline.='Col '       " Column number (padded)
+    let &l:statusline.='%{Statusline_col()}'
+    let &l:statusline.=' ◼ '        " Separator ☲
+    let &l:statusline.='%p%%  '     " Percent through file
+endfunction
+
 augroup Statusline
     autocmd!
-    autocmd BufEnter,WinEnter * call Focus_statusline()
-    autocmd WinLeave * call Blur_statusline()
+    autocmd BufEnter,WinEnter * call Active_statusline()
+    autocmd WinLeave * let &l:statusline=g:base_statusline
 augroup END
-
-function! Focus_statusline()
-    setlocal statusline=\            " Space
-    setlocal statusline+=\           " Space
-    setlocal statusline+=%f          " Short filename
-    setlocal statusline+=%*          " Space
-    setlocal statusline+=%m          " Modified flag
-    setlocal statusline+=%r          " Readonly flag
-    setlocal statusline+=%=          " Split point to right side
-    setlocal statusline+=%y          " Filetype
-    setlocal statusline+=\           " Space
-    setlocal statusline+=Ln\ %l/%L   " Line number / Total lines
-    setlocal statusline+=\ :\        " Separator
-    setlocal statusline+=Col\        " Column number (padded)
-    setlocal statusline+=%{Statusline_col()}
-    setlocal statusline+=\ ◼\        " Separator ☲
-    setlocal statusline+=%p%%        " Percent through file
-    setlocal statusline+=\           " Space
-    setlocal statusline+=\           " Space
-endfunction
-
-function! Blur_statusline()
-    setlocal statusline=\            " Space
-    setlocal statusline+=\           " Space
-    setlocal statusline+=%f          " Short filename
-    setlocal statusline+=\           " Space
-    setlocal statusline+=%m          " Modified flag
-    setlocal statusline+=%r          " Readonly flag
-endfunction
 
 " }}}
 
@@ -332,7 +327,7 @@ else
     set directory+=.
 endif
 
-if has('viminfo')
+if has('viminfo')                       " Neovim has deprecated viminfo in favor of 'shada'
     if exists('$SUDO_USER')
         set viminfo=                        " Don't create root-owned files
     else
