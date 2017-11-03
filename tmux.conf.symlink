@@ -130,4 +130,4 @@ set -s escape-time 0
 
 # }}}
 
-# vim:foldmethod=marker:foldlevel=0
+# vim:foldmethod=marker
