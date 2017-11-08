@@ -333,6 +333,16 @@ else
     set directory+=.
 endif
 
+if has('persistent_undo')
+  if exists('$SUDO_USER')
+    set noundofile                      " don't create root-owned files
+  else
+    set undodir+=~/.vim/tmp/undo        " keep undo files out of the way
+    set undodir+=.
+    set undofile                        " actually use undo files
+  endif
+endif
+
 if has('viminfo')                       " Neovim has deprecated viminfo in favor of 'shada'
     if exists('$SUDO_USER')
         set viminfo=                        " Don't create root-owned files
@@ -343,6 +353,15 @@ endif
 
 if has('mksession')
     set viewdir=~/.vim/tmp/view         " Override ~/.vim/view default
+    set viewoptions-=options            " Don't save options with session information
+
+    " Save and load session information if we're dealing with a real normal
+    " file and not in a diff situation
+    augroup Session
+        autocmd!
+        autocmd BufWinLeave ?* if &buftype ==# '' && &diff ==# 0 | silent! mkview | endif
+        autocmd BufWinEnter ?* if &buftype ==# '' && &diff ==# 0 | silent! loadview | endif
+    augroup END
 endif
 
 " }}}
