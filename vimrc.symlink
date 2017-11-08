@@ -106,10 +106,6 @@ function! CustomHighlights()
         " Comments in italics
         highlight Comment cterm=italic
     endif
-    
-    " Disable background to be consistent with tmux active panes
-    " highlight NonText ctermbg=NONE
-    " highlight Normal ctermbg=NONE
 endfunction
 
 syntax enable               " Enable syntax processing/highlighting
@@ -128,7 +124,7 @@ set smartindent
 
 " }}}
 
-" UI Layout {{{
+" Settings {{{
 
 set hidden                  " Allow hidden Buffers
 
@@ -242,7 +238,6 @@ set smartcase               " If uppercase letters are included in the search sw
 
 " Folding {{{
 
-set foldenable              " Enable folding
 set foldlevelstart=10       " Open most folds by default
 set foldmethod=indent       " Fold based on indent level
 
@@ -292,20 +287,18 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " Edit .vimrc
 nnoremap <leader>ev :vsp $MYVIMRC<CR>
-
 " Edit .zshrc
 nnoremap <leader>ez :vsp ~/.zshrc<CR>
-
 " Source .vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Toggle relative line numbers
 nnoremap <leader>r :set relativenumber!<CR>
 
-" Enable special characters
+" Toggle special characters
 nnoremap <leader>l :set list!<CR>
 
-" Enable spellchecking
+" Toggle spellchecking
 nnoremap <leader>s :set spell!<CR>
 
 " <leader><leader> -- Open last buffer.
