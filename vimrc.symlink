@@ -7,7 +7,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" Start vim-plug and list plugins {{{
+" Start vim-plug and list plugins
 call plug#begin('~/.vim/plugged')
 
 " Colorschemes
@@ -23,6 +23,8 @@ Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
 Plug 'tpope/vim-surround'                   " Surround objects with ([{' etc.
 Plug 'tpope/vim-fugitive'
 
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+
 " Completion
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -31,54 +33,57 @@ else
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'wokalski/autocomplete-flow'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 Plug 'SirVer/UltiSnips'                     " Text/Code snippets
 Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
 
 call plug#end()
-" End vim-plug listing }}}
+" End vim-plug listing
+
+let g:LanguageClient_autoStart = 1
+let g:LanguageClient_diagnosticsEnable = 0
+let g:LanguageClient_serverCommands = {}
+
+" javascript language server: npm -g install javascript-typescript-langserver
+if executable('javascript-typescript-stdio')
+    let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
+    let g:LanguageClient_serverCommands.typescript = ['javascript-typescript-stdio']
+endif
+
+" html language server: npm -g install vscode-html-languageserver-bin
+if executable('html-languageserver')
+    let g:LanguageClient_serverCommands.html = ['html-languageserver', '--stdio']
+endif
+
+" css language server: npm -g install vscode-css-languageserver-bin
+if executable('css-languageserver')
+    let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
+endif
+
+" Python language server: pip install python-language-server
+if executable('pyls')
+  let g:LanguageClient_serverCommands.python = ['pyls']
+endif
 
 " Start deoplete
 let g:deoplete#enable_at_startup = 1
-" let g:deoplete#sources#ternjs#docs = 1
-" let g:deoplete#sources#ternjs#types = 1
 
 " UltiSnips settings
 let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips'
-
 let g:UltiSnipsExpandTrigger = '<nop>'
-" let g:UltiSnipsJumpForwardTrigger = '<Tab>'
-" let g:UltiSnipsJumpBackwardTrigger = '<S-Tab>'
 
 " Map Enter to expanding snippet when completion is open
 function! ExpandSnippetOrCarriageReturn()
     let snippet = UltiSnips#ExpandSnippetOrJump()
     if g:ulti_expand_or_jump_res > 0
         return snippet
-    else
-        return "\<CR>"
     endif
+    return "\<CR>"
 endfunction
 
 inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
-
-" Customize fzf colors
-let g:fzf_colors = {
-  \ 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+imap <expr><C-j>   pumvisible() ? "\<Down>" : "\<C-j>"
+imap <expr><C-k>   pumvisible() ? "\<Up>" : "\<C-k>"
 
 " }}}
 
