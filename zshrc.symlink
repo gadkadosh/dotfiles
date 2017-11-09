@@ -24,11 +24,11 @@ antigen apply
 
 # Global Variables
 
-export HISTFILE=$HOME/.zsh_history              # History file
-export HISTSIZE=10000                           # Maximum number of events stored internally
-export SAVEHIST=10000                           # Maximum number of events stored in the file
-export CLICOLOR=true                            # Enable colors for 'ls' (at least under macOS)
-export EDITOR=nvim                              # Default Editor
+export HISTFILE=$HOME/.zsh_history      # History file
+export HISTSIZE=10000                   # Maximum number of events stored internally
+export SAVEHIST=10000                   # Maximum number of events stored in the file
+export CLICOLOR=true                    # Enable colors for 'ls' (at least under macOS)
+export EDITOR=nvim                      # Default Editor
 
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/ percentage
@@ -41,17 +41,17 @@ export LESS_TERMCAP_so=$'\e[01;44;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[01;32m'
 
-export GREP_OPTIONS="-i"                        # Options for grep
-export HOMEBREW_NO_GITHUB_API=1                 # Homebrew: don't use my GitHub account (returns errors)
+export GREP_OPTIONS="-i"                # Options for grep, case insensitive
+export HOMEBREW_NO_GITHUB_API=1         # Homebrew: don't use my GitHub account (returns errors)
 
 # Bindkey
 
-bindkey -e                                      # Emacs style bindings
-bindkey ' ' magic-space                         # Magic space for history expansion
+bindkey -e                              # Emacs style bindings
+bindkey ' ' magic-space                 # Magic space for history expansion
 bindkey '^r' history-incremental-search-backward # History search
-bindkey "^[[3~" delete-char                     # Delete key
-bindkey '^u' backward-kill-line                 # Delete from cursor to beginning
-bindkey '^[[Z' reverse-menu-complete            # Shift-tab for moving backwards in menus
+bindkey "^[[3~" delete-char             # Delete key
+bindkey '^u' backward-kill-line         # Delete from cursor to beginning
+bindkey '^[[Z' reverse-menu-complete    # Shift-tab for moving backwards in menus
 
 # Up/Down arrows history search
 autoload history-search-end
@@ -78,14 +78,18 @@ setopt sharehistory
 
 # Completion colors: empty string ("") would use the shell's defaults ($LSCOLORS),
 # but zsh doesn't support BSD style $LSCOLORS so here is the equivalent in Linux style $LS_COLORS
-zstyle ":completion:*" list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
+zstyle ":completion:*" \
+    list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 # Case insensitive autocomplete
-zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
+zstyle ":completion:*" \
+    matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
 # Show a menu for completions
 zstyle ":completion:*" menu select
 # Kill processes autocomplete
-zstyle ":completion:*:*:kill:*:processes" list-colors "=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01"
-zstyle ":completion:*:*:*:*:processes" command "ps -u `whoami` -o pid,user,comm -w -w"
+zstyle ":completion:*:*:kill:*:processes" \
+    list-colors "=(#b) #([0-9]#) ([0-9a-z-]#)*=01;34=0=01"
+zstyle ":completion:*:*:*:*:processes" \
+    command "ps -u `whoami` -o pid,user,comm -w -w"
 # Users autocomplete, hide irrelelvant users
 zstyle ":completion:*:*:*:users" ignored-patterns \
     adm amanda apache at avahi avahi-autoipd beaglidx bin cacti canna \
@@ -97,7 +101,8 @@ zstyle ":completion:*:*:*:users" ignored-patterns \
     rpc rpcuser rpm rtkit scard shutdown squid sshd statd svn sync tftp \
     usbmux uucp vcsa wwwrun xfs "_*"
 # Disable named-directories autocompletion
-zstyle ":completion:*:cd:*" tag-order local-directories directory-stack path-directories
+zstyle ":completion:*:cd:*" tag-order local-directories directory-stack \
+    path-directories
 
 # Aliases
 
