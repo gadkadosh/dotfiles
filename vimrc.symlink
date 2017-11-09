@@ -172,11 +172,15 @@ set listchars+=extends:»
 set listchars+=precedes:«
 set listchars+=trail:•
 
-let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
-let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
+" Jump to last position on file load
+autocmd BufReadPost *
+            \ if line("'\"") > 1 && line("'\"") <= line("$") |
+            \   exe "normal! g`\"" |
+            \ endif
 
-if exists('&belloff')
-    set belloff=all         " never ring the bell for any reason
+if !has('nvim')
+    let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
+    let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
 endif
 
 " }}}
@@ -294,67 +298,30 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Toggle relative line numbers
 nnoremap <leader>r :set relativenumber!<CR>
-
 " Toggle special characters
 nnoremap <leader>l :set list!<CR>
-
 " Toggle spellchecking
 nnoremap <leader>s :set spell!<CR>
-
 " <leader><leader> -- Open last buffer.
 nnoremap <leader><leader> <C-^>
 
-" Make current buffer/window full screen
-nnoremap <leader>o :only<CR>
-
 " }}}
 
-" Backups {{{
-
-if exists('$SUDO_USER')
-    set nobackup                        " Don't create backups as root
-    set nowritebackup
-else
-    set backupdir=~/.vim/tmp/backup     " Keeps backup files out of the way
-    set backupdir+=.
-endif
+" Directories {{{
 
 if exists('$SUDO_USER')
     set noswapfile                      " Don't create root-owned files
 else
     set directory=~/.vim/tmp/swap//     " Keeps swap files out of the way
-    set directory+=.
 endif
 
 if has('persistent_undo')
   if exists('$SUDO_USER')
-    set noundofile                      " don't create root-owned files
+    set noundofile                      " Don't create root-owned files
   else
-    set undodir+=~/.vim/tmp/undo        " keep undo files out of the way
-    set undodir+=.
-    set undofile                        " actually use undo files
+    set undodir=~/.vim/tmp/undo         " Keep undo files out of the way
+    set undofile                        " Actually use undo files
   endif
-endif
-
-if has('viminfo')                       " Neovim has deprecated viminfo in favor of 'shada'
-    if exists('$SUDO_USER')
-        set viminfo=                        " Don't create root-owned files
-    else
-        set viminfo+=n~/.vim/tmp/viminfo    " Override ~/.viminfo default
-    endif
-endif
-
-if has('mksession')
-    set viewdir=~/.vim/tmp/view         " Override ~/.vim/view default
-    set viewoptions-=options            " Don't save options with session information
-
-    " Save and load session information if we're dealing with a real normal
-    " file and not in a diff situation
-    augroup Session
-        autocmd!
-        autocmd BufWinLeave ?* if &buftype ==# '' && &diff ==# 0 | silent! mkview | endif
-        autocmd BufWinEnter ?* if &buftype ==# '' && &diff ==# 0 | silent! loadview | endif
-    augroup END
 endif
 
 " }}}
