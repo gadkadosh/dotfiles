@@ -1,9 +1,9 @@
-" vim-plug and plugin settings {{{
+" vim-plug and plugin settings
 
 " Download vim-plug if it's not installed already
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
@@ -17,54 +17,51 @@ Plug 'sjl/badwolf'
 Plug 'AlessandroYorba/Sierra'
 
 " Utilities
-Plug '/usr/local/opt/fzf'                   " Fzf is installed locally through brew
-Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
-Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
-Plug 'tpope/vim-surround'                   " Surround objects with ([{' etc.
-Plug 'tpope/vim-fugitive'                   " Git wrapper
+Plug '/usr/local/opt/fzf'               " Fzf is installed locally through brew
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
-if has('nvim')                              " Deoplete has more dependencies when not running neovim
+if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
     Plug 'Shougo/deoplete.nvim'
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'SirVer/UltiSnips'                     " Text/Code snippets
-Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
+Plug 'SirVer/UltiSnips'
+Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] }
 
 call plug#end()
 " End vim-plug listing
 
-" Start LanguageClient and set language servers
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
-" javascript language server: npm -g install javascript-typescript-langserver
+" javascript: npm -g install javascript-typescript-langserver
 if executable('javascript-typescript-stdio')
     let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
     let g:LanguageClient_serverCommands.typescript = ['javascript-typescript-stdio']
 endif
-" html language server: npm -g install vscode-html-languageserver-bin
+" html: npm -g install vscode-html-languageserver-bin
 if executable('html-languageserver')
     let g:LanguageClient_serverCommands.html = ['html-languageserver', '--stdio']
 endif
-" css language server: npm -g install vscode-css-languageserver-bin
+" css: npm -g install vscode-css-languageserver-bin
 if executable('css-languageserver')
     let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
 endif
-" Python language server: pip install python-language-server
+" Python: pip install python-language-server
 if executable('pyls')
   let g:LanguageClient_serverCommands.python = ['pyls']
 endif
 
-" Start deoplete
 let g:deoplete#enable_at_startup = 1
 
-" UltiSnips settings
-let g:UltiSnipsSnippetsDir = $HOME . '/.vim/UltiSnips'
+let g:UltiSnipsSnippetsDir = $HOME.'/.vim/UltiSnips'
 let g:UltiSnipsExpandTrigger = '<nop>'
 
 " Map Enter to expanding snippet when completion is open
@@ -76,17 +73,16 @@ function! ExpandSnippetOrCarriageReturn()
     return "\<CR>"
 endfunction
 
-inoremap <expr> <CR> pumvisible() ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
-imap <expr><C-j>   pumvisible() ? "\<Down>" : "\<C-j>"
-imap <expr><C-k>   pumvisible() ? "\<Up>" : "\<C-k>"
+inoremap <expr> <CR> pumvisible() 
+    \ ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
+imap <expr> <C-j> pumvisible() ? "\<Down>" : "\<C-j>"
+imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
 
-" }}}
+" Colors
 
-" Colors {{{
+colorscheme dracula
 
-colorscheme dracula         " Color scheme/theme
-
-" Customize colorschemes
+" Customize color schemes
 augroup Colors
     autocmd!
     autocmd ColorScheme * call CustomHighlights()
@@ -103,11 +99,9 @@ function! CustomHighlights()
     endif
 endfunction
 
-syntax enable               " Enable syntax processing/highlighting
+syntax enable
 
-" }}}
-
-" Indentation {{{
+" Indentation
 
 set shiftwidth=4            " Actual number of spaces for each indentation step
 set tabstop=4               " Number of visual spaces per TAB
@@ -116,9 +110,7 @@ set expandtab               " Tabs are spaces
 set autoindent
 set smartindent
 
-" }}}
-
-" Settings {{{
+" Settings
 
 set hidden                  " Allow hidden Buffers
 set number                  " Show line numbers
@@ -128,7 +120,7 @@ set linebreak               " Wordwrapping not in the middle of words
 set showcmd                 " Show command in bottom bar
 set cursorline              " Highlight current line, see next few line
 
-" Show/hide cursorline for current window only
+" Show cursorline for current window only
 augroup Focus
     autocmd!
     autocmd WinEnter * setlocal cursorline
@@ -157,25 +149,22 @@ set listchars+=extends:»    " Last character of a wrapped line
 set listchars+=precedes:«   " First character of a wrapped line
 set listchars+=trail:•      " Trailing spaces
 
-" Jump to last position on file load
+" Jump to last cursor position on file load
 autocmd BufReadPost *
-            \ if &filetype !=# 'gitcommit' &&
-            \ line("'\"") > 1 && line("'\"") <= line("$") |
-            \   exe "normal! g`\"" |
-            \ endif
+    \ if &filetype !=# 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
+    \ endif
 
 if !has('nvim')
     let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
     let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
 endif
 
-" }}}
-
-" Statusline {{{
+" Status line
 
 set laststatus=2            " Always show status line
 
-" Function to pad the column line for less jittery movement
+" Pad the column line number for less jittery movement
 function! Statusline_col()
     let l:curCol=virtcol('.')
     if len(l:curCol) < 2
@@ -192,21 +181,21 @@ function! Statusline_branch()
     return ''
 endfunction
 
-let g:base_statusline='  %f '        " Short filename
+let g:base_statusline='  %f '               " Short filename
 let g:base_statusline.='%{Statusline_branch()} ' " Git branch (uses fugitive)
-let g:base_statusline.='%m'         " Modified flag
-let g:base_statusline.='%r'         " Readonly flag
+let g:base_statusline.='%m'                 " Modified flag
+let g:base_statusline.='%r'                 " Readonly flag
 
 function! Active_statusline()
     let &l:statusline=g:base_statusline
-    let &l:statusline.='%='         " Split point to right side
-    let &l:statusline.='%y '        " Filetype
-    let &l:statusline.='Ln %l/%L'   " Line number / Total lines
-    let &l:statusline.=' : '        " Separator
-    let &l:statusline.='Col '       " Column number (padded)
+    let &l:statusline.='%='                 " Split point to right side
+    let &l:statusline.='%y '                " Filetype
+    let &l:statusline.='Ln %l/%L'           " Line number / Total lines
+    let &l:statusline.=' : '                " Separator
+    let &l:statusline.='Col '               " Column number (padded)
     let &l:statusline.='%{Statusline_col()}'
-    let &l:statusline.=' ◼ '        " Separator ☲
-    let &l:statusline.='%p%%  '     " Percent through file
+    let &l:statusline.=' ◼ '                " Separator ☲
+    let &l:statusline.='%p%%  '             " Percent through file
 endfunction
 
 augroup Statusline
@@ -215,25 +204,19 @@ augroup Statusline
     autocmd WinLeave * let &l:statusline=g:base_statusline
 augroup END
 
-" }}}
-
-" Search {{{
+" Search
 
 set incsearch               " Search as characters are being typed
 set hlsearch                " Keep highlighting matches of last search
 set ignorecase              " Case insensitive search
 set smartcase               " If uppercase letters are included in the search switch to case sensitive
 
-" }}}
-
-" Folding {{{
+" Folding
 
 set foldlevelstart=10       " Open most folds by default
 set foldmethod=indent       " Fold based on indent level
 
-" }}}
-
-" Mappings {{{
+" Mappings
 
 let mapleader=","           " Leader mapping
 set ttimeoutlen=1           " This fixes the <esc> delay issue
@@ -285,14 +268,12 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>r :set relativenumber!<CR>
 " Toggle special characters
 nnoremap <leader>l :set list!<CR>
-" Toggle spellchecking
+" Toggle spell checking
 nnoremap <leader>s :set spell!<CR>
 " <leader><leader> -- Open last buffer.
 nnoremap <leader><leader> <C-^>
 
-" }}}
-
-" Directories {{{
+" Directories
 
 if exists('$SUDO_USER')
     set noswapfile                      " Don't create root-owned files
@@ -301,14 +282,10 @@ else
 endif
 
 if has('persistent_undo')
-  if exists('$SUDO_USER')
-    set noundofile                      " Don't create root-owned files
-  else
-    set undodir=~/.vim/tmp/undo         " Keep undo files out of the way
-    set undofile                        " Actually use undo files
-  endif
+    if exists('$SUDO_USER')
+        set noundofile                  " Don't create root-owned files
+    else
+        set undodir=~/.vim/tmp/undo     " Keep undo files out of the way
+        set undofile                    " Actually use undo files
+    endif
 endif
-
-" }}}
-
-" vim:foldmethod=marker
