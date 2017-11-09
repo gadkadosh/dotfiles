@@ -157,8 +157,10 @@ set listchars+=extends:»    " Last character of a wrapped line
 set listchars+=precedes:«   " First character of a wrapped line
 set listchars+=trail:•      " Trailing spaces
 
-autocmd BufReadPost *       " Jump to last position on file load
-            \ if line("'\"") > 1 && line("'\"") <= line("$") |
+" Jump to last position on file load
+autocmd BufReadPost *
+            \ if &filetype !=# 'gitcommit' &&
+            \ line("'\"") > 1 && line("'\"") <= line("$") |
             \   exe "normal! g`\"" |
             \ endif
 
