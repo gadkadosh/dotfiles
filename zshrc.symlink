@@ -1,11 +1,11 @@
 #!/usr/bin/env zsh
 
-# rbenv setup {{{
+# Setup rbenv 
+
 # --no-hash makes it quicker and it's enough to run after installations
 eval "$(rbenv init - --no-rehash)"
-# }}}
 
-# Antigen {{{
+# Antigen
 
 # Installs antigen if it's not found
 if [[ ! -f ~/.antigen/antigen.zsh ]]; then
@@ -16,26 +16,24 @@ source ~/.antigen/antigen.zsh
 
 antigen bundle rupa/z                           # Frecency based directory switching
 antigen bundle mafredri/zsh-async               # async support for pure theme
-antigen bundle sindresorhus/pure                # My prefered minimal theme
+antigen bundle sindresorhus/pure                # My preferred minimal theme
 antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
 antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
 
 antigen apply
 
-# }}}
+# Global Variables
 
-# Globals {{{
-
-export HISTFILE=$HOME/.zsh_history
-export HISTSIZE=10000
-export SAVEHIST=10000
-
-export CLICOLOR=true
-export EDITOR=nvim
+export HISTFILE=$HOME/.zsh_history              # History file
+export HISTSIZE=10000                           # Maximum number of events stored internally
+export SAVEHIST=10000                           # Maximum number of events stored in the file
+export CLICOLOR=true                            # Enable colors for 'ls' (at least under macOS)
+export EDITOR=nvim                              # Default Editor
 
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/ percentage
 export LESS="-iRM"
+# Colors for man pages
 export LESS_TERMCAP_md=$'\e[01;31m'
 export LESS_TERMCAP_me=$'\e[0m'
 export LESS_TERMCAP_se=$'\e[0m'
@@ -43,19 +41,14 @@ export LESS_TERMCAP_so=$'\e[01;44;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[01;32m'
 
-# Options for grep
-export GREP_OPTIONS="-i"
+export GREP_OPTIONS="-i"                        # Options for grep
+export HOMEBREW_NO_GITHUB_API=1                 # Homebrew: don't use my GitHub account (returns errors)
 
-# Stops Homebrew from using my GitHub accound and returning errors
-export HOMEBREW_NO_GITHUB_API=1
-
-# }}}
-
-# Bindkey {{{
+# Bindkey
 
 bindkey -e                                      # Emacs style bindings
 bindkey ' ' magic-space                         # Magic space for history expansion
-bindkey '^r' history-incremental-search-backward
+bindkey '^r' history-incremental-search-backward # History search
 bindkey "^[[3~" delete-char                     # Delete key
 bindkey '^u' backward-kill-line                 # Delete from cursor to beginning
 bindkey '^[[Z' reverse-menu-complete            # Shift-tab for moving backwards in menus
@@ -67,9 +60,7 @@ zle -N history-beginning-search-forward-end history-search-end
 bindkey '^[[A' history-beginning-search-backward-end
 bindkey '^[[B' history-beginning-search-forward-end
 
-# }}}
-
-# Options {{{
+# Options
 
 setopt appendhistory
 setopt autocd
@@ -108,11 +99,8 @@ zstyle ":completion:*:*:*:users" ignored-patterns \
 # Disable named-directories autocompletion
 zstyle ":completion:*:cd:*" tag-order local-directories directory-stack path-directories
 
-# }}}
+# Aliases
 
-# Aliases {{{
-
-# Shortcuts
 alias c=clear
 alias d="dirs -v"
 alias h=history
@@ -136,7 +124,7 @@ alias du="du -h"
 # Git
 alias gs="git status -sb"
 
-# MacOs
+# macOS
 alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
 alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
 alias emptytrash="trash -e"
@@ -167,14 +155,12 @@ alias -g C="|lolcat"
 alias -g H="|head"
 alias -g T="|tail"
 
-# Websearch from commandline
+# Websearch from command line
 alias bing='web_search bing'
 alias github='web_search github'
 alias google='web_search google'
 
-# }}}
-
-# Functions {{{
+# Functions
 
 # Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
 compresspdf() {
@@ -220,7 +206,7 @@ history_stats() {
 function web_search() {
     emulate -L zsh
 
-    # define search engine URLS
+    # define search engine URLs
     typeset -A urls
     urls=(
         google      "https://www.google.com/search?q="
@@ -256,15 +242,13 @@ function web_search() {
     open "$url"
 }
 
-# }}}
-
-# fzf {{{
+# fzf
 
 # Load fzf tab completion and key bindings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Use fzf to cd
-# Direct descendents
+# Direct descendants
 fd() {
     local dir
     dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print |
@@ -297,9 +281,5 @@ z() {
         sed 's/^[0-9,.]* *//')"
 }
 
-# }}}
-
 # Start tmux
 tmux
-
-# vim:foldmethod=marker
