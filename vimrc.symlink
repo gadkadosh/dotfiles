@@ -149,16 +149,15 @@ set showmatch               " Highlight matching [{()}]
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 set splitbelow              " Default to new splits below and to the right
 set splitright
-" special characters for formatting. set list to enable (<leader>l)
-set listchars=nbsp:⦸
-set listchars+=tab:▷┅
-set listchars+=eol:¬
-set listchars+=extends:»
-set listchars+=precedes:«
-set listchars+=trail:•
+                            " Special characters for formatting enable (<leader>l)
+set listchars=nbsp:⦸        " Non-breakable space character
+set listchars+=tab:▷┅       " Tab (two characters)
+set listchars+=eol:¬        " End-of-line
+set listchars+=extends:»    " Last character of a wrapped line
+set listchars+=precedes:«   " First character of a wrapped line
+set listchars+=trail:•      " Trailing spaces
 
-" Jump to last position on file load
-autocmd BufReadPost *
+autocmd BufReadPost *       " Jump to last position on file load
             \ if line("'\"") > 1 && line("'\"") <= line("$") |
             \   exe "normal! g`\"" |
             \ endif
