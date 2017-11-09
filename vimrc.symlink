@@ -21,45 +21,40 @@ Plug '/usr/local/opt/fzf'                   " Fzf is installed locally through b
 Plug 'junegunn/fzf.vim'                     " Vim fzf bindings
 Plug 'tpope/vim-commentary'                 " Un/comment easily (gcc)
 Plug 'tpope/vim-surround'                   " Surround objects with ([{' etc.
-Plug 'tpope/vim-fugitive'
-
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'tpope/vim-fugitive'                   " Git wrapper
 
 " Completion
-if has('nvim')
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+if has('nvim')                              " Deoplete has more dependencies when not running neovim
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
     Plug 'Shougo/deoplete.nvim'
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
-
 Plug 'SirVer/UltiSnips'                     " Text/Code snippets
 Plug 'mattn/emmet-vim'                      " Emmet plugin. Usage: <C-y>, to expand
 
 call plug#end()
 " End vim-plug listing
 
+" Start LanguageClient and set language servers
 let g:LanguageClient_autoStart = 1
 let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
-
 " javascript language server: npm -g install javascript-typescript-langserver
 if executable('javascript-typescript-stdio')
     let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
     let g:LanguageClient_serverCommands.typescript = ['javascript-typescript-stdio']
 endif
-
 " html language server: npm -g install vscode-html-languageserver-bin
 if executable('html-languageserver')
     let g:LanguageClient_serverCommands.html = ['html-languageserver', '--stdio']
 endif
-
 " css language server: npm -g install vscode-css-languageserver-bin
 if executable('css-languageserver')
     let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
 endif
-
 " Python language server: pip install python-language-server
 if executable('pyls')
   let g:LanguageClient_serverCommands.python = ['pyls']
@@ -118,7 +113,6 @@ set shiftwidth=4            " Actual number of spaces for each indentation step
 set tabstop=4               " Number of visual spaces per TAB
 set softtabstop=4           " Number of spaces in tab when editing
 set expandtab               " Tabs are spaces
-
 set autoindent
 set smartindent
 
@@ -127,14 +121,10 @@ set smartindent
 " Settings {{{
 
 set hidden                  " Allow hidden Buffers
-
 set number                  " Show line numbers
 set relativenumber          " Relative line numbers, together they are hybrid
-
 set backspace=indent,eol,start  " Make backspace less limited
-
 set linebreak               " Wordwrapping not in the middle of words
-
 set showcmd                 " Show command in bottom bar
 set cursorline              " Highlight current line, see next few line
 
@@ -146,7 +136,6 @@ augroup Focus
 augroup END
 
 set clipboard=unnamed       " macOS clipboard
-
 set mouse=a                 " Enable mouse support
 if !has('nvim')
     set ttymouse=sgr        " Fast modern mouse draggin
@@ -155,13 +144,9 @@ endif
 filetype indent on          " Load filetype-specific indent files, also enables filetype detection
 
 set wildmenu                " Visual autocompletion for command line
-
 set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
-
 set showmatch               " Highlight matching [{()}]
-
 set scrolloff=3             " Start scrolling before reaching the first or last lines
-
 set splitbelow              " Default to new splits below and to the right
 set splitright
 " special characters for formatting. set list to enable (<leader>l)
@@ -250,7 +235,6 @@ set foldmethod=indent       " Fold based on indent level
 " Mappings {{{
 
 let mapleader=","           " Leader mapping
-
 set ttimeoutlen=1           " This fixes the <esc> delay issue
 
 " Alternative mappings for <esc>
