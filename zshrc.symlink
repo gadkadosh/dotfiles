@@ -143,7 +143,8 @@ alias emptytrash="trash -e"
 alias battery="pmset -g batt"
 
 # Editing
-alias zshrc="$EDITOR ~/.zshrc"
+alias ev="$EDITOR ~/.vimrc"
+alias ez="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
 alias todo="$EDITOR ~/todo.md"
 
