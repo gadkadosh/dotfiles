@@ -9,3 +9,6 @@ config.symlink/nvim/.netrwhist
 
 # firebase/npm related files, ignore for now
 config.symlink/configstore
+
+# Binary spell files, can be remade with :mkspell inside Vim
+*.spl
