@@ -22,6 +22,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-eunuch'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
@@ -184,7 +185,7 @@ function! Statusline_branch()
 endfunction
 
 let g:base_statusline='  %f '               " Short filename
-let g:base_statusline.='%{Statusline_branch()} ' " Git branch (uses fugitive)
+let g:base_statusline.='%{Statusline_branch()}' " Git branch (uses fugitive)
 let g:base_statusline.='%m'                 " Modified flag
 let g:base_statusline.='%r'                 " Readonly flag
 
