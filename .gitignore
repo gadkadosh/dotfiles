@@ -1,10 +1,6 @@
 .DS_Store
 
 # vim temporary files and plugins
-vim.symlink/tmp
-vim.symlink/autoload
-vim.symlink/plugged
-vim.symlink/.netrwhist
 config.symlink/nvim/.netrwhist
 
 # firebase/npm related files, ignore for now
