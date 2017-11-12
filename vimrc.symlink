@@ -1,14 +1,19 @@
 " vim-plug and plugin settings
 
+" Use Neovim XDG directory to load vim-plug on normal Vim
+if !has('nvim')
+    set runtimepath+=~/.local/share/nvim/site
+endif
+
 " Download vim-plug if it's not installed already
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 " Start vim-plug and list plugins
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " Colorschemes
 Plug 'dracula/vim'
@@ -34,7 +39,7 @@ else
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'SirVer/UltiSnips'
-Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] }
+Plug 'mattn/emmet-vim'
 
 call plug#end()
 " End vim-plug listing
@@ -62,7 +67,7 @@ endif
 
 let g:deoplete#enable_at_startup = 1
 
-let g:UltiSnipsSnippetsDir = $HOME.'/.vim/UltiSnips'
+let g:UltiSnipsSnippetsDir = $HOME.'/.config/nvim/UltiSnips'
 let g:UltiSnipsExpandTrigger = '<nop>'
 
 " Map Enter to expanding snippet when completion is open
@@ -280,15 +285,18 @@ nnoremap <leader><leader> <C-^>
 
 if exists('$SUDO_USER')
     set noswapfile                      " Don't create root-owned files
-else
-    set directory=~/.vim/tmp/swap//     " Keeps swap files out of the way
+elseif !has('nvim')                     " Use Neovim XDG directory
+    set directory=~/.local/share/nvim/swap// " Keeps swap files out of the way
 endif
 
 if has('persistent_undo')
     if exists('$SUDO_USER')
         set noundofile                  " Don't create root-owned files
     else
-        set undodir=~/.vim/tmp/undo     " Keep undo files out of the way
-        set undofile                    " Actually use undo files
+        set undofile
+    endif
+
+    if !has('nvim')                     " Use Neovim XDG directory
+        set undodir=~/.local/share/nvim/undo " Keep undo files out of the way
     endif
 endif
