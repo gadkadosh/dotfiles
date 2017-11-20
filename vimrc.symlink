@@ -275,6 +275,8 @@ nnoremap <leader>ez :vsp ~/.zshrc<CR>
 " Source .vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
+" Toggle line numbers
+nnoremap <leader>n :set number!<CR>
 " Toggle relative line numbers
 nnoremap <leader>r :set relativenumber!<CR>
 " Toggle special characters
