@@ -227,6 +227,8 @@ endif
 set foldlevelstart=10       " Open most folds by default
 set foldmethod=indent       " Fold based on indent level
 
+let g:markdown_folding=1    " Folding for markdown files
+
 " Mappings
 
 let mapleader=","           " Leader mapping
