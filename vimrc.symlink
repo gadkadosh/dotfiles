@@ -278,9 +278,17 @@ nnoremap <leader>ez :vsp ~/.zshrc<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Toggle line numbers
-nnoremap <leader>n :set number!<CR>
-" Toggle relative line numbers
-nnoremap <leader>r :set relativenumber!<CR>
+function! ToggleNumbers()
+    if &number && &relativenumber
+        setlocal norelativenumber
+    elseif &number && !&relativenumber
+        setlocal nonumber
+    elseif !&number && !&relativenumber
+        setlocal number relativenumber
+    endif
+endfunction
+
+nnoremap <leader>r :call ToggleNumbers()<CR>
 " Toggle special characters
 nnoremap <leader>l :set list!<CR>
 " Toggle spell checking
