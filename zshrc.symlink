@@ -139,7 +139,7 @@ alias battery="pmset -g batt"
 alias ev="$EDITOR ~/.vimrc"
 alias ez="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
-alias todo="$EDITOR ~/todo.md"
+alias todo="$EDITOR ~/Dropbox/todo.md"
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
