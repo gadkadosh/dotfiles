@@ -231,7 +231,7 @@ let g:markdown_folding=1    " Folding for markdown files
 
 " Mappings
 
-let mapleader=","           " Leader mapping
+let mapleader=" "           " Leader mapping
 set ttimeoutlen=1           " This fixes the <esc> delay issue
 
 " Alternative mappings for <esc>
@@ -252,7 +252,7 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
 autocmd FileType html,css imap <leader><Tab> <plug>(emmet-expand-abbr)
 
 " Quick folding with <space>
-nnoremap <space> za
+nnoremap <CR> za
 
 " move vertically by visual line (when lines are wrapping)
 " nnoremap j gj
@@ -294,7 +294,7 @@ nnoremap <leader>l :set list!<CR>
 " Toggle spell checking
 nnoremap <leader>s :set spell!<CR>
 " <leader><leader> -- Open last buffer.
-nnoremap <leader><leader> <C-^>
+nnoremap <leader>, <C-^>
 
 " Directories
 
