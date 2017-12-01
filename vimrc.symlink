@@ -28,6 +28,8 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-eunuch'
+Plug 'ap/vim-css-color'
+Plug 'KabbAmine/vCoolor.vim'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
@@ -83,6 +85,9 @@ inoremap <expr> <CR> pumvisible()
     \ ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 imap <expr> <C-j> pumvisible() ? "\<Down>" : "\<C-j>"
 imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
+
+" VCoolor colorpicker
+let g:vcoolor_map = '<C-Y>c'
 
 " Colors
 
