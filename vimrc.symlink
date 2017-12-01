@@ -133,6 +133,12 @@ set linebreak               " Wordwrapping not in the middle of words
 set showcmd                 " Show command in bottom bar
 set cursorline              " Highlight current line, see next few line
 
+augroup Terminal
+    autocmd!
+    autocmd TermOpen * setlocal nonumber norelativenumber
+    autocmd TermOpen * startinsert
+augroup END
+
 " Show cursorline for current window only
 augroup Focus
     autocmd!
@@ -201,21 +207,38 @@ let g:base_statusline.='%m'                 " Modified flag
 let g:base_statusline.='%r'                 " Readonly flag
 
 function! Active_statusline()
-    let &l:statusline=g:base_statusline
-    let &l:statusline.='%='                 " Split point to right side
-    let &l:statusline.='%y '                " Filetype
-    let &l:statusline.='Ln %l/%L'           " Line number / Total lines
-    let &l:statusline.=' : '                " Separator
-    let &l:statusline.='Col '               " Column number (padded)
-    let &l:statusline.='%{Statusline_col()}'
-    let &l:statusline.=' ◼ '                " Separator ☲
-    let &l:statusline.='%p%%  '             " Percent through file
+    if &buftype == 'terminal'
+        call Terminal_statusline()
+    else
+        let &l:statusline=g:base_statusline
+        let &l:statusline.='%='                 " Split point to right side
+        let &l:statusline.='%y '                " Filetype
+        let &l:statusline.='Ln %l/%L'           " Line number / Total lines
+        let &l:statusline.=' : '                " Separator
+        let &l:statusline.='Col '               " Column number (padded)
+        let &l:statusline.='%{Statusline_col()}'
+        let &l:statusline.=' ◼ '                " Separator ☲
+        let &l:statusline.='%p%%  '             " Percent through file
+    endif
+endfunction
+
+function! Inactive_statusline()
+    if &buftype == 'terminal'
+        call Terminal_statusline()
+    else
+        let &l:statusline=g:base_statusline
+    endif
+endfunction
+
+function! Terminal_statusline()
+    let &l:statusline='  %{b:term_title}'
 endfunction
 
 augroup Statusline
     autocmd!
     autocmd BufEnter,WinEnter * call Active_statusline()
-    autocmd WinLeave * let &l:statusline=g:base_statusline
+    autocmd WinLeave * call Inactive_statusline()
+    autocmd TermOpen,TermClose * call Terminal_statusline()
 augroup END
 
 " Search
