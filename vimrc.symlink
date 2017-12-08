@@ -122,6 +122,7 @@ set softtabstop=4           " Number of spaces in tab when editing
 set expandtab               " Tabs are spaces
 set autoindent
 set smartindent
+set showbreak=↳\            " Symbol for showing wrapped lines
 
 " Settings
 
@@ -146,7 +147,6 @@ augroup Focus
     autocmd WinLeave * setlocal nocursorline
 augroup END
 
-set clipboard=unnamed       " macOS clipboard
 set mouse=a                 " Enable mouse support
 if !has('nvim')
     set ttymouse=sgr        " Fast modern mouse draggin
@@ -321,6 +321,9 @@ nnoremap <leader>l :set list!<CR>
 nnoremap <leader>s :set spell!<CR>
 " <leader><leader> -- Open last buffer.
 nnoremap <leader>, <C-^>
+
+" Leader mappings for LanguageClient
+nnoremap <leader>h :call LanguageClient_textDocument_hover()<CR>
 
 " Directories
 
