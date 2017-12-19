@@ -106,8 +106,9 @@ function! CustomHighlights()
     if g:colors_name == 'dracula'
         " Pink statusline
         highlight StatusLine ctermbg=176 
-        " Purple completion menu
-        highlight Pmenu ctermbg=56
+        " Completion menu
+        highlight Pmenu ctermbg=236
+        highlight PmenuSel ctermbg=56
         " Comments in italics
         highlight Comment cterm=italic
     endif
