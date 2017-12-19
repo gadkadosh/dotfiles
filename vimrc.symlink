@@ -42,6 +42,7 @@ else
 endif
 Plug 'SirVer/UltiSnips'
 Plug 'mattn/emmet-vim'
+Plug 'jiangmiao/auto-pairs'
 
 call plug#end()
 " End vim-plug listing
