@@ -1,5 +1,7 @@
 #! /bin/sh
 
+OS=$(uname -s)
+
 # Home directory dotfiles
 DOTFILES_DIR=$(cd $(dirname ${BASH_SOURCE[0]}) && pwd)
 
@@ -29,6 +31,7 @@ install_dotfiles() {
 			dst="$HOME/.$(basename "${src%.*}")"
 			link_file "$src" "$dst"
 		done
+    echo
 }
 
 setup_gitconfig() {
@@ -47,6 +50,8 @@ setup_gitconfig() {
 		# otherwise this gitconfig was already made by the dotfiles
 		echo "already set up"
 	fi
+
+    echo
 }
 
 setup_vscode() {
@@ -54,8 +59,11 @@ setup_vscode() {
         return 0
     fi
 
+    read -p "Install VSCode configurations? [yN] " vscode_conf
+    [[ $vscode_conf != [Yy] ]] && return 0
+
     bluetext "Setting up VSCode"
-    if [ "$(uname -s)" = "Darwin" ]; then
+    if [ "$OS" = "Darwin" ]; then
         VSCODE_HOME="$HOME/Library/Application Support/Code"
     else
         VSCODE_HOME="$HOME/.config/Code"
@@ -68,6 +76,10 @@ setup_vscode() {
     [[ ! -e "$DOTFILES_DIR/vscode/extensions-list" ]] && return 0
 
     install_vscode_extenstions
+
+    echo
+    bluetext "For vscode vim usability, I might want to run:"
+    echo "defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false"
 }
 
 install_vscode_extenstions() {
@@ -81,7 +93,7 @@ install_vscode_extenstions() {
 
 setup_homebrew() {
     if [ $(command -v brew) ]; then
-        bluetext "Brew is already installed, updating..."
+        bluetext "Homebrew is already installed, updating..."
     else
         read -p "Would you like to install Homebrew? [yN] " brew_yn
         # Install Homebrew
@@ -98,16 +110,16 @@ setup_homebrew() {
     [[ $packages_yn != [Yy] ]] && return 0
     echo "Installing packages..."
     brew bundle
+
+    echo
 }
 
 read -p "Proceed with installing dotfiles and configurations? [yN] " yn
 [[ $yn != [Yy] ]] && echo "\nExiting..." && exit
 
+echo
+
 install_dotfiles
 setup_gitconfig
+[ "$OS" = "Darwin" ] && setup_homebrew
 setup_vscode
-setup_homebrew
-
-echo
-bluetext "For vscode vim usability, I might want to run:"
-echo "defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false"
