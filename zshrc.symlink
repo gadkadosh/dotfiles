@@ -151,14 +151,6 @@ alias small-server="python -m SimpleHTTPServer 3000 ."
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
 
-# Global aliases
-alias -g G="|grep"
-alias -g L="|less"
-alias -g Y="|yank"
-alias -g C="|lolcat"
-alias -g H="|head"
-alias -g T="|tail"
-
 # Websearch from command line
 alias bing='web_search bing'
 alias github='web_search github'
