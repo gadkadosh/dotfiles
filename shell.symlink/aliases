@@ -7,6 +7,8 @@ alias u=users
 alias t=tmux
 alias vim=nvim
 alias vimr="vim -M"
+alias top="top -o cpu -s 2"
+alias grep="grep -i --color=always"
 
 # File management
 alias ..="cd .."
@@ -15,8 +17,7 @@ alias ....="cd ../../.."
 alias .....="cd ../../../.."
 alias -- -="cd -"
 alias la="ls -a"
-alias ll="ls -lh"
-alias l="ls -lha"
+alias ll="ls -lha"
 alias mkdir="mkdir -pv"
 alias du="du -h"
 

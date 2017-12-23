@@ -15,5 +15,4 @@ export LESS_TERMCAP_so=$'\e[01;44;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[01;32m'
 
-export GREP_OPTIONS="-i --color=always" # Options for grep, case insensitive
 export HOMEBREW_NO_GITHUB_API=1         # Homebrew: don't use my GitHub account (returns errors)
