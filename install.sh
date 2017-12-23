@@ -89,6 +89,8 @@ install_vscode_extenstions() {
     while read extension; do
         code --install-extension "$extension"
     done < $DOTFILES_DIR/vscode/extensions-list
+
+    echo
 }
 
 setup_homebrew() {
@@ -107,7 +109,7 @@ setup_homebrew() {
 
     echo
     read -p "Would you like to install packages from Brewfile? [yN] " packages_yn
-    [[ $packages_yn != [Yy] ]] && return 0
+    [[ $packages_yn != [Yy] ]] && echo && return 0
     echo "Installing packages..."
     brew bundle
 
