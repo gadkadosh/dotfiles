@@ -22,27 +22,12 @@ antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
 
 antigen apply
 
-# Global Variables
+# History
 
 export HISTFILE=$HOME/.zsh_history      # History file
 export HISTSIZE=10000                   # Maximum number of events stored internally
 export SAVEHIST=10000                   # Maximum number of events stored in the file
-export CLICOLOR=true                    # Enable colors for 'ls' (at least under macOS)
-export EDITOR=nvim                      # Default Editor
 
-# R: raw output, to allow ANSI colors
-# M: verbose prompt, line numbers/ percentage
-export LESS="-iRM"
-# Colors for man pages
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;44;33m'
-export LESS_TERMCAP_ue=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;32m'
-
-export GREP_OPTIONS="-i"                # Options for grep, case insensitive
-export HOMEBREW_NO_GITHUB_API=1         # Homebrew: don't use my GitHub account (returns errors)
 
 # Bindkey
 
@@ -104,139 +89,12 @@ zstyle ":completion:*:*:*:users" ignored-patterns \
 zstyle ":completion:*:cd:*" tag-order local-directories directory-stack \
     path-directories
 
+# Environment variables
+source $HOME/.shell/env
 # Aliases
-
-alias c=clear
-alias d="dirs -v"
-alias h=history
-alias u=users
-alias t=tmux
-alias vim=nvim
-alias vimr="vim -M"
-
-# File management
-alias -g ...="../.."
-alias -g ....="../../.."
-alias -g .....="../../../.."
-alias -- -="cd -"
-alias la="ls -a"
-alias ll="ls -lh"
-alias l="ls -lha"
-alias mkdir="mkdir -pv"
-alias du="du -h"
-
-# Git
-alias gs="git status -sb"
-
-# macOS
-alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
-alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
-alias emptytrash="trash -e"
-alias battery="pmset -g batt"
-
-# Editing
-alias ev="$EDITOR ~/.vimrc"
-alias ez="$EDITOR ~/.zshrc"
-alias reload="source ~/.zshrc"
-alias todo="$EDITOR ~/Dropbox/todo.md"
-
-# IP addresses
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
-
-# Small python webserver
-alias small-server="python -m SimpleHTTPServer 3000 ."
-
-# Show active network interfaces
-alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
-
-# Websearch from command line
-alias bing='web_search bing'
-alias github='web_search github'
-alias google='web_search google'
-
+source $HOME/.shell/aliases
 # Functions
-
-# Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
-compresspdf() {
-    \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} \
-        -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
-}
-
-# Open the detached session or start a new one
-tmux() {
-    if [[ -n "$@" ]]; then
-        command tmux "$@"
-        return
-    fi
-
-    if [[ "$TERM" != "screen" ]] && 
-        [[ "$SSH_CONNECTION" == "" ]] &&
-        [[ -z "$TMUX" ]]; then
-    # Attempt to discover a detached session and attach 
-    # it, else create a new session
-        SESSION_NAME=base
-        command tmux new -A -s $SESSION_NAME
-    fi
-}
-
-# Find in current directory shortcut
-f() {
-    find . -iname "*${1}*"
-}
-
-# Shortcut for opening a file or the current directory in macOS Finder
-o() {
-    open ${1:-"."}
-}
-
-# Get statistics on most commonly used commands
-history_stats() {
-    fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " \
-        CMD[a]/count*100 "% " a;}' | grep -v "./" | \
-        column -c3 -s " " -t | sort -nr | nl |  head -n20
-}
-
-# Web searching from the command line, taken from oh-my-zsh
-function web_search() {
-    emulate -L zsh
-
-    # define search engine URLs
-    typeset -A urls
-    urls=(
-        google      "https://www.google.com/search?q="
-        bing        "https://www.bing.com/search?q="
-        yahoo       "https://search.yahoo.com/search?p="
-        duckduckgo  "https://www.duckduckgo.com/?q="
-        startpage   "https://www.startpage.com/do/search?q="
-        yandex      "https://yandex.ru/yandsearch?text="
-        github      "https://github.com/search?q="
-        baidu       "https://www.baidu.com/s?wd="
-        ecosia      "https://www.ecosia.org/search?q="
-        goodreads   "https://www.goodreads.com/search?q="
-    )
-
-    # check whether the search engine is supported
-    if [[ -z "$urls[$1]" ]]; then
-        echo "Search engine $1 not supported."
-        return 1
-    fi
-
-    # search or go to main page depending on number of arguments passed
-    if [[ $# -gt 1 ]]; then
-        # build search url:
-        # join arguments passed with '+', then append to search engine URL
-        url="${urls[$1]}${(j:+:)@[2,-1]}"
-    else
-        # build main page url:
-        # split by '/', then rejoin protocol (1) and domain (2) parts with '//'
-        url="${(j://:)${(s:/:)urls[$1]}[1,2]}"
-    fi
-
-    # for macOS
-    open "$url"
-}
+source $HOME/.shell/functions
 
 # fzf
 
