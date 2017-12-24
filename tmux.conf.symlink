@@ -110,6 +110,8 @@ set -g mouse on
 # (Would use `bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X
 # stop-selection` but it is a bit glitchy.)
 unbind-key -T copy-mode-vi MouseDragEnd1Pane
+
+# Double click to select word (triple click selects line)
 bind-key -T root DoubleClick1Pane if-shell -Ft{mouse} '#{alternate_on}' "send-keys -M" "copy-mode -t{mouse}; send-keys -t{mouse} -X select-word"
 
 # Scroll 1 lines at a time instead of default 5
@@ -121,6 +123,9 @@ set -g mode-keys vi
 bind-key -T copy-mode-vi v send-keys -X begin-selection
 bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "pbcopy"
 bind-key -T copy-mode-vi enter send-keys -X copy-pipe-and-cancel "pbcopy"
+
+# Escape to leave copy mode
+bind-key -T copy-mode-vi Escape send-keys -X cancel
 
 # }}}
 
