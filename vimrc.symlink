@@ -136,11 +136,13 @@ set linebreak               " Wordwrapping not in the middle of words
 set showcmd                 " Show command in bottom bar
 set cursorline              " Highlight current line, see next few line
 
-augroup Terminal
-    autocmd!
-    autocmd TermOpen * setlocal nonumber norelativenumber
-    autocmd TermOpen * startinsert
-augroup END
+if has('nvim')
+    augroup Terminal
+        autocmd!
+        autocmd TermOpen * setlocal nonumber norelativenumber
+        autocmd TermOpen * startinsert
+    augroup END
+endif
 
 " Show cursorline for current window only
 augroup Focus
@@ -240,7 +242,9 @@ augroup Statusline
     autocmd!
     autocmd BufEnter,WinEnter * call Active_statusline()
     autocmd WinLeave * call Inactive_statusline()
-    autocmd TermOpen,TermClose * call Terminal_statusline()
+    if has('nvim')
+        autocmd TermOpen,TermClose * call Terminal_statusline()
+    endif
 augroup END
 
 " Search
