@@ -30,6 +30,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-eunuch'
 Plug 'ap/vim-css-color'
 Plug 'KabbAmine/vCoolor.vim'
+Plug 'henrik/vim-indexed-search'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
