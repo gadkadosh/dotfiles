@@ -9,13 +9,22 @@ alias top="top -o cpu -s 2"
 alias grep="grep -i --color=always"
 
 # File management
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias .....="cd ../../../.."
+if [ -n "$ZSH_VERSION" ]
+then
+    alias -g ...='../..'
+    alias -g ....='../../..'
+    alias -g .....='../../../..'
+    alias -g ......='../../../../..'
+else
+    alias ..="cd .."
+    alias ...="cd ../.."
+    alias ....="cd ../../.."
+    alias .....="cd ../../../.."
+fi
 alias -- -="cd -"
 alias la="ls -a"
-alias ll="ls -lha"
+alias l="ls -lha"
+alias ll="ls -lh"
 alias mkdir="mkdir -pv"
 alias du="du -h"
 
