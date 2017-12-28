@@ -3,8 +3,9 @@
 # vim temporary files and plugins
 config.symlink/nvim/.netrwhist
 
-# firebase/npm related files, ignore for now
+# firebase/npm and gtk related files, ignore for now
 config.symlink/configstore
+config.symlink/gtk-2.0
 
 # Binary spell files, can be remade with :mkspell inside Vim
 *.spl
