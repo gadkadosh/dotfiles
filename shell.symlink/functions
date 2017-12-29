@@ -7,7 +7,7 @@ compresspdf() {
 }
 
 # Open the detached session or start a new one
-tmux() {
+start_tmux() {
     if [[ -n "$@" ]]; then
         command tmux "$@"
         return
@@ -79,3 +79,43 @@ function web_search() {
     # for macOS
     open "$url"
 }
+
+# Use fzf to cd, if it's installed
+if [ $(command -v fzf) ];then
+# Direct descendants
+    fd() {
+        local dir
+            dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print |
+                    sed '1d;s#^./##' |
+                    fzf --height 20 --reverse --query "$1" --select-1 --exit-0) && cd "$dir"
+    }
+
+# Whole tree
+    fcd() {
+        local dir
+            dir=$(find ${1:-*} -path '*/\.*' -prune \
+                    -o -type d -print 2>/dev/null | fzf +m) &&
+            cd "$dir"
+    }
+
+# Including hidden directories
+    fcda() {
+        local dir
+            dir=$(find ${2:-.} -type d 2>/dev/null |
+                    fzf +m) && cd "$dir"
+    }
+
+# Combine z and fzf
+    if command -v z > /dev/null 2>&1; then
+        unalias z 2> /dev/null
+
+        function z() {
+            [ $# -gt 0 ] && _z "$*" && return
+                cd "$(_z -l 2>&1 |
+                    fzf --height 40% --nth 2.. --reverse --inline-info +s --tac \
+                    --query "${*##-* }" |
+                    sed 's/^[0-9,.]* *//')"
+        }
+    fi
+fi
+

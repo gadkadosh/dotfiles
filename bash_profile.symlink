@@ -36,6 +36,12 @@ yellow=$(tput setaf 136)
 PS1="\[${bold}\]\[${green}\]\u\[${reset}\] at \[${bold}\]\[${purple}\]\h\[${reset}\] in \[${bold}\]\[${blue}\]\W \$(parse_git_branch)\n\[${reset}\]$ "
 export PS1
 
+# Frecency based directory switching
+[ -n /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
+
+# Load fzf tab completion and key bindings
+[ $(command -v fzf) ] && [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
 # Environment variables
 source $HOME/.shell/env
 # Aliases

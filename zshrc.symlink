@@ -14,7 +14,7 @@ if [[ ! -f ~/.antigen/antigen.zsh ]]; then
 fi
 source ~/.antigen/antigen.zsh
 
-antigen bundle rupa/z                           # Frecency based directory switching
+
 antigen bundle mafredri/zsh-async               # async support for pure theme
 antigen bundle sindresorhus/pure                # My preferred minimal theme
 antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
@@ -89,6 +89,12 @@ zstyle ":completion:*:*:*:users" ignored-patterns \
 zstyle ":completion:*:cd:*" tag-order local-directories directory-stack \
     path-directories
 
+# Frecency based directory switching
+[ -n /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
+
+# Load fzf tab completion and key bindings
+[ $(command -v fzf) ] && [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 # Environment variables
 source $HOME/.shell/env
 # Aliases
@@ -96,44 +102,4 @@ source $HOME/.shell/aliases
 # Functions
 source $HOME/.shell/functions
 
-# fzf
-
-# Load fzf tab completion and key bindings
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Use fzf to cd
-# Direct descendants
-fd() {
-    local dir
-    dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print |
-        sed '1d;s#^./##' |
-        fzf --height 20 --reverse --query "$1" --select-1 --exit-0) && cd "$dir"
-}
-
-# Whole tree
-fcd() {
-    local dir
-    dir=$(find ${1:-*} -path '*/\.*' -prune \
-        -o -type d -print 2>/dev/null | fzf +m) &&
-        cd "$dir"
-}
-
-# Including hidden directories
-fcda() {
-    local dir
-    dir=$(find ${1:-.} -type d 2>/dev/null |
-        fzf +m) && cd "$dir"
-}
-
-# Combine z and fzf
-unalias z 2> /dev/null
-z() {
-    [ $# -gt 0 ] && _z "$*" && return
-    cd "$(_z -l 2>&1 |
-        fzf --height 40% --nth 2.. --reverse --inline-info +s --tac \
-        --query "${*##-* }" |
-        sed 's/^[0-9,.]* *//')"
-}
-
-# Start tmux
-tmux
+start_tmux
