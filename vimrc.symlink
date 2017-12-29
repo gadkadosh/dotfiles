@@ -260,10 +260,23 @@ endif
 
 " Folding
 
-set foldlevelstart=10       " Open most folds by default
-set foldmethod=indent       " Fold based on indent level
+if has('folding')
+    set fillchars+=fold:·       " Unicode middle dot instead of dashes
+    set foldlevelstart=10       " Open most folds by default
+    set foldmethod=indent       " Fold based on indent level
+    set foldtext=CustomFoldtext()
 
-let g:markdown_folding=1    " Folding for markdown files
+    function! CustomFoldtext()
+        let middot = '·'
+        let raquo = '»'
+        let lines = ' [' . (v:foldend - v:foldstart + 1) . ' lines' . '] '
+        let first = ' ' . substitute(getline(v:foldstart), '\v *', '', '')
+        let dashes = substitute(v:folddashes, '-', middot, 'g')
+        return raquo . middot . middot . lines . dashes . first . ' '
+    endfunction
+
+    let g:markdown_folding=1    " Folding for markdown files
+endif
 
 " Mappings
 
