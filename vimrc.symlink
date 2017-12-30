@@ -200,15 +200,6 @@ endif
 
 set laststatus=2                " Always show status line
 
-" Pad the column line number for less jittery movement
-function! Statusline_col()
-    let l:curCol=virtcol('.')
-    if len(l:curCol) < 2
-        return ' ' . l:curCol
-    endif
-    return l:curCol
-endfunction
-
 " Get current git branch
 function! Statusline_branch()
     if exists('b:git_dir')
@@ -217,23 +208,21 @@ function! Statusline_branch()
     return ''
 endfunction
 
-let g:base_statusline=' %f '                " Short filename
-let g:base_statusline.='%{Statusline_branch()}' " Git branch (uses fugitive)
-let g:base_statusline.='%m'                 " Modified flag
-let g:base_statusline.='%r'                 " Readonly flag
+" %f    Short filename
+" %m    Modified flag
+" %r    Readonly flag
+let g:base_statusline=' %f %{Statusline_branch()}%m%r'
 
 function! Active_statusline()
     if &buftype == 'terminal'
         call Terminal_statusline()
     else
-        let &l:statusline=g:base_statusline
-        let &l:statusline.='%='                 " Split point to right side
-        let &l:statusline.='%y '                " Filetype
-        let &l:statusline.='%p%% '              " Percent through file
-        let &l:statusline.='◼ '                 " Separator ☲
-        let &l:statusline.='Ln %l, '            " Line number
-        let &l:statusline.='Col '               " Column number (padded)
-        let &l:statusline.='%{Statusline_col()} '
+        " %=    Split point to right side
+        " %y    Filetype
+        " %p    Percent through file
+        " %l    Line number
+        " %c    Column number
+        let &l:statusline=g:base_statusline.'%=%y %p%% ◼ Ln %2l, Col %2c '
     endif
 endfunction
 
@@ -246,8 +235,9 @@ function! Inactive_statusline()
 endfunction
 
 function! Terminal_statusline()
-    let &l:statusline='  %{b:term_title}'
+    let &l:statusline=' Terminal%=%{b:term_title} '
 endfunction
+
 
 augroup Statusline
     autocmd!
@@ -255,6 +245,7 @@ augroup Statusline
     autocmd WinLeave * call Inactive_statusline()
     if has('nvim')
         autocmd TermOpen,TermClose * call Terminal_statusline()
+        call Terminal_statusline()
     endif
 augroup END
 
