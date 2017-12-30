@@ -88,7 +88,7 @@ function! ExpandSnippetOrCarriageReturn()
     return "\<CR>"
 endfunction
 
-inoremap <expr> <CR> pumvisible() 
+inoremap <expr> <CR> pumvisible()
     \ ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 imap <expr> <C-j> pumvisible() ? "\<Down>" : "\<C-j>"
 imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
@@ -198,7 +198,7 @@ endif
 
 " Status line
 
-set laststatus=2            " Always show status line
+set laststatus=2                " Always show status line
 
 " Pad the column line number for less jittery movement
 function! Statusline_col()
@@ -212,12 +212,12 @@ endfunction
 " Get current git branch
 function! Statusline_branch()
     if exists('b:git_dir')
-        return  '[' . fugitive#head(7) . ']'
+        return '[' . fugitive#head(7) . ']'
     endif
     return ''
 endfunction
 
-let g:base_statusline='  %f '               " Short filename
+let g:base_statusline=' %f '                " Short filename
 let g:base_statusline.='%{Statusline_branch()}' " Git branch (uses fugitive)
 let g:base_statusline.='%m'                 " Modified flag
 let g:base_statusline.='%r'                 " Readonly flag
@@ -229,12 +229,11 @@ function! Active_statusline()
         let &l:statusline=g:base_statusline
         let &l:statusline.='%='                 " Split point to right side
         let &l:statusline.='%y '                " Filetype
-        let &l:statusline.='Ln %l/%L'           " Line number / Total lines
-        let &l:statusline.=' : '                " Separator
+        let &l:statusline.='%p%% '              " Percent through file
+        let &l:statusline.='◼ '                 " Separator ☲
+        let &l:statusline.='Ln %l, '            " Line number
         let &l:statusline.='Col '               " Column number (padded)
-        let &l:statusline.='%{Statusline_col()}'
-        let &l:statusline.=' ◼ '                " Separator ☲
-        let &l:statusline.='%p%%  '             " Percent through file
+        let &l:statusline.='%{Statusline_col()} '
     endif
 endfunction
 
