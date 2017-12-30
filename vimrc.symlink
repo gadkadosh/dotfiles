@@ -27,6 +27,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-eunuch'
 Plug 'ap/vim-css-color'             " Color highlighting
 Plug 'KabbAmine/vCoolor.vim'        " Color picker (<C-Y>c)
@@ -35,7 +36,6 @@ Plug 'henrik/vim-indexed-search'    " Shows how many matches were found
 " Syntax highlighting
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'elzr/vim-json'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
