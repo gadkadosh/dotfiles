@@ -22,15 +22,20 @@ Plug 'sjl/badwolf'
 Plug 'AlessandroYorba/Sierra'
 
 " Utilities
-Plug '/usr/local/opt/fzf'               " Fzf is installed locally through brew
+Plug '/usr/local/opt/fzf'           " fzf is installed locally through brew
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-eunuch'
-Plug 'ap/vim-css-color'
-Plug 'KabbAmine/vCoolor.vim'
-Plug 'henrik/vim-indexed-search'
+Plug 'ap/vim-css-color'             " Color highlighting
+Plug 'KabbAmine/vCoolor.vim'        " Color picker (<C-Y>c)
+Plug 'henrik/vim-indexed-search'    " Shows how many matches were found
+
+" Syntax highlighting
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'elzr/vim-json'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
@@ -43,7 +48,7 @@ else
 endif
 Plug 'SirVer/UltiSnips'
 Plug 'mattn/emmet-vim'
-Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
 
 call plug#end()
 " End vim-plug listing
@@ -90,6 +95,12 @@ imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
 
 " VCoolor colorpicker
 let g:vcoolor_map = '<C-Y>c'
+
+" jsx highlightling in .js files
+let g:jsx_ext_required = 0
+
+" set emmet for jsx syntax
+let g:user_emmet_settings = { 'javascript.jsx': { 'extends': 'jsx' } }
 
 " Colors
 
