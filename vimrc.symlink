@@ -117,7 +117,8 @@ function! CustomHighlights()
     " Customize dracula colorscheme
     if g:colors_name == 'dracula'
         " Pink statusline
-        highlight StatusLine ctermbg=176 
+        highlight StatusLineNC ctermbg=233
+        highlight User1 cterm=bold ctermfg=231 ctermbg=92
         " Completion menu
         highlight Pmenu ctermbg=236
         highlight PmenuSel ctermbg=56
@@ -200,52 +201,33 @@ endif
 
 set laststatus=2                " Always show status line
 
-" Get current git branch
-function! Statusline_branch()
-    if exists('b:git_dir')
-        return '[' . fugitive#head(7) . ']'
-    endif
-    return ''
-endfunction
+let s:activeStatusline="%1*%( ☲ %{fugitive#head()} %)%* %<%f %m%r%=%y %1* Ln %2l, Col %2c ◼ %p%% "
+let s:inactiveStatusline="%( ☲ %{fugitive#head()} %) %<%f %m%r%=%y  Ln %2l, Col %2c ◼ %p%% "
+let s:activeTerminalStatusline="%1* TERMINAL %* %{b:term_title}"
+let s:inactiveTerminalStatusline=" TERMINAL  %{b:term_title}"
 
-" %f    Short filename
-" %m    Modified flag
-" %r    Readonly flag
-let g:base_statusline=' %f %{Statusline_branch()}%m%r'
-
-function! Active_statusline()
-    if &buftype == 'terminal'
-        call Terminal_statusline()
+function! RefreshStatusline()
+    " Set last window's inactive statusline
+    if getwinvar(winnr('#'), '&buftype') == 'terminal'
+        call setwinvar(winnr('#'), '&statusline', s:inactiveTerminalStatusline)
     else
-        " %=    Split point to right side
-        " %y    Filetype
-        " %p    Percent through file
-        " %l    Line number
-        " %c    Column number
-        let &l:statusline=g:base_statusline.'%=%y %p%% ◼ Ln %2l, Col %2c '
+        call setwinvar(winnr('#'), '&statusline', s:inactiveStatusline)
     endif
-endfunction
 
-function! Inactive_statusline()
-    if &buftype == 'terminal'
-        call Terminal_statusline()
+    " Set current window's active statusline
+    if getwinvar(winnr(), '&buftype') == 'terminal'
+        call setwinvar(winnr(), '&statusline', s:activeTerminalStatusline)
     else
-        let &l:statusline=g:base_statusline
+        call setwinvar(winnr(), '&statusline', s:activeStatusline)
     endif
-endfunction
 
-function! Terminal_statusline()
-    let &l:statusline=' Terminal%=%{b:term_title} '
 endfunction
-
 
 augroup Statusline
     autocmd!
-    autocmd BufEnter,WinEnter * call Active_statusline()
-    autocmd WinLeave * call Inactive_statusline()
+    autocmd VimEnter,WinEnter,BufWinEnter * call RefreshStatusline()
     if has('nvim')
-        autocmd TermOpen,TermClose * call Terminal_statusline()
-        call Terminal_statusline()
+        autocmd TermOpen,TermClose * call RefreshStatusline()
     endif
 augroup END
 
@@ -269,7 +251,7 @@ if has('folding')
 
     function! CustomFoldtext()
         let middot = '·'
-        let raquo = '»'
+        let raquo = '» '
         let lines = ' [' . (v:foldend - v:foldstart + 1) . ' lines' . '] '
         let first = ' ' . substitute(getline(v:foldstart), '\v *', '', '')
         let dashes = substitute(v:folddashes, '-', middot, 'g')
