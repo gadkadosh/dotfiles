@@ -227,7 +227,7 @@ augroup Statusline
     autocmd!
     autocmd VimEnter,WinEnter,BufWinEnter * call RefreshStatusline()
     if has('nvim')
-        autocmd TermOpen,TermClose * call RefreshStatusline()
+        autocmd TermOpen * call RefreshStatusline()
     endif
 augroup END
 
@@ -269,6 +269,7 @@ set ttimeoutlen=1           " This fixes the <esc> delay issue
 " Alternative mappings for <esc>
 inoremap jj <esc>
 inoremap jk <esc>
+tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
 
 " Easier navigation between windows
 nnoremap <C-h> <C-w>h
@@ -300,9 +301,9 @@ nnoremap <leader>? :Helptags<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 
 " Edit .vimrc
-nnoremap <leader>ev :vsp $MYVIMRC<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
 " Edit .zshrc
-nnoremap <leader>ez :vsp ~/.zshrc<CR>
+nnoremap <leader>ez :e ~/.zshrc<CR>
 " Source .vimrc
 nnoremap <leader>sv :source $MYVIMRC<CR>
 
