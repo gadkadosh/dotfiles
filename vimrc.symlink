@@ -40,7 +40,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 
 " Completion
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', { 'tag': 'binary-*-x86_64-apple-darwin' } 
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
@@ -55,25 +55,25 @@ Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
 call plug#end()
 " End vim-plug listing
 
-let g:LanguageClient_autoStart = 1
 let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
 " javascript: npm -g install javascript-typescript-langserver
 if executable('javascript-typescript-stdio')
-    let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
-    let g:LanguageClient_serverCommands.typescript = ['javascript-typescript-stdio']
+    let g:LanguageClient_serverCommands['javascript'] = ['javascript-typescript-stdio']
+    let g:LanguageClient_serverCommands['javascript.jsx'] = ['javascript-typescript-stdio']
+    let g:LanguageClient_serverCommands['typescript'] = ['javascript-typescript-stdio']
 endif
 " html: npm -g install vscode-html-languageserver-bin
 if executable('html-languageserver')
-    let g:LanguageClient_serverCommands.html = ['html-languageserver', '--stdio']
+    let g:LanguageClient_serverCommands['html'] = ['html-languageserver', '--stdio']
 endif
 " css: npm -g install vscode-css-languageserver-bin
 if executable('css-languageserver')
-    let g:LanguageClient_serverCommands.css = ['css-languageserver', '--stdio']
+    let g:LanguageClient_serverCommands['css'] = ['css-languageserver', '--stdio']
 endif
 " Python: pip install python-language-server
 if executable('pyls')
-  let g:LanguageClient_serverCommands.python = ['pyls']
+  let g:LanguageClient_serverCommands['python'] = ['pyls']
 endif
 
 let g:deoplete#enable_at_startup = 1
@@ -170,8 +170,6 @@ set mouse=a                 " Enable mouse support
 if !has('nvim')
     set ttymouse=sgr        " Fast modern mouse draggin
 endif
-
-filetype indent on          " Load filetype-specific indent files, also enables filetype detection
 
 set wildmenu                " Visual autocompletion for command line
 set completeopt-=preview    " Disable preview window from automatically showing using autocompletion
