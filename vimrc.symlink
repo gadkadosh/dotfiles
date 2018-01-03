@@ -24,6 +24,7 @@ Plug 'AlessandroYorba/Sierra'
 " Utilities
 Plug '/usr/local/opt/fzf'           " fzf is installed locally through brew
 Plug 'junegunn/fzf.vim'
+Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
@@ -296,6 +297,8 @@ nnoremap <leader>t :Files<CR>
 nnoremap <leader>/ :History/<CR>
 nnoremap <leader>: :History:<CR>
 nnoremap <leader>? :Helptags<CR>
+
+nnoremap <leader>f :NERDTreeToggle<CR>
 
 " Hide search highlights
 nnoremap <leader><space> :nohlsearch<CR>

@@ -14,7 +14,6 @@ if [[ ! -f ~/.antigen/antigen.zsh ]]; then
 fi
 source ~/.antigen/antigen.zsh
 
-
 antigen bundle mafredri/zsh-async               # async support for pure theme
 antigen bundle sindresorhus/pure                # My preferred minimal theme
 antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
