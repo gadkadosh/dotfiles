@@ -9,3 +9,4 @@ config.symlink/gtk-2.0
 
 # Binary spell files, can be remade with :mkspell inside Vim
 *.spl
+*.sug
