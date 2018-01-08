@@ -6,23 +6,6 @@ compresspdf() {
         -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
 }
 
-# Open the detached session or start a new one
-start_tmux() {
-    if [[ -n "$@" ]]; then
-        command tmux "$@"
-        return
-    fi
-
-    if [[ "$TERM" != "screen" ]] && 
-        [[ "$SSH_CONNECTION" == "" ]] &&
-        [[ -z "$TMUX" ]]; then
-    # Attempt to discover a detached session and attach 
-    # it, else create a new session
-        SESSION_NAME=base
-        command tmux new -A -s $SESSION_NAME
-    fi
-}
-
 # Find in current directory shortcut
 f() {
     find . -iname "*${1}*"

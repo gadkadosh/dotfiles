@@ -101,4 +101,13 @@ source $HOME/.shell/aliases
 # Functions
 source $HOME/.shell/functions
 
-start_tmux
+# If tmux is available start a session or attach to an existing one
+if  [[ $(command -v tmux) ]] &&
+    [[ "$TERM" != "screen" ]] && 
+    [[ "$SSH_CONNECTION" == "" ]] &&
+    [[ -z "$TMUX" ]]; then
+    # Attempt to discover a detached session and attach 
+    # it, else create a new session
+    SESSION_NAME=base
+    command tmux new -A -s $SESSION_NAME
+fi
