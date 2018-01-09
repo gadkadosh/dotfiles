@@ -3,7 +3,7 @@
 # Setup rbenv 
 
 # --no-hash makes it quicker and it's enough to run after installations
-eval "$(rbenv init - --no-rehash)"
+[[ $(command -v rbenv) ]] && eval "$(rbenv init - --no-rehash)"
 
 # Antigen
 
@@ -89,7 +89,7 @@ zstyle ":completion:*:cd:*" tag-order local-directories directory-stack \
     path-directories
 
 # Frecency based directory switching
-[ -n /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
+[ -f /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
 
 # Load fzf tab completion and key bindings
 [ $(command -v fzf) ] && [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
