@@ -5,7 +5,7 @@ alias d="dirs -v"
 alias h=history
 alias vim=nvim
 alias vimr="vim -M"
-alias top="top -o cpu -s 2"
+alias top="top -u -s 2"
 alias grep="grep -i --color=always"
 
 # File management
@@ -44,7 +44,6 @@ fi
 alias ev="$EDITOR ~/.vimrc"
 alias ez="$EDITOR ~/.zshrc"
 alias reload="source ~/.zshrc"
-alias todo="$EDITOR ~/Dropbox/todo.md"
 
 # IP addresses
 alias globalip="dig +short myip.opendns.com @resolver1.opendns.com"
