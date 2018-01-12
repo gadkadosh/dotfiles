@@ -24,7 +24,7 @@ history_stats() {
 }
 
 # Web searching from the command line, taken from oh-my-zsh
-function web_search() {
+web_search() {
     emulate -L zsh
 
     # define search engine URLs
