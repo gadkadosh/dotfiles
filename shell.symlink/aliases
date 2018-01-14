@@ -8,7 +8,7 @@ alias h=history
 alias vim=nvim
 alias vimr="vim -M"
 alias top="top -u -s 2"
-alias grep="grep -i --color=always"
+alias grep="grep --color"
 
 # File management
 if [ -n "$ZSH_VERSION" ]
