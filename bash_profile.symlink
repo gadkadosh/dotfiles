@@ -5,7 +5,7 @@ export HISTFILESIZE=100000
 [[ $(command -v rbenv) ]] && eval "$(rbenv init - --no-rehash)"
 
 # bash completion
-if [ $(uname -s) == "Darwin" ] && [ -f $(brew --prefix)/etc/bash_completion ]
+if [[ $(uname -s) == "Darwin" ]] && [[ -f $(brew --prefix)/etc/bash_completion ]]
 then
     source $(brew --prefix)/etc/bash_completion
 else

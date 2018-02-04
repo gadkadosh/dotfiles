@@ -31,8 +31,6 @@ fi
 alias la="ls -a"
 alias l="ls -lha"
 alias ll="ls -lh"
-alias mkdir="mkdir -pv"
-alias du="du -h"
 
 # Git
 alias gs="git status -sb"
