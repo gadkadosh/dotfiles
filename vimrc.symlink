@@ -48,7 +48,6 @@ else
     Plug 'roxma/nvim-yarp'
     Plug 'roxma/vim-hug-neovim-rpc'
 endif
-Plug 'SirVer/UltiSnips'
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
 
@@ -78,20 +77,6 @@ endif
 
 let g:deoplete#enable_at_startup = 1
 
-let g:UltiSnipsSnippetsDir = $HOME.'/.config/nvim/UltiSnips'
-let g:UltiSnipsExpandTrigger = '<nop>'
-
-" Map Enter to expanding snippet when completion is open
-function! ExpandSnippetOrCarriageReturn()
-    let snippet = UltiSnips#ExpandSnippetOrJump()
-    if g:ulti_expand_or_jump_res > 0
-        return snippet
-    endif
-    return "\<CR>"
-endfunction
-
-inoremap <expr> <CR> pumvisible()
-    \ ? "<C-R>=ExpandSnippetOrCarriageReturn()<CR>" : "\<CR>"
 imap <expr> <C-j> pumvisible() ? "\<Down>" : "\<C-j>"
 imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
 
@@ -103,6 +88,9 @@ let g:jsx_ext_required = 0
 
 " set emmet for jsx syntax
 let g:user_emmet_settings = { 'javascript.jsx': { 'extends': 'jsx' } }
+
+" Close NERDTree automatically when opening a file
+let g:NERDTreeQuitOnOpen = 1
 
 " Colors
 
