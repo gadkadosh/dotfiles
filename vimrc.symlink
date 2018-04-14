@@ -9,14 +9,17 @@ endif
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    augroup VimPlug
+        autocmd!
+        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    augroup END
 endif
 
 " Start vim-plug and list plugins
 call plug#begin('~/.local/share/nvim/plugged')
 
 " Colorschemes
-Plug 'dracula/vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'tomasr/molokai'
 Plug 'sjl/badwolf'
 Plug 'AlessandroYorba/Sierra'
@@ -28,16 +31,17 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'KabbAmine/vCoolor.vim'        " Color picker (<C-Y>c)
 Plug 'henrik/vim-indexed-search'    " Shows how many matches were found
 Plug 'gregsexton/matchtag'          " Highlight matching HTML tags
+Plug 'sbdchd/neoformat'             " For prettier
 
 " Syntax highlighting
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'alampros/vim-styled-jsx'
 
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
@@ -53,6 +57,16 @@ Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
 
 call plug#end()
 " End vim-plug listing
+
+" Run Neoformat on save
+augroup Neoformat
+    autocmd!
+    autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --no-semi\ --single-quote\ --trailing-comma\ es5
+    autocmd BufWritePre * Neoformat
+augroup END
+
+" Use formatprg when available
+let g:neoformat_try_formatprg = 1
 
 let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
@@ -70,9 +84,9 @@ endif
 if executable('css-languageserver')
     let g:LanguageClient_serverCommands['css'] = ['css-languageserver', '--stdio']
 endif
-" Python: pip install python-language-server
+" python: pip install python-language-server
 if executable('pyls')
-  let g:LanguageClient_serverCommands['python'] = ['pyls']
+    let g:LanguageClient_serverCommands['python'] = ['pyls']
 endif
 
 let g:deoplete#enable_at_startup = 1
@@ -82,9 +96,7 @@ imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
 
 " VCoolor colorpicker
 let g:vcoolor_map = '<C-Y>c'
-
-" jsx highlightling in .js files
-let g:jsx_ext_required = 0
+let g:vcoolor_lowercase = 1
 
 " set emmet for jsx syntax
 let g:user_emmet_settings = { 'javascript.jsx': { 'extends': 'jsx' } }
@@ -106,14 +118,13 @@ augroup END
 function! CustomHighlights()
     " Customize dracula colorscheme
     if g:colors_name == 'dracula'
-        " Pink statusline
+        " Statusline
         highlight StatusLineNC ctermbg=233
         highlight User1 cterm=bold ctermfg=231 ctermbg=92
-        " Completion menu
-        highlight Pmenu ctermbg=236
-        highlight PmenuSel ctermbg=56
         " Comments in italics
         highlight Comment cterm=italic
+        " MatchParen dracula setting is confusing, stick to just underline
+        highlight MatchParen ctermbg=none
     endif
 endfunction
 
@@ -121,9 +132,9 @@ syntax enable
 
 " Indentation
 
-set shiftwidth=4            " Actual number of spaces for each indentation step
-set tabstop=4               " Number of visual spaces per TAB
-set softtabstop=4           " Number of spaces in tab when editing
+set shiftwidth=2            " Actual number of spaces for each indentation step
+set tabstop=2               " Number of visual spaces per TAB
+set softtabstop=2           " Number of spaces in tab when editing
 set expandtab               " Tabs are spaces
 set autoindent
 set smartindent
@@ -162,7 +173,6 @@ endif
 set wildmenu                " Visual autocompletion for command line
 set completeopt-=preview    " Disable preview window from automatically showing using autocompletion
 set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
-set showmatch               " Highlight matching [{()}]
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 set splitbelow splitright   " Default to new splits below and to the right
 
@@ -175,10 +185,13 @@ set listchars+=precedes:«   " First character of a wrapped line
 set listchars+=trail:•      " Trailing spaces
 
 " Jump to last cursor position on file load
-autocmd BufReadPost *
-    \ if &filetype !=# 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal! g`\"" |
-    \ endif
+augroup JumpPos
+    autocmd!
+    autocmd BufReadPost *
+                \ if &filetype !=# 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") |
+                \   exe "normal! g`\"" |
+                \ endif
+augroup END
 
 if !has('nvim')
     let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
@@ -222,7 +235,6 @@ augroup END
 " Search
 
 set incsearch               " Search as characters are being typed
-set hlsearch                " Keep highlighting matches of last search
 set ignorecase              " Case insensitive search
 set smartcase               " If uppercase letters are included in the search switch to case sensitive
 if exists('+inccommand')
@@ -233,7 +245,7 @@ endif
 
 if has('folding')
     set fillchars+=fold:·       " Unicode middle dot instead of dashes
-    set foldlevelstart=10       " Open most folds by default
+    set foldlevelstart=99       " Open most folds by default
     set foldmethod=indent       " Fold based on indent level
     set foldtext=CustomFoldtext()
 
@@ -270,12 +282,8 @@ nnoremap <C-l> <C-w>l
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
 
-" Quick folding with <space>
+" Quick folding with <CR>
 nnoremap <CR> za
-
-" move vertically by visual line (when lines are wrapping)
-" nnoremap j gj
-" nnoremap k gk
 
 " fzf mappings
 nnoremap <leader><enter> :Buffers<CR>
@@ -286,6 +294,7 @@ nnoremap <leader>/ :History/<CR>
 nnoremap <leader>: :History:<CR>
 nnoremap <leader>? :Helptags<CR>
 
+nnoremap <leader>n :Neoformat<CR>
 nnoremap <leader>f :NERDTreeToggle<CR>
 
 " Hide search highlights
