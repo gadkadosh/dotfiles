@@ -33,7 +33,6 @@ local grid = {
 
 -- The keybindings
 local ctrlalt = {"ctrl", "alt"}
-local ctrlaltcmd = {"ctrl", "alt", "cmd"}
 local switchMeta = {"cmd", "ctrl"}
 
 local keyBindings = {
@@ -58,13 +57,13 @@ local keyBindings = {
         chain = { grid.leftHalf, grid.leftThird, grid.leftTwoThirds }
     },
     {
-        meta = ctrlaltcmd,
-        key = "up",
+        meta = ctrlalt,
+        key = "\\",
         chain = { grid.topLeft, grid.topRight, grid.bottomRight, grid.bottomLeft }
     },
     {
-        meta = ctrlaltcmd,
-        key = "down",
+        meta = ctrlalt,
+        key = "return",
         chain = { grid.fullScreen, grid.centeredLarge, grid.centeredMedium, grid.centeredSmall }
     }
 }

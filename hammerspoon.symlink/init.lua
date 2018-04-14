@@ -1,15 +1,13 @@
-ctrlaltcmd = {"ctrl", "alt", "cmd"}
 ctrlaltcmdshift = {"ctrl", "alt", "cmd", "shift"}
-appLaunchMeta = {"alt", "shift"}
 
 -- Cmd+Alt+Ctrl+R: Reload Hammerspoon config
-hs.hotkey.bind(ctrlaltcmd, "R", function()
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "R", function()
     hs.reload()
 end)
 hs.alert.show("Config reloaded")
 
 -- Cmd+Alt+Ctrl+E: Toggle Hammerspoon console
-hs.hotkey.bind(ctrlaltcmd, "E", function()
+hs.hotkey.bind({"ctrl", "alt", "cmd"}, "E", function()
     hs.toggleConsole()
 end)
 
@@ -20,13 +18,13 @@ require('launchApps')
 require('winManagement')
 
 -- Displays what's in the clipboard
-require('clipboard')
+-- require('clipboard')
 
 -- Lowers the volume to 0 when outside of my WiFi
-require('homeWifi')
+-- require('homeWifi')
 
 -- Maps fn + hjkl to arrow keys
-require('fnMeta')
+-- require('fnMeta')
 
 -- Disable the annoyind Cmd+I shortcut in Safari, which keeps firing up Mail.app
-require('appWatcher')
+-- require('appWatcher')
