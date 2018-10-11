@@ -33,6 +33,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-unimpaired'
 Plug 'KabbAmine/vCoolor.vim'        " Color picker (<C-Y>c)
 Plug 'henrik/vim-indexed-search'    " Shows how many matches were found
 Plug 'gregsexton/matchtag'          " Highlight matching HTML tags
@@ -61,14 +62,9 @@ call plug#end()
 " Run Neoformat on save
 augroup Neoformat
     autocmd!
-    autocmd FileType javascript setlocal formatprg=prettier\ --stdin\ --no-semi\ --single-quote\ --trailing-comma\ es5
-    autocmd BufWritePre * Neoformat
+    autocmd BufWritePre *.js Neoformat
 augroup END
 
-" Use formatprg when available
-let g:neoformat_try_formatprg = 1
-
-let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
 " javascript: npm -g install javascript-typescript-langserver
 if executable('javascript-typescript-stdio')
@@ -240,6 +236,8 @@ set smartcase               " If uppercase letters are included in the search sw
 if exists('+inccommand')
     set inccommand=split    " Incremental search and replace (Neovim)
 endif
+
+set wildignore+=*/node_modules/*
 
 " Folding
 
