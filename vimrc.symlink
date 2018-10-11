@@ -65,6 +65,7 @@ augroup Neoformat
     autocmd BufWritePre *.js Neoformat
 augroup END
 
+let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
 " javascript: npm -g install javascript-typescript-langserver
 if executable('javascript-typescript-stdio')
