@@ -12,11 +12,11 @@ fi
 
 # git branch
 parse_git_dirty() {
-    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo [!]
+    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo '*'
 }
 
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e "/^[^*]/ d" -e "s/* \(.*\)/${reset}on ${bold}${violet}\1 $(parse_git_dirty)/"
+    git branch 2> /dev/null | sed -e "/^[^*]/ d" -e "s/* \(.*\)/${violet}${bold}\1$(parse_git_dirty)/"
 }
 
 bold=$(tput bold)
@@ -34,7 +34,7 @@ violet=$(tput setaf 61)
 white=$(tput setaf 15)
 yellow=$(tput setaf 136)
 
-PS1="\[${bold}\]\[${green}\]\u\[${reset}\] at \[${bold}\]\[${purple}\]\h\[${reset}\] in \[${bold}\]\[${blue}\]\W \$(parse_git_branch)\n\[${reset}\]$ "
+PS1="\n\[${bold}\]\[${blue}\]\w \$(parse_git_branch)\n\[${reset}\]\[${purple}\]❯ \[${reset}\]"
 export PS1
 
 # Frecency based directory switching
