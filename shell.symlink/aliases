@@ -1,9 +1,7 @@
 # Aliases
-
 OS="$(uname -s)"
 
 alias c=clear
-alias d="dirs -v"
 alias h=history
 alias vim=nvim
 alias vimr="vim -M"
@@ -52,15 +50,9 @@ alias reload="source ~/.zshrc"
 # IP addresses
 alias globalip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Small python webserver
 alias small-server="python -m SimpleHTTPServer 3000 ."
 
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
-
-# Websearch from command line (depends on web_search function)
-alias bing='web_search bing'
-alias github='web_search github'
-alias google='web_search google'

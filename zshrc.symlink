@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-
 # Setup rbenv 
 
 # --no-hash makes it quicker and it's enough to run after installations
@@ -15,7 +14,7 @@ fi
 source ~/.antigen/antigen.zsh
 
 antigen bundle mafredri/zsh-async               # async support for pure theme
-antigen bundle sindresorhus/pure                # My preferred minimal theme
+antigen bundle sindresorhus/pure                # A minimal theme
 antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
 antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
 
@@ -27,14 +26,13 @@ export HISTFILE=$HOME/.zsh_history      # History file
 export HISTSIZE=10000                   # Maximum number of events stored internally
 export SAVEHIST=10000                   # Maximum number of events stored in the file
 
-
 # Bindkey
 
 bindkey -e                              # Emacs style bindings
 bindkey ' ' magic-space                 # Magic space for history expansion
-bindkey '^r' history-incremental-search-backward # History search
+bindkey ^r history-incremental-search-backward # History search
 bindkey "^[[3~" delete-char             # Delete key
-bindkey '^u' backward-kill-line         # Delete from cursor to beginning
+bindkey ^u backward-kill-line           # Delete from cursor to beginning
 bindkey '^[[Z' reverse-menu-complete    # Shift-tab for moving backwards in menus
 
 # Up/Down arrows history search
