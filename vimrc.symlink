@@ -20,9 +20,6 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Colorschemes
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'tomasr/molokai'
-Plug 'sjl/badwolf'
-Plug 'AlessandroYorba/Sierra'
 
 " Utilities
 Plug '/usr/local/opt/fzf'           " fzf is installed locally through brew
