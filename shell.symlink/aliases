@@ -4,7 +4,6 @@ OS="$(uname -s)"
 alias c=clear
 alias h=history
 alias vim=nvim
-alias vimr="vim -M"
 alias top="top -u -s 2"
 alias grep="grep --color"
 
