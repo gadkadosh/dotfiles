@@ -44,7 +44,6 @@ fi
 # Editing
 alias ev="$EDITOR ~/.vimrc"
 alias ez="$EDITOR ~/.zshrc"
-alias reload="source ~/.zshrc"
 
 # IP addresses
 alias globalip="dig +short myip.opendns.com @resolver1.opendns.com"
