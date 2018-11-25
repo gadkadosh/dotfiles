@@ -113,8 +113,8 @@ function! CustomHighlights()
     " Customize dracula colorscheme
     if g:colors_name == 'dracula'
         " Statusline
-        highlight StatusLineNC ctermbg=233
-        highlight User1 cterm=bold ctermfg=231 ctermbg=92
+        highlight StatusLineNC ctermbg=235
+        highlight User1 cterm=bold ctermfg=231 ctermbg=95
         " Comments in italics
         highlight Comment cterm=italic
         " MatchParen dracula setting is confusing, stick to just underline
