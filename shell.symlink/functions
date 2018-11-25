@@ -17,78 +17,14 @@ o() {
 }
 
 # Get statistics on most commonly used commands
-history_stats() {
+hstats() {
     fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " \
         CMD[a]/count*100 "% " a;}' | grep -v "./" | \
-        column -c3 -s " " -t | sort -nr | nl |  head -n20
+        column -c3 -s " " -t | sort -nr | nl | head -n20
 }
 
-# Web searching from the command line, taken from oh-my-zsh
-web_search() {
-    emulate -L zsh
-
-    # define search engine URLs
-    typeset -A urls
-    urls=(
-        google      "https://www.google.com/search?q="
-        bing        "https://www.bing.com/search?q="
-        yahoo       "https://search.yahoo.com/search?p="
-        duckduckgo  "https://www.duckduckgo.com/?q="
-        startpage   "https://www.startpage.com/do/search?q="
-        yandex      "https://yandex.ru/yandsearch?text="
-        github      "https://github.com/search?q="
-        baidu       "https://www.baidu.com/s?wd="
-        ecosia      "https://www.ecosia.org/search?q="
-        goodreads   "https://www.goodreads.com/search?q="
-    )
-
-    # check whether the search engine is supported
-    if [[ -z "$urls[$1]" ]]; then
-        echo "Search engine $1 not supported."
-        return 1
-    fi
-
-    # search or go to main page depending on number of arguments passed
-    if [[ $# -gt 1 ]]; then
-        # build search url:
-        # join arguments passed with '+', then append to search engine URL
-        url="${urls[$1]}${(j:+:)@[2,-1]}"
-    else
-        # build main page url:
-        # split by '/', then rejoin protocol (1) and domain (2) parts with '//'
-        url="${(j://:)${(s:/:)urls[$1]}[1,2]}"
-    fi
-
-    # for macOS
-    open "$url"
-}
-
-# Use fzf to cd, if it's installed
+# Use fzf with z , if it's installed
 if [ $(command -v fzf) ];then
-# Direct descendants
-    fd() {
-        local dir
-            dir=$(find . -maxdepth 1 -path './.*' -prune -o -type d -print |
-                    sed '1d;s#^./##' |
-                    fzf --height 20 --reverse --query "$1" --select-1 --exit-0) && cd "$dir"
-    }
-
-# Whole tree
-    fcd() {
-        local dir
-            dir=$(find ${1:-*} -path '*/\.*' -prune \
-                    -o -type d -print 2>/dev/null | fzf +m) &&
-            cd "$dir"
-    }
-
-# Including hidden directories
-    fcda() {
-        local dir
-            dir=$(find ${2:-.} -type d 2>/dev/null |
-                    fzf +m) && cd "$dir"
-    }
-
-# Combine z and fzf
     if command -v z > /dev/null 2>&1; then
         unalias z 2> /dev/null
 
@@ -101,4 +37,3 @@ if [ $(command -v fzf) ];then
         }
     fi
 fi
-
