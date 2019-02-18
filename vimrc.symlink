@@ -34,7 +34,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'KabbAmine/vCoolor.vim'        " Color picker (<C-Y>c)
 Plug 'henrik/vim-indexed-search'    " Shows how many matches were found
 Plug 'gregsexton/matchtag'          " Highlight matching HTML tags
-Plug 'sbdchd/neoformat'             " For prettier
+Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 
 " Syntax highlighting
 Plug 'pangloss/vim-javascript'
@@ -56,11 +56,10 @@ Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
 call plug#end()
 " End vim-plug listing
 
-" Run Neoformat on save
-augroup Neoformat
-    autocmd!
-    autocmd BufWritePre *.js Neoformat
-augroup END
+" Prettier settings
+let g:prettier#exec_cmd_async = 1   " Run prettier asynchronously
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
@@ -113,8 +112,9 @@ function! CustomHighlights()
     " Customize dracula colorscheme
     if g:colors_name == 'dracula'
         " Statusline
-        highlight StatusLineNC ctermbg=235
-        highlight User1 cterm=bold ctermfg=231 ctermbg=95
+        highlight StatusLine cterm=reverse
+        highlight StatusLineNC ctermbg=234
+        highlight User1 cterm=reverse,bold ctermfg=252 ctermbg=239
         " Comments in italics
         highlight Comment cterm=italic
         " MatchParen dracula setting is confusing, stick to just underline
@@ -129,7 +129,7 @@ syntax enable
 set shiftwidth=2            " Actual number of spaces for each indentation step
 set tabstop=2               " Number of visual spaces per TAB
 set softtabstop=2           " Number of spaces in tab when editing
-set expandtab               " Tabs are spaces
+set expandtab               " Use spaces instead of tabs
 set autoindent
 set smartindent
 set showbreak=↳\            " Symbol for showing wrapped lines
@@ -170,61 +170,22 @@ set lazyredraw              " Redraw only when we need, not in the middle of mac
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 set splitbelow splitright   " Default to new splits below and to the right
 
-" Special characters for formatting enable (<leader>l)
-set listchars=nbsp:⦸        " Non-breakable space character
-set listchars+=tab:▷┅       " Tab (two characters)
-set listchars+=eol:¬        " End-of-line
-set listchars+=extends:»    " Last character of a wrapped line
-set listchars+=precedes:«   " First character of a wrapped line
-set listchars+=trail:•      " Trailing spaces
+" Special characters for formatting enable
+set listchars=nbsp:⦸,tab:→\ ,eol:↵,extends:»,precedes:«,trail:·
 
 " Jump to last cursor position on file load
 augroup JumpPos
-    autocmd!
-    autocmd BufReadPost *
-                \ if &filetype !=# 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") |
-                \   exe "normal! g`\"" |
-                \ endif
+  autocmd!
+  autocmd BufReadPost *
+        \ if &filetype !=# 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
 augroup END
-
-if !has('nvim')
-    let &t_SI = "\<Esc>[6 q"    " use a solid | cursor in insert mode
-    let &t_EI = "\<Esc>[2 q"    " use a solid rectangle cursor otherwise
-endif
 
 " Status line
 
 set laststatus=2                " Always show status line
-
-let s:activeStatusline="%1*%( ☲ %{fugitive#head()} %)%* %<%f %m%r%=%y %1* Ln %2l, Col %2c ◼ %p%% "
-let s:inactiveStatusline="%( ☲ %{fugitive#head()} %) %<%f %m%r%=%y  Ln %2l, Col %2c ◼ %p%% "
-let s:activeTerminalStatusline="%1* TERMINAL %* %{b:term_title}"
-let s:inactiveTerminalStatusline=" TERMINAL  %{b:term_title}"
-
-function! RefreshStatusline()
-    " Set last window's inactive statusline
-    if getwinvar(winnr('#'), '&buftype') == 'terminal'
-        call setwinvar(winnr('#'), '&statusline', s:inactiveTerminalStatusline)
-    else
-        call setwinvar(winnr('#'), '&statusline', s:inactiveStatusline)
-    endif
-
-    " Set current window's active statusline
-    if getwinvar(winnr(), '&buftype') == 'terminal'
-        call setwinvar(winnr(), '&statusline', s:activeTerminalStatusline)
-    else
-        call setwinvar(winnr(), '&statusline', s:activeStatusline)
-    endif
-
-endfunction
-
-augroup Statusline
-    autocmd!
-    autocmd VimEnter,WinEnter,BufWinEnter * call RefreshStatusline()
-    if has('nvim')
-        autocmd TermOpen * call RefreshStatusline()
-    endif
-augroup END
+set statusline=%1*\ ☲\ %{fugitive#head()}\ %*\ %<%f\ %m%r%=%y\ %1*\ %2l:%2c\ ◼\ %P\ 
 
 " Search
 
@@ -259,14 +220,14 @@ endif
 
 " Mappings
 
-let mapleader=" "           " Leader mapping
+let mapleader = " "           " Leader mapping
 set ttimeoutlen=1           " This fixes the <esc> delay issue
 
 " Alternative mappings for <esc>
-inoremap jj <esc>
-inoremap jk <esc>
-tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
-tnoremap <expr> jj &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
+inoremap jj <Esc>
+tnoremap <expr> <Esc> &filetype == 'fzf' ? "\<Esc>" : "\<C-\>\<C-n>"
+tnoremap <expr> jj &filetype == 'fzf' ? "\<Esc>" : "\<C-\>\<C-n>"
+" tnoremap <Esc> <C-\><C-n>
 
 " Easier navigation between windows
 nnoremap <C-h> <C-w>h
@@ -283,47 +244,23 @@ nnoremap <CR> za
 
 " fzf mappings
 nnoremap <leader><enter> :Buffers<CR>
-nnoremap <leader>a :Ag<CR>
+nnoremap <leader>a :Rg<CR>
 nnoremap <leader>c :Colors<CR>
 nnoremap <leader>t :Files<CR>
 nnoremap <leader>/ :History/<CR>
 nnoremap <leader>: :History:<CR>
 nnoremap <leader>? :Helptags<CR>
 
-nnoremap <leader>n :Neoformat<CR>
 nnoremap <leader>f :NERDTreeToggle<CR>
 
 " Hide search highlights
 nnoremap <leader><space> :nohlsearch<CR>
 
-" Edit .vimrc
-nnoremap <leader>ev :e $MYVIMRC<CR>
-" Edit .zshrc
-nnoremap <leader>ez :e ~/.zshrc<CR>
-" Source .vimrc
-nnoremap <leader>sv :source $MYVIMRC<CR>
-
-" Toggle line numbers
-function! ToggleNumbers()
-    if &number && &relativenumber
-        setlocal norelativenumber
-    elseif &number && !&relativenumber
-        setlocal nonumber
-    elseif !&number && !&relativenumber
-        setlocal number relativenumber
-    endif
-endfunction
-
-nnoremap <leader>r :call ToggleNumbers()<CR>
-" Toggle special characters
-nnoremap <leader>l :set list!<CR>
-" Toggle spell checking
-nnoremap <leader>s :set spell!<CR>
-" <leader><leader> -- Open last buffer.
+" Switch to alternate buffer
 nnoremap <leader>, <C-^>
 
 " Leader mappings for LanguageClient
-nnoremap <leader>h :call LanguageClient_textDocument_hover()<CR>
+nnoremap <leader>h :call LanguageClient#textDocument_hover()<CR>
 
 " Directories
 

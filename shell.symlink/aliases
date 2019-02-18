@@ -8,42 +8,29 @@ alias top="top -u -s 2"
 alias grep="grep --color"
 
 # File management
-if [ -n "$ZSH_VERSION" ]
-then
+if [ -n "$ZSH_VERSION" ]; then
     alias -g ...='../..'
     alias -g ....='../../..'
     alias -g .....='../../../..'
-    alias -g ......='../../../../..'
 else
     alias ..="cd .."
     alias ...="cd ../.."
     alias ....="cd ../../.."
     alias .....="cd ../../../.."
 fi
-alias -- -="cd -"
-if [ $OS = "Linux" ]
-then
-    alias ls="ls --color"
-fi
+
 alias la="ls -a"
-alias l="ls -lha"
 alias ll="ls -lh"
 
 # Git
 alias gs="git status -sb"
 
 # macOS
-if [ $OS = "Darwin" ]
-then
+if [ $OS = "Darwin" ]; then
     alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
     alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
-    alias emptytrash="trash -e"
     alias battery="pmset -g batt"
 fi
-
-# Editing
-alias ev="$EDITOR ~/.vimrc"
-alias ez="$EDITOR ~/.zshrc"
 
 # IP addresses
 alias globalip="dig +short myip.opendns.com @resolver1.opendns.com"

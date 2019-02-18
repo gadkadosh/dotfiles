@@ -1,8 +1,8 @@
 # Environment exports
 
-export CLICOLOR=true            # Enable colors for 'ls' (at least under macOS)
+export CLICOLOR=true            # Enable colors for 'ls' (macOS)
 export LSCOLORS=Exfxcxdxbxegedabagacad
-export EDITOR=nvim              # Default Editor
+export EDITOR=nvim
 
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/ percentage
@@ -15,6 +15,8 @@ export LESS_TERMCAP_so=$'\e[01;44;33m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[01;32m'
 
-export HOMEBREW_NO_GITHUB_API=1         # Homebrew: don't use my GitHub account (returns errors)
+# FZF using fd instead of find (respects .gitignore)
+export FZF_DEFAULT_COMMAND='fd'
 
-export FZF_DEFAULT_COMMAND='ag -g ""'
+# Homebrew: don't use my GitHub account (returns errors)
+export HOMEBREW_NO_GITHUB_API=1
