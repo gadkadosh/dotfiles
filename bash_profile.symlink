@@ -1,12 +1,13 @@
+# History
+export HISTFILE=~/.bash_history
 export HISTSIZE=100000
 export HISTFILESIZE=100000
 
 # --no-hash makes it quicker and it's enough to run after installations
-[[ $(command -v rbenv) ]] && eval "$(rbenv init - --no-rehash)"
+# [[ $(command -v rbenv) ]] && eval "$(rbenv init - --no-rehash)"
 
 # bash completion
-if [[ -f /usr/local/etc/bash_completion ]]
-then
+if [[ -f /usr/local/etc/bash_completion ]]; then
     source /usr/local/etc/bash_completion
 fi
 
@@ -34,6 +35,7 @@ violet=$(tput setaf 61)
 white=$(tput setaf 15)
 yellow=$(tput setaf 136)
 
+# Prompt
 PS1="\n\[${bold}\]\[${blue}\]\w \$(parse_git_branch)\n\[${reset}\]\[${purple}\]❯ \[${reset}\]"
 export PS1
 

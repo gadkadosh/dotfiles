@@ -24,7 +24,7 @@ hstats() {
 }
 
 # Use fzf with z , if it's installed
-if [ $(command -v fzf) ];then
+if [ $(command -v fzf) ]; then
     if command -v z > /dev/null 2>&1; then
         unalias z 2> /dev/null
 

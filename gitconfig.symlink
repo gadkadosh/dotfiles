@@ -1,7 +1,7 @@
 [include]
     path = ~/.gitconfig.local
 [color]
-	ui = true
+    ui = true
 [alias]
     br = branch
     ci = commit
@@ -10,4 +10,4 @@
 [diff]
     tool = vimdiff
 [difftool "vimdiff"]
-	path = nvim
+    path = nvim
