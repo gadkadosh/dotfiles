@@ -2,17 +2,17 @@
 
 " Use Neovim XDG directory to load vim-plug on normal Vim
 if !has('nvim')
-    set runtimepath+=~/.local/share/nvim/site
+  set runtimepath+=~/.local/share/nvim/site
 endif
 
 " Download vim-plug if it's not installed already
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    augroup VimPlug
-        autocmd!
-        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-    augroup END
+  augroup VimPlug
+    autocmd!
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+  augroup END
 endif
 
 " Start vim-plug and list plugins
@@ -20,18 +20,18 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 " Colorschemes
 Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'joshdick/onedark.vim'
 
 " Utilities
 Plug '/usr/local/opt/fzf'           " fzf is installed locally through brew
 Plug 'junegunn/fzf.vim'
-Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-unimpaired'
-Plug 'KabbAmine/vCoolor.vim'        " Color picker (<C-Y>c)
+Plug 'KabbAmine/vCoolor.vim'        " Color picker
 Plug 'henrik/vim-indexed-search'    " Shows how many matches were found
 Plug 'gregsexton/matchtag'          " Highlight matching HTML tags
 Plug 'prettier/vim-prettier', { 'do': 'npm install' }
@@ -44,11 +44,11 @@ Plug 'alampros/vim-styled-jsx'
 " Completion
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
@@ -65,21 +65,21 @@ let g:LanguageClient_diagnosticsEnable = 0
 let g:LanguageClient_serverCommands = {}
 " javascript: npm -g install javascript-typescript-langserver
 if executable('javascript-typescript-stdio')
-    let g:LanguageClient_serverCommands['javascript'] = ['javascript-typescript-stdio']
-    let g:LanguageClient_serverCommands['javascript.jsx'] = ['javascript-typescript-stdio']
-    let g:LanguageClient_serverCommands['typescript'] = ['javascript-typescript-stdio']
+  let g:LanguageClient_serverCommands['javascript'] = ['javascript-typescript-stdio']
+  let g:LanguageClient_serverCommands['javascript.jsx'] = ['javascript-typescript-stdio']
+  let g:LanguageClient_serverCommands['typescript'] = ['javascript-typescript-stdio']
 endif
 " html: npm -g install vscode-html-languageserver-bin
 if executable('html-languageserver')
-    let g:LanguageClient_serverCommands['html'] = ['html-languageserver', '--stdio']
+  let g:LanguageClient_serverCommands['html'] = ['html-languageserver', '--stdio']
 endif
 " css: npm -g install vscode-css-languageserver-bin
 if executable('css-languageserver')
-    let g:LanguageClient_serverCommands['css'] = ['css-languageserver', '--stdio']
+  let g:LanguageClient_serverCommands['css'] = ['css-languageserver', '--stdio']
 endif
 " python: pip install python-language-server
 if executable('pyls')
-    let g:LanguageClient_serverCommands['python'] = ['pyls']
+  let g:LanguageClient_serverCommands['python'] = ['pyls']
 endif
 
 let g:deoplete#enable_at_startup = 1
@@ -87,8 +87,6 @@ let g:deoplete#enable_at_startup = 1
 imap <expr> <C-j> pumvisible() ? "\<Down>" : "\<C-j>"
 imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
 
-" VCoolor colorpicker
-let g:vcoolor_map = '<C-Y>c'
 let g:vcoolor_lowercase = 1
 
 " set emmet for jsx syntax
@@ -98,70 +96,59 @@ let g:user_emmet_settings = { 'javascript.jsx': { 'extends': 'jsx' } }
 let g:NERDTreeQuitOnOpen = 1
 
 " Colors
-
-colorscheme dracula
+" colorscheme dracula
+" let g:dracula_colorterm = 0         " Transparent background
+colorscheme onedark
 
 " Customize color schemes
-augroup Colors
-    autocmd!
-    autocmd ColorScheme * call CustomHighlights()
+augroup colorscheme_customization
+  autocmd!
+  " Dracula
+  autocmd ColorScheme dracula highlight StatusLine cterm=reverse
+  autocmd ColorScheme dracula highlight User1 cterm=reverse,bold ctermfg=252 ctermbg=239
+  " Comments in italics
+  autocmd ColorScheme dracula highlight Comment cterm=italic
+  " OneDark
+  autocmd ColorScheme onedark highlight StatusLine cterm=reverse
+  autocmd ColorScheme onedark highlight User1 cterm=reverse,bold ctermfg=252 ctermbg=239
+  " Transparent background
+  autocmd ColorScheme onedark highlight Normal ctermbg=NONE
 augroup END
-
-" Customize highlight colors with autocmd to override colorschemes
-function! CustomHighlights()
-    " Customize dracula colorscheme
-    if g:colors_name == 'dracula'
-        " Statusline
-        highlight StatusLine cterm=reverse
-        highlight StatusLineNC ctermbg=234
-        highlight User1 cterm=reverse,bold ctermfg=252 ctermbg=239
-        " Comments in italics
-        highlight Comment cterm=italic
-        " MatchParen dracula setting is confusing, stick to just underline
-        highlight MatchParen ctermbg=none
-    endif
-endfunction
 
 syntax enable
 
 " Indentation
+set shiftwidth=2 tabstop=2 softtabstop=2 expandtab
+set autoindent smartindent
 
-set shiftwidth=2            " Actual number of spaces for each indentation step
-set tabstop=2               " Number of visual spaces per TAB
-set softtabstop=2           " Number of spaces in tab when editing
-set expandtab               " Use spaces instead of tabs
-set autoindent
-set smartindent
-set showbreak=↳\            " Symbol for showing wrapped lines
+set showbreak=¬\            " Symbol for showing wrapped lines
+" Special characters for formatting enable
+set listchars=nbsp:⦸,tab:→\ ,eol:↵,extends:»,precedes:«,trail:·
 
 " Settings
-
 set hidden                  " Allow hidden Buffers
-set number                  " Show line numbers
-set relativenumber          " Relative line numbers, together they are hybrid
-set backspace=indent,eol,start  " Make backspace less limited
-set linebreak               " Wordwrapping not in the middle of words
-set showcmd                 " Show command in bottom bar
+set number relativenumber   " Show line numbers (relative)
+set backspace=indent,eol,start
 set cursorline              " Highlight current line, see next few line
 
 if has('nvim')
-    augroup Terminal
-        autocmd!
-        autocmd TermOpen * setlocal nonumber norelativenumber
-        autocmd TermOpen * startinsert
-    augroup END
+  augroup Terminal
+    autocmd!
+    autocmd TermOpen * setlocal nonumber norelativenumber
+    autocmd TermOpen * startinsert
+  augroup END
 endif
 
 " Show cursorline for current window only
 augroup Focus
-    autocmd!
-    autocmd WinEnter * setlocal cursorline
-    autocmd WinLeave * setlocal nocursorline
+  autocmd!
+  autocmd WinEnter * setlocal cursorline
+  autocmd WinLeave * setlocal nocursorline
 augroup END
 
 set mouse=a                 " Enable mouse support
 if !has('nvim')
-    set ttymouse=sgr        " Fast modern mouse draggin
+  set ttymouse=sgr        " Fast modern mouse draggin
 endif
 
 set wildmenu                " Visual autocompletion for command line
@@ -169,9 +156,7 @@ set completeopt-=preview    " Disable preview window from automatically showing 
 set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
 set scrolloff=3             " Start scrolling before reaching the first or last lines
 set splitbelow splitright   " Default to new splits below and to the right
-
-" Special characters for formatting enable
-set listchars=nbsp:⦸,tab:→\ ,eol:↵,extends:»,precedes:«,trail:·
+set wildignore+=*/node_modules/*
 
 " Jump to last cursor position on file load
 augroup JumpPos
@@ -183,51 +168,43 @@ augroup JumpPos
 augroup END
 
 " Status line
-
 set laststatus=2                " Always show status line
 set statusline=%1*\ ☲\ %{fugitive#head()}\ %*\ %<%f\ %m%r%=%y\ %1*\ %2l:%2c\ ◼\ %P\ 
 
 " Search
-
 set incsearch               " Search as characters are being typed
-set ignorecase              " Case insensitive search
-set smartcase               " If uppercase letters are included in the search switch to case sensitive
+set ignorecase smartcase    " Case insensitive search
 if exists('+inccommand')
-    set inccommand=split    " Incremental search and replace (Neovim)
+  set inccommand=split    " Incremental search and replace (Neovim)
 endif
 
-set wildignore+=*/node_modules/*
-
 " Folding
-
 if has('folding')
-    set fillchars+=fold:·       " Unicode middle dot instead of dashes
-    set foldlevelstart=99       " Open most folds by default
-    set foldmethod=indent       " Fold based on indent level
-    set foldtext=CustomFoldtext()
+  set fillchars+=fold:·       " Unicode middle dot instead of dashes
+  set foldlevelstart=99       " Open most folds by default
+  set foldmethod=indent       " Fold based on indent level
+  set foldtext=CustomFoldtext()
 
-    function! CustomFoldtext()
-        let middot = '·'
-        let raquo = '» '
-        let lines = ' [' . (v:foldend - v:foldstart + 1) . ' lines' . '] '
-        let first = ' ' . substitute(getline(v:foldstart), '\v *', '', '')
-        let dashes = substitute(v:folddashes, '-', middot, 'g')
-        return raquo . middot . middot . lines . dashes . first . ' '
-    endfunction
+  function! CustomFoldtext()
+    let middot = '·'
+    let raquo = '» '
+    let lines = ' [' . (v:foldend - v:foldstart + 1) . ' lines' . '] '
+    let first = ' ' . substitute(getline(v:foldstart), '\v *', '', '')
+    let dashes = substitute(v:folddashes, '-', middot, 'g')
+    return raquo . middot . middot . lines . dashes . first . ' '
+  endfunction
 
-    let g:markdown_folding=1    " Folding for markdown files
+  let g:markdown_folding = 1  " Folding for markdown files
 endif
 
 " Mappings
 
 let mapleader = " "           " Leader mapping
-set ttimeoutlen=1           " This fixes the <esc> delay issue
 
 " Alternative mappings for <esc>
 inoremap jj <Esc>
 tnoremap <expr> <Esc> &filetype == 'fzf' ? "\<Esc>" : "\<C-\>\<C-n>"
 tnoremap <expr> jj &filetype == 'fzf' ? "\<Esc>" : "\<C-\>\<C-n>"
-" tnoremap <Esc> <C-\><C-n>
 
 " Easier navigation between windows
 nnoremap <C-h> <C-w>h
@@ -262,22 +239,22 @@ nnoremap <leader>, <C-^>
 " Leader mappings for LanguageClient
 nnoremap <leader>h :call LanguageClient#textDocument_hover()<CR>
 
-" Directories
-
+" Swapfiles
 if exists('$SUDO_USER')
-    set noswapfile                      " Don't create root-owned files
+  set noswapfile                      " Don't create root-owned files
 elseif !has('nvim')                     " Use Neovim XDG directory
-    set directory=~/.local/share/nvim/swap// " Keeps swap files out of the way
+  set directory=~/.local/share/nvim/swap// " Keeps swap files out of the way
 endif
 
+" Persistent undo
 if has('persistent_undo')
-    if exists('$SUDO_USER')
-        set noundofile                  " Don't create root-owned files
-    else
-        set undofile
-    endif
+  if exists('$SUDO_USER')
+    set noundofile                  " Don't create root-owned files
+  else
+    set undofile
+  endif
 
-    if !has('nvim')                     " Use Neovim XDG directory
-        set undodir=~/.local/share/nvim/undo " Keep undo files out of the way
-    endif
+  if !has('nvim')                     " Use Neovim XDG directory
+    set undodir=~/.local/share/nvim/undo " Keep undo files out of the way
+  endif
 endif
