@@ -1,8 +1,5 @@
 #!/usr/bin/env zsh
 
-# --no-hash makes it quicker and it's enough to run after installations
-# [[ $(command -v rbenv) ]] && eval "$(rbenv init - --no-rehash)"
-
 # Antigen
 
 # Installs antigen if it's not found
@@ -104,6 +101,5 @@ if  [[ $(command -v tmux) ]] &&
     [[ -z "$TMUX" ]]; then
     # Attempt to discover a detached session and attach 
     # it, else create a new session
-    SESSION_NAME=base
-    command tmux new -A -s $SESSION_NAME
+    exec tmux new -A -s base
 fi

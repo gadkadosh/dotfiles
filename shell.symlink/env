@@ -1,11 +1,11 @@
 # Environment exports
 
 export CLICOLOR=true            # Enable colors for 'ls' (macOS)
-export LSCOLORS=Exfxcxdxbxegedabagacad
+# export LSCOLORS=Exfxcxdxbxegedabagacad
 export EDITOR=nvim
 
 # R: raw output, to allow ANSI colors
-# M: verbose prompt, line numbers/ percentage
+# M: verbose prompt, line numbers/percentage
 export LESS="-iRM"
 # Colors for man pages
 export LESS_TERMCAP_md=$'\e[01;31m'
