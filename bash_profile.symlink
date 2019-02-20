@@ -3,21 +3,18 @@ export HISTFILE=~/.bash_history
 export HISTSIZE=100000
 export HISTFILESIZE=100000
 
-# --no-hash makes it quicker and it's enough to run after installations
-# [[ $(command -v rbenv) ]] && eval "$(rbenv init - --no-rehash)"
-
 # bash completion
 if [[ -f /usr/local/etc/bash_completion ]]; then
-    source /usr/local/etc/bash_completion
+  source /usr/local/etc/bash_completion
 fi
 
 # git branch
 parse_git_dirty() {
-    [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo '*'
+  [[ $(git status 2> /dev/null | tail -n1) != "nothing to commit, working tree clean" ]] && echo '*'
 }
 
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e "/^[^*]/ d" -e "s/* \(.*\)/${violet}${bold}\1$(parse_git_dirty)/"
+  git branch 2> /dev/null | sed -e "/^[^*]/ d" -e "s/* \(.*\)/${violet}${bold}\1$(parse_git_dirty)/"
 }
 
 bold=$(tput bold)
@@ -45,9 +42,6 @@ export PS1
 # Load fzf tab completion and key bindings
 [ $(command -v fzf) ] && [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-# Environment variables
 source $HOME/.shell/env
-# Aliases
 source $HOME/.shell/aliases
-# Functions
 source $HOME/.shell/functions
