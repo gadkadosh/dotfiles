@@ -2,21 +2,20 @@
 OS="$(uname -s)"
 
 alias c=clear
-alias h=history
 alias vim=nvim
 alias top="top -u -s 2"
 alias grep="grep --color"
 
 # File management
 if [ -n "$ZSH_VERSION" ]; then
-    alias -g ...='../..'
-    alias -g ....='../../..'
-    alias -g .....='../../../..'
+  alias -g ...='../..'
+  alias -g ....='../../..'
+  alias -g .....='../../../..'
 else
-    alias ..="cd .."
-    alias ...="cd ../.."
-    alias ....="cd ../../.."
-    alias .....="cd ../../../.."
+  alias ..="cd .."
+  alias ...="cd ../.."
+  alias ....="cd ../../.."
+  alias .....="cd ../../../.."
 fi
 
 alias la="ls -a"
@@ -27,9 +26,9 @@ alias gs="git status -sb"
 
 # macOS
 if [ $OS = "Darwin" ]; then
-    alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
-    alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
-    alias battery="pmset -g batt"
+  alias showfiles="defaults write com.apple.finder AppleShowAllFiles YES && killall Finder"
+  alias hidefiles="defaults write com.apple.finder AppleShowAllFiles NO && killall Finder"
+  alias battery="pmset -g batt"
 fi
 
 # IP addresses
