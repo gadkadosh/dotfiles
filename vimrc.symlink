@@ -96,22 +96,12 @@ let g:user_emmet_settings = { 'javascript.jsx': { 'extends': 'jsx' } }
 let g:NERDTreeQuitOnOpen = 1
 
 " Colors
-" colorscheme dracula
-" let g:dracula_colorterm = 0         " Transparent background
 colorscheme onedark
 
 " Customize color schemes
 augroup colorscheme_customization
   autocmd!
-  " Dracula
-  autocmd ColorScheme dracula highlight StatusLine cterm=reverse
-  autocmd ColorScheme dracula highlight User1 cterm=reverse,bold ctermfg=252 ctermbg=239
-  " Comments in italics
-  autocmd ColorScheme dracula highlight Comment cterm=italic
-  " OneDark
-  autocmd ColorScheme onedark highlight StatusLine cterm=reverse
-  autocmd ColorScheme onedark highlight User1 cterm=reverse,bold ctermfg=252 ctermbg=239
-  " Transparent background
+  " OneDark - Transparent background
   autocmd ColorScheme onedark highlight Normal ctermbg=NONE
 augroup END
 
@@ -140,7 +130,7 @@ if has('nvim')
 endif
 
 " Show cursorline for current window only
-augroup Focus
+augroup Cursorline
   autocmd!
   autocmd WinEnter * setlocal cursorline
   autocmd WinLeave * setlocal nocursorline
@@ -148,28 +138,28 @@ augroup END
 
 set mouse=a                 " Enable mouse support
 if !has('nvim')
-  set ttymouse=sgr        " Fast modern mouse draggin
+  set ttymouse=sgr          " Fast modern mouse dragging
 endif
 
 set wildmenu                " Visual autocompletion for command line
-set completeopt-=preview    " Disable preview window from automatically showing using autocompletion
-set lazyredraw              " Redraw only when we need, not in the middle of macros (faster)
+set lazyredraw              " Redraw only when we need, not in the middle of macros (performance)
 set scrolloff=3             " Start scrolling before reaching the first or last lines
-set splitbelow splitright   " Default to new splits below and to the right
-set wildignore+=*/node_modules/*
+set splitbelow splitright   " create splits below and to the right
 
 " Jump to last cursor position on file load
 augroup JumpPos
   autocmd!
   autocmd BufReadPost *
-        \ if &filetype !=# 'gitcommit' && line("'\"") > 1 && line("'\"") <= line("$") |
-        \   exe "normal! g`\"" |
-        \ endif
+    \ if line("'\"") > 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+    \ |   exe "normal! g`\""
+    \ | endif
 augroup END
 
 " Status line
 set laststatus=2                " Always show status line
-set statusline=%1*\ ☲\ %{fugitive#head()}\ %*\ %<%f\ %m%r%=%y\ %1*\ %2l:%2c\ ◼\ %P\ 
+set statusline=\ ☲\ 
+set statusline+=%{fugitive#head()!=''?'\ ['.fugitive#head().']':''}\ 
+set statusline+=%<%f\ %m%r%=%y\ \ %2l:%2c\ ◼\ %P\ 
 
 " Search
 set incsearch               " Search as characters are being typed
@@ -193,8 +183,6 @@ if has('folding')
     let dashes = substitute(v:folddashes, '-', middot, 'g')
     return raquo . middot . middot . lines . dashes . first . ' '
   endfunction
-
-  let g:markdown_folding = 1  " Folding for markdown files
 endif
 
 " Mappings

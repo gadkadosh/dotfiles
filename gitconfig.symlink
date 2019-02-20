@@ -1,13 +1,2 @@
 [include]
-    path = ~/.gitconfig.local
-[color]
-    ui = true
-[alias]
-    br = branch
-    ci = commit
-    co = checkout
-    st = status
-[diff]
-    tool = vimdiff
-[difftool "vimdiff"]
-    path = nvim
+  path = ~/.gitconfig.local
