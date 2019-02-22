@@ -58,7 +58,6 @@ call plug#end()
 
 " Prettier settings
 let g:prettier#exec_cmd_async = 1   " Run prettier asynchronously
-let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 
 let g:LanguageClient_diagnosticsEnable = 0
@@ -136,15 +135,15 @@ augroup Cursorline
   autocmd WinLeave * setlocal nocursorline
 augroup END
 
-set mouse=a                 " Enable mouse support
+set mouse=a                 " Mouse support
 if !has('nvim')
   set ttymouse=sgr          " Fast modern mouse dragging
 endif
 
-set wildmenu                " Visual autocompletion for command line
-set lazyredraw              " Redraw only when we need, not in the middle of macros (performance)
+set wildmenu wildmode=longest:full,full  " Visual autocompletion for command line
+set lazyredraw              " No redraw in the middle of macros (performance)
 set scrolloff=3             " Start scrolling before reaching the first or last lines
-set splitbelow splitright   " create splits below and to the right
+set splitbelow splitright   " Create splits below and to the right
 
 " Jump to last cursor position on file load
 augroup JumpPos
@@ -186,23 +185,19 @@ if has('folding')
 endif
 
 " Mappings
-
-let mapleader = " "           " Leader mapping
-
-" Alternative mappings for <esc>
+let mapleader = " "
 inoremap jj <Esc>
-tnoremap <expr> <Esc> &filetype == 'fzf' ? "\<Esc>" : "\<C-\>\<C-n>"
-tnoremap <expr> jj &filetype == 'fzf' ? "\<Esc>" : "\<C-\>\<C-n>"
+nnoremap <leader>s :let @+=@"<CR>
 
-" Easier navigation between windows
+" Window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " Map tab when completion is open
-inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+" inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+" inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
 
 " Quick folding with <CR>
 nnoremap <CR> za
@@ -229,8 +224,8 @@ nnoremap <leader>h :call LanguageClient#textDocument_hover()<CR>
 
 " Swapfiles
 if exists('$SUDO_USER')
-  set noswapfile                      " Don't create root-owned files
-elseif !has('nvim')                     " Use Neovim XDG directory
+  set noswapfile                    " Don't create root-owned files
+elseif !has('nvim')                 " Use Neovim XDG directory
   set directory=~/.local/share/nvim/swap// " Keeps swap files out of the way
 endif
 
@@ -242,7 +237,7 @@ if has('persistent_undo')
     set undofile
   endif
 
-  if !has('nvim')                     " Use Neovim XDG directory
+  if !has('nvim')                   " Use Neovim XDG directory
     set undodir=~/.local/share/nvim/undo " Keep undo files out of the way
   endif
 endif

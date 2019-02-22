@@ -1,18 +1,21 @@
 #!/usr/bin/env zsh
+# If tmux is available start a session or attach to an existing one
+if  [[ $(command -v tmux) ]] &&
+  [[ "$SSH_CONNECTION" == "" ]] &&
+  [[ -z "$TMUX" ]]; then
+  exec tmux new -A -s base
+fi
 
 # Antigen
-# Installs antigen if it's not found
-if [[ ! -f ~/.antigen/antigen.zsh ]]; then
-  mkdir -v ~/.antigen
-  curl -L git.io/antigen > ~/.antigen/antigen.zsh
-fi
-source ~/.antigen/antigen.zsh
+if [[ -f /usr/local/share/antigen/antigen.zsh ]]; then
+  source /usr/local/share/antigen/antigen.zsh
 
-antigen bundle mafredri/zsh-async               # async support for pure theme
-antigen bundle sindresorhus/pure                # A minimal theme
-antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
-antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
-antigen apply
+  antigen bundle mafredri/zsh-async               # async support for pure
+  antigen bundle sindresorhus/pure                # A minimal theme
+  antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
+  antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
+  antigen apply
+fi
 
 # History
 export HISTFILE=$HOME/.zsh_history      # History file
@@ -49,13 +52,13 @@ setopt interactivecomments
 setopt pushdignoredups
 setopt sharehistory
 
+# Show a menu for completions
+zstyle ":completion:*" menu select
+# Case insensitive autocomplete
+zstyle ":completion:*" matcher-list "" "m:{a-zA-Z}={A-Za-z}"
 # Completion colors: empty string ("") would use the shell's defaults ($LSCOLORS),
 # but zsh doesn't support BSD style $LSCOLORS so here is the equivalent in Linux style $LS_COLORS
 zstyle ":completion:*" list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
-# Case insensitive autocomplete
-zstyle ":completion:*" matcher-list "" "m:{a-zA-Z}={A-Za-z}" "r:|[._-]=* r:|=*" "l:|=* r:|=*"
-# Show a menu for completions
-zstyle ":completion:*" menu select
 
 # Frecency based directory switching
 [ -f /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
@@ -66,10 +69,3 @@ zstyle ":completion:*" menu select
 source $HOME/.shell/env
 source $HOME/.shell/aliases
 source $HOME/.shell/functions
-
-# If tmux is available start a session or attach to an existing one
-if  [[ $(command -v tmux) ]] &&
-  [[ "$SSH_CONNECTION" == "" ]] &&
-  [[ -z "$TMUX" ]]; then
-  exec tmux new -A -s base
-fi

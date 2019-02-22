@@ -1,7 +1,6 @@
 # Environment exports
 
 export CLICOLOR=true            # Enable colors for 'ls' (macOS)
-# export LSCOLORS=Exfxcxdxbxegedabagacad
 export EDITOR=nvim
 
 # R: raw output, to allow ANSI colors
