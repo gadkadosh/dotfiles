@@ -8,7 +8,6 @@ bluetext() {
   echo "$(tput bold)$(tput setaf 33)$*$(tput sgr 0)"
 }
 
-
 link_file() {
   if [ -e "$2" ]; then
     if [ "$(readlink "$2")" = "$1" ]; then
@@ -16,7 +15,7 @@ link_file() {
       return 0
     else
       mv "$2" "$2.backup"
-      echo "moved $2 to $2.backup"
+      echo "moved $2 to $2.bak"
     fi
   fi
   ln -sf "$1" "$2"
