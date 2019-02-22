@@ -42,6 +42,5 @@ export PS1
 # Load fzf tab completion and key bindings
 [ $(command -v fzf) ] && [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-source $HOME/.shell/env
-source $HOME/.shell/aliases
-source $HOME/.shell/functions
+source $HOME/.env
+source $HOME/.aliases

@@ -40,3 +40,36 @@ alias small-server="python -m SimpleHTTPServer 3000 ."
 
 # Show active network interfaces
 alias ifactive="ifconfig | pcregrep -M -o '^[^\t:]+:([^\n]|\n\t)*status: active'"
+
+# Usage: compresspdf [input file] [output file] [screen*|ebook*|printer|prepress]
+compresspdf() {
+  \gs -sDEVICE=pdfwrite -dNOPAUSE -dQUIET -dBATCH -dPDFSETTINGS=/${3:-"ebook"} \
+    -dCompatibilityLevel=1.4 -sOutputFile="$2" "$1"
+}
+
+# Shortcut for opening a file or the current directory in macOS Finder
+o() {
+  open ${1:-"."}
+}
+
+# Get statistics on most commonly used commands
+hstats() {
+  fc -l 1 | awk '{CMD[$2]++;count++;}END { for (a in CMD)print CMD[a] " " \
+    CMD[a]/count*100 "% " a;}' | grep -v "./" | \
+    column -c3 -s " " -t | sort -nr | nl | head -n20
+}
+
+# Use fzf with z , if it's installed
+if [ $(command -v fzf) ]; then
+  if command -v z > /dev/null 2>&1; then
+    unalias z 2> /dev/null
+
+    function z() {
+      [ $# -gt 0 ] && _z "$*" && return
+        cd "$(_z -l 2>&1 |
+          fzf --height 40% --nth 2.. --reverse --inline-info +s --tac \
+          --query "${*##-* }" |
+          sed 's/^[0-9,.]* *//')"
+    }
+  fi
+fi

@@ -66,6 +66,5 @@ zstyle ":completion:*" list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34
 # Load fzf tab completion and key bindings
 [ $(command -v fzf) ] && [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source $HOME/.shell/env
-source $HOME/.shell/aliases
-source $HOME/.shell/functions
+source $HOME/.env
+source $HOME/.aliases
