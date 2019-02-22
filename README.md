@@ -1,4 +1,12 @@
 # dotfiles
-These are my dotfiles and config files. I'm using MacOS, Vim/Neovim and ZSH with Antigen.
 
-The **install.sh** script links all **.symlink** files to the home directory, prompts for gitconfig user/email - which are saved in **.gitconfig.local** and included in the main **.gitconfig**, and installs brew packages and vscode extensions.
+These are my dotfiles and config files. Currently using MacOS, Homebrew, Vim/Neovim, tmux and ZSH with Antigen.
+
+## Installation
+
+```
+alias dotfiles="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+git clone --bare https://github.com/gadkadosh/dotfiles.git $HOME/.dotfiles
+dotfiles checkout
+dotfiles config --local status.showUntrackedFiles no
+```
