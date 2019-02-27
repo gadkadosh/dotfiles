@@ -27,7 +27,9 @@ alias globalip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
 
 # Shortcut for opening a file or the current directory in macOS Finder
-o() { open ${1:-"."}; }
+o() {
+  open ${1:-"."}
+}
 
 # Get statistics on most commonly used commands
 hstats() {
