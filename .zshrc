@@ -6,22 +6,11 @@ if  [[ $(command -v tmux) ]] &&
   exec tmux new -A -s base
 fi
 
-# Antigen
-if [[ -f /usr/local/share/antigen/antigen.zsh ]]; then
-  source /usr/local/share/antigen/antigen.zsh
-
-  antigen bundle mafredri/zsh-async               # async support for pure
-  antigen bundle sindresorhus/pure                # A minimal theme
-  antigen bundle zsh-users/zsh-autosuggestions    # Autosuggestions
-  antigen bundle zdharma/fast-syntax-highlighting # Syntax highlighting
-  antigen apply
-fi
-
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-bindkey -e                              # Emacs style bindings
+bindkey -v                              # vim mode
 bindkey '^[[Z' reverse-menu-complete    # Shift-tab for moving backwards in menus
 
 # Arrows search history
@@ -61,3 +50,15 @@ zstyle ":completion:*" list-colors "di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34
 
 source $HOME/.env
 source $HOME/.aliases
+
+autoload -U compinit && compinit
+
+# Pure prompt (npm install pure-prompt)
+autoload -U promptinit && promptinit
+prompt pure
+
+# zsh autosuggestions (brew install zsh-autosuggestions)
+[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zsh syntax highlighting (brew install zsh-syntax=highlighting)
+[ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
