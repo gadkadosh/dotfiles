@@ -1,6 +1,6 @@
 # dotfiles
 
-These are my dotfiles and config files. Currently using MacOS, Homebrew, Vim/Neovim, tmux and ZSH with Antigen.
+These are my dotfiles and config files. Currently using MacOS, Homebrew, Vim/Neovim, tmux.
 
 ## Installation
 

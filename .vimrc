@@ -1,10 +1,5 @@
 " vim-plug and plugin settings
 
-" Use Neovim XDG directory to load vim-plug on normal Vim
-if !has('nvim')
-  set runtimepath+=~/.local/share/nvim/site
-endif
-
 " Download vim-plug if it's not installed already
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
@@ -13,6 +8,11 @@ if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
     autocmd!
     autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
   augroup END
+endif
+
+" Use Neovim XDG directory to load vim-plug on normal Vim
+if !has('nvim')
+  set runtimepath+=~/.local/share/nvim/site
 endif
 
 " Start vim-plug and list plugins
@@ -45,10 +45,6 @@ Plug 'alampros/vim-styled-jsx'
 Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
 endif
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'         " Auto-close parentheses, brackets etc..
@@ -81,7 +77,7 @@ if executable('pyls')
   let g:LanguageClient_serverCommands['python'] = ['pyls']
 endif
 
-let g:deoplete#enable_at_startup = 1
+" let g:deoplete#enable_at_startup = 1
 
 imap <expr> <C-j> pumvisible() ? "\<Down>" : "\<C-j>"
 imap <expr> <C-k> pumvisible() ? "\<Up>" : "\<C-k>"
@@ -111,14 +107,13 @@ set shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 set autoindent smartindent
 
 set showbreak=¬\            " Symbol for showing wrapped lines
-" Special characters for formatting enable
+" Special characters for formatting
 set listchars=nbsp:⦸,tab:→\ ,eol:↵,extends:»,precedes:«,trail:·
 
 " Settings
-set hidden                  " Allow hidden Buffers
-set number relativenumber   " Show line numbers (relative)
+set hidden
+set number relativenumber
 set backspace=indent,eol,start
-set cursorline              " Highlight current line, see next few line
 
 if has('nvim')
   augroup Terminal
@@ -172,16 +167,6 @@ if has('folding')
   set fillchars+=fold:·       " Unicode middle dot instead of dashes
   set foldlevelstart=99       " Open most folds by default
   set foldmethod=indent       " Fold based on indent level
-  set foldtext=CustomFoldtext()
-
-  function! CustomFoldtext()
-    let middot = '·'
-    let raquo = '» '
-    let lines = ' [' . (v:foldend - v:foldstart + 1) . ' lines' . '] '
-    let first = ' ' . substitute(getline(v:foldstart), '\v *', '', '')
-    let dashes = substitute(v:folddashes, '-', middot, 'g')
-    return raquo . middot . middot . lines . dashes . first . ' '
-  endfunction
 endif
 
 " Mappings
