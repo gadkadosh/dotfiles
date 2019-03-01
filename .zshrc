@@ -11,7 +11,7 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 bindkey -v                              # vim mode
-bindkey '^[[Z' reverse-menu-complete    # Shift-tab for moving backwards in menus
+bindkey '^[[Z' reverse-menu-complete    # Shift-tab
 
 # Arrows search history
 autoload -U up-line-or-beginning-search
