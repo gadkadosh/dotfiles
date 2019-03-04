@@ -1,7 +1,5 @@
 " Use Neovim XDG directory to load vim-plug on normal Vim
-if !has('nvim')
-  set runtimepath+=~/.local/share/nvim/site
-endif
+set runtimepath+=~/.local/share/nvim/site
 
 " Plugins (vim-plug)
 call plug#begin('~/.local/share/nvim/plugged')
@@ -47,16 +45,6 @@ let g:vcoolor_lowercase = 1
 " Close NERDTree automatically when opening a file
 let g:NERDTreeQuitOnOpen = 1
 
-" Colors
-syntax enable
-colorscheme onedark
-" Customize color schemes
-augroup colorscheme_customization
-  autocmd!
-  " OneDark - Transparent background
-  autocmd ColorScheme onedark highlight Normal ctermbg=NONE
-augroup END
-
 " Settings
 set hidden
 set number relativenumber
@@ -64,6 +52,7 @@ set wildmenu wildmode=longest:full,full
 set lazyredraw
 set scrolloff=3
 set splitbelow splitright
+set laststatus=2
 " Indentation
 set shiftwidth=2 tabstop=2 softtabstop=2 expandtab
 set autoindent smartindent
@@ -76,17 +65,13 @@ set ignorecase smartcase    " Case insensitive search
 if exists('+inccommand')
   set inccommand=split      " Incremental search and replace (Neovim)
 endif
+" Folding
+set foldlevelstart=99     " Open most folds by default
+set foldmethod=indent     " Fold based on indent level
 " Use Neovim XDG directories
 set directory=~/.local/share/nvim/swap//
 set undofile
 set undodir=~/.local/share/nvim/undo
-
-" Folding
-if has('folding')
-  set fillchars+=fold:·     " Unicode middle dot instead of dashes
-  set foldlevelstart=99     " Open most folds by default
-  set foldmethod=indent     " Fold based on indent level
-endif
 
 set mouse=a                 " Mouse support
 if !has('nvim')
@@ -116,16 +101,12 @@ augroup JumpPos
     \ | endif
 augroup END
 
-" Status line
-set laststatus=2
-set statusline=\ ☲\ 
-set statusline+=%{fugitive#head()!=''?'\ ['.fugitive#head().']':''}\ 
-set statusline+=%<%f\ %m%r%=%y\ \ %2l:%2c\ ◼\ %P\ 
-
 " Mappings
 let mapleader = ' '
 inoremap jj <Esc>
 nnoremap <leader>s :let @+=@"<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
 " Window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -147,3 +128,13 @@ nnoremap <leader>f :NERDTreeToggle<CR>
 nnoremap <leader><space> :nohlsearch<CR>
 " Switch to alternate buffer
 nnoremap <leader>, <C-^>
+
+" Colors
+" Customize color schemes
+augroup colorscheme_customization
+  autocmd!
+  " OneDark - Transparent background
+  autocmd ColorScheme onedark highlight Normal ctermbg=NONE
+augroup END
+syntax enable
+colorscheme onedark
