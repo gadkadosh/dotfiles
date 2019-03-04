@@ -13,7 +13,7 @@ cmd + shift - return : open /Applications/Safari.app
 shift + alt - m : open /Applications/Messages.app
 
 # close focused window
-alt - w : chunkc tiling::window --close
+# alt - w : chunkc tiling::window --close
 
 # focus window
 alt - h : chunkc tiling::window --focus west
@@ -21,8 +21,8 @@ alt - j : chunkc tiling::window --focus south
 alt - k : chunkc tiling::window --focus north
 alt - l : chunkc tiling::window --focus east
 
-cmd - j : chunkc tiling::window --focus prev
-cmd - k : chunkc tiling::window --focus next
+# cmd - j : chunkc tiling::window --focus prev
+# cmd - k : chunkc tiling::window --focus next
 
 # swap window
 shift + alt - h : chunkc tiling::window --swap west
@@ -143,7 +143,7 @@ alt - y : chunkc tiling::desktop --mirror vertical
 alt - x : chunkc tiling::desktop --mirror horizontal
 
 # toggle desktop offset
-alt - a : chunkc tiling::desktop --toggle offset
+# alt - a : chunkc tiling::desktop --toggle offset
 
 # toggle window fullscreen
 alt - f : chunkc tiling::window --toggle fullscreen
@@ -172,7 +172,7 @@ alt - t : chunkc tiling::window --toggle float;\
 #           chunkc tiling::window --grid-layout 5:5:4:0:1:1
 
 # float next window to be tiled
-shift + alt - t : chunkc set window_float_next 1
+# shift + alt - t : chunkc set window_float_next 1
 
 # change layout of desktop
 ctrl + alt - a : chunkc tiling::desktop --layout bsp
