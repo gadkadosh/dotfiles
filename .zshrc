@@ -10,7 +10,6 @@ export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-bindkey -v                              # vim mode
 bindkey '^[[Z' reverse-menu-complete    # Shift-tab
 
 # Arrows search history

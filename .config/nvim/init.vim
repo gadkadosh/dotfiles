@@ -27,7 +27,7 @@ call plug#end()
 
 " Prettier on save
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
-" let g:LanguageClient_diagnosticsEnable = 0
+let g:LanguageClient_diagnosticsEnable = 0
 " js: npm -g install javascript-typescript-langserver
 " html: npm -g install vscode-html-languageserver-bin
 " css: npm -g install vscode-css-languageserver-bin
@@ -48,7 +48,7 @@ let g:NERDTreeQuitOnOpen = 1
 " Settings
 set hidden
 set number relativenumber
-set wildmenu wildmode=longest:full,full
+set wildmenu wildmode=longest:full,full completeopt-=preview
 set lazyredraw
 set scrolloff=3
 set splitbelow splitright
