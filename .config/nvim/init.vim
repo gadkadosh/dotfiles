@@ -22,37 +22,30 @@ let g:vcoolor_lowercase = 1
 
 " Settings
 set hidden
-" set number relativenumber
-set wildmenu wildmode=longest:full,full completeopt-=preview
-set lazyredraw
-set scrolloff=3
-set splitbelow splitright
-" Indentation
-set shiftwidth=2 tabstop=2 softtabstop=2 expandtab
-set autoindent smartindent
-set showbreak=¬\            " Symbol for showing wrapped lines
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set autoindent
+set smartindent
+set showbreak=>\ 
 " Special characters for formatting
 set listchars=nbsp:⦸,tab:→\ ,eol:↵,extends:»,precedes:«,trail:·
-" Search
-set incsearch               " Search as characters are being typed
-set ignorecase smartcase    " Case insensitive search
+set incsearch
+set ignorecase
+set smartcase
 if exists('+inccommand')
   set inccommand=split      " Incremental search and replace (Neovim)
 endif
-" Folding
-set foldlevelstart=99       " Open most folds by default
 set foldmethod=indent       " Fold based on indent level
+set foldlevelstart=99       " Open most folds by default
+set mouse=a                 " Mouse support
+
 " Use Neovim XDG directories
 set directory=~/.local/share/nvim/swap//
 set undofile
 set undodir=~/.local/share/nvim/undo
 
-set mouse=a                 " Mouse support
-if !has('nvim')
-  set ttymouse=sgr          " Fast modern mouse dragging
-endif
-
-augroup Cursorline
+augroup LocalCursorline
   autocmd!
   autocmd WinEnter * setlocal cursorline
   autocmd WinLeave * setlocal nocursorline

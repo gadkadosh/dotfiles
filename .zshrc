@@ -1,11 +1,4 @@
 #!/usr/bin/env zsh
-# If tmux is available start a session or attach to an existing one
-# if  [[ $(command -v tmux) ]] &&
-#   [[ "$SSH_CONNECTION" == "" ]] &&
-#   [[ -z "$TMUX" ]]; then
-#   exec tmux new -A -s base
-# fi
-
 export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
