@@ -1,0 +1,9 @@
+window:
+  decorations: buttonless
+  startup_mode: Maximized
+
+font:
+  size: 16.0
+
+key_bindings:
+  - { key: Return, mods: Shift|Control, action: ToggleViMode }

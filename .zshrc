@@ -1,5 +1,4 @@
 #!/usr/bin/env zsh
-export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=10000
 export SAVEHIST=10000
 
@@ -43,8 +42,7 @@ source $HOME/.env
 source $HOME/.aliases
 
 # Pure prompt (npm install pure-prompt)
-autoload -U promptinit
-promptinit
+autoload -U promptinit; promptinit
 prompt pure
 
 # zsh autosuggestions (brew install zsh-autosuggestions)
