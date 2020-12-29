@@ -29,22 +29,24 @@ augroup end
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'joshdick/onedark.vim'
 Plug 'jiangmiao/auto-pairs'
-" Alternative: I might want to try https://github.com/rstacruz/vim-closer
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'KabbAmine/vCoolor.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'nvim-lua/completion-nvim'
+" Plug 'hrsh7th/vim-vsnip'
+" Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'gadkadosh/vim-prettier', {
+Plug '~/Code/vim-prettier', {
   \ 'branch': 'update-prettier-php',
   \ 'do': 'npm install',
   \ 'for': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html', 'php'] }
+Plug '~/Code/vim-pixem'
 call plug#end()
 
 " Mappings
@@ -57,8 +59,6 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
-" Quick folding with <CR>
-nnoremap <CR> za
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>, <C-^>
 
@@ -73,19 +73,27 @@ local function custom_attach()
   vim.api.nvim_buf_set_keymap(0, 'n', '<leader>]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', {noremap = true})
 end
 
-require'lspconfig'.tsserver.setup{ on_attach=custom_attach }
-require'lspconfig'.jsonls.setup{ on_attach=custom_attach }
-require'lspconfig'.html.setup{ on_attach=custom_attach }
-require'lspconfig'.cssls.setup{ on_attach=custom_attach }
-require'lspconfig'.vimls.setup{ on_attach=custom_attach }
-require'lspconfig'.sumneko_lua.setup({ settings = {
-    Lua = { 
-      diagnostics = {
-        globals = { 'vim' }
-      }
-    }
-  },
-  on_attach=custom_attach })
+local lspconfig = require'lspconfig'
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- tsserver requires typescript to be installed, either locally or globally!
+lspconfig.tsserver.setup{ on_attach = custom_attach }
+lspconfig.jsonls.setup{ on_attach = custom_attach }
+lspconfig.html.setup{
+  on_attach = custom_attach,
+  capabilities = capabilities
+}
+lspconfig.cssls.setup{
+  on_attach = custom_attach,
+  capabilities = capabilities
+}
+lspconfig.vimls.setup{ on_attach = custom_attach }
+lspconfig.sumneko_lua.setup{
+  settings = { Lua = { diagnostics = { globals = { 'vim' } } } },
+  on_attach = custom_attach
+}
+lspconfig.pyls.setup{ on_attach = custom_attach }
 EOF
 
 " completion-nvim
@@ -93,6 +101,16 @@ let g:completion_confirm_key = ""
 let g:completion_enable_auto_paren = 1
 let g:completion_trigger_on_delete = 1
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+let g:completion_chain_complete_list = {
+      \ 'default' : {
+      \   'default': [
+      \       {'complete_items': ['lsp', 'snippet']},
+      \       {'complete_items': ['path'], 'triggered_only': ['/']},
+      \       {'mode': '<c-p>'},
+      \       {'mode': '<c-n>'}],
+      \   'comment': [],
+      \   }}
+
 imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
       \ "\<Plug>(completion_confirm_completion)"  :
       \ "\<c-e>\<CR>" : "\<CR>"
@@ -100,7 +118,7 @@ imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
 " nvim-treesitter
 lua << EOF
 require'nvim-treesitter.configs'.setup{
-  ensure_installed={ 'bash', 'lua', 'json', 'javascript', 'typescript', 'css', 'html' },
+  ensure_installed={ 'bash', 'lua', 'python', 'json', 'javascript', 'typescript', 'css', 'html' },
   highlight = { enable = true }, 
   indent = { enable = true }
 }
@@ -112,7 +130,7 @@ let g:prettier#autoformat_require_pragma = 0
 
 " nvim-colorizer
 lua << EOF
-require'colorizer'.setup{ 'css', 'javascript', 'html' }
+require'colorizer'.setup{ 'css', 'scss', 'javascript', 'html' }
 EOF
 
 " FZF
