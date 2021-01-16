@@ -5,6 +5,7 @@ set shiftwidth=2
 set expandtab
 set smartindent
 set number relativenumber
+set scrolloff=3
 " Better completion experience for completion-nvim
 set completeopt=menuone,noinsert,noselect
 set wildmode=longest,full
@@ -13,17 +14,16 @@ set listchars=nbsp:⦸,tab:→\ ,eol:↵,extends:»,precedes:«,trail:·
 set ignorecase
 set smartcase
 set inccommand=split
+set cursorline
 set foldmethod=indent
 set foldlevelstart=99
 set mouse=a
 set undofile
 set termguicolors
-let g:vimsyn_embed="l"
 
-augroup YankHighlight
-  autocmd!
-  autocmd TextYankPost * silent! lua vim.highlight.on_yank()
-augroup end
+" Use ripgrep for :grep
+set grepprg=rg\ --vimgrep\ --smart-case
+set grepformat=%f:%l:%c:%m
 
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
@@ -35,23 +35,22 @@ Plug 'KabbAmine/vCoolor.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'nvim-lua/completion-nvim'
-" Plug 'hrsh7th/vim-vsnip'
-" Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug '~/Code/vim-prettier', {
-  \ 'branch': 'update-prettier-php',
-  \ 'do': 'npm install',
-  \ 'for': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html', 'php'] }
+  \ 'do': 'npm install',}
 Plug '~/Code/vim-pixem'
 call plug#end()
 
 " Mappings
 let mapleader = ' '
 inoremap jj <Esc>
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>
 nnoremap <leader>s :let @+=@"<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 " Window navigation
@@ -59,6 +58,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>, <C-^>
 
@@ -81,6 +81,7 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig.tsserver.setup{ on_attach = custom_attach }
 lspconfig.jsonls.setup{ on_attach = custom_attach }
 lspconfig.html.setup{
+  filetypes = { "html", "htmldjango" },
   on_attach = custom_attach,
   capabilities = capabilities
 }
@@ -89,10 +90,6 @@ lspconfig.cssls.setup{
   capabilities = capabilities
 }
 lspconfig.vimls.setup{ on_attach = custom_attach }
-lspconfig.sumneko_lua.setup{
-  settings = { Lua = { diagnostics = { globals = { 'vim' } } } },
-  on_attach = custom_attach
-}
 lspconfig.pyls.setup{ on_attach = custom_attach }
 EOF
 
@@ -101,6 +98,7 @@ let g:completion_confirm_key = ""
 let g:completion_enable_auto_paren = 1
 let g:completion_trigger_on_delete = 1
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+let g:completion_auto_change_source = 1
 let g:completion_chain_complete_list = {
       \ 'default' : {
       \   'default': [
@@ -108,7 +106,7 @@ let g:completion_chain_complete_list = {
       \       {'complete_items': ['path'], 'triggered_only': ['/']},
       \       {'mode': '<c-p>'},
       \       {'mode': '<c-n>'}],
-      \   'comment': [],
+      \   'comment': []
       \   }}
 
 imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
@@ -119,14 +117,14 @@ imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
 lua << EOF
 require'nvim-treesitter.configs'.setup{
   ensure_installed={ 'bash', 'lua', 'python', 'json', 'javascript', 'typescript', 'css', 'html' },
-  highlight = { enable = true }, 
+  highlight = { enable = true },
   indent = { enable = true }
 }
 EOF
 
 " vim-prettier
 let g:prettier#autoformat_config_present = 1
-let g:prettier#autoformat_require_pragma = 0
+" let g:prettier#autoformat_require_pragma = 0
 
 " nvim-colorizer
 lua << EOF
@@ -139,11 +137,11 @@ nnoremap <leader>a :Rg<CR>
 nnoremap <leader>t :Files<CR>
 nnoremap <leader>? :Helptags<CR>
 
-" Filetypes
-augroup Filetypes
+augroup YankHighlight
   autocmd!
-  autocmd BufNewFile,BufRead .prettierrc setfiletype json
+  autocmd TextYankPost * silent! lua vim.highlight.on_yank()
 augroup end
 
+let g:vimsyn_embed="l"
 syntax enable
 colorscheme onedark
