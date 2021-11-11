@@ -37,6 +37,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'KabbAmine/vCoolor.vim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'ray-x/lsp_signature.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'hrsh7th/nvim-cmp'
 Plug 'onsails/lspkind-nvim'
@@ -110,6 +111,8 @@ for _, server in ipairs(servers) do
         capabilities = capabilities,
     }
 end
+
+require'lsp_signature'.setup()
 EOF
 
 " completion
@@ -149,6 +152,7 @@ cmp.setup{
 EOF
 
 " luasnip
+lua require("luasnip/loaders/from_vscode").lazy_load()
 imap <silent><expr> <c-k> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'
 inoremap <silent> <c-j> <cmd>lua require('luasnip').jump(-1)<CR>
 snoremap <silent> <c-k> <cmd>lua require('luasnip').jump(1)<CR>
@@ -200,7 +204,7 @@ nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.i
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
 nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
 nnoremap <silent> <leader>di :lua require'dap.ui.widgets'.hover()<CR>
-nnoremap <silent> <leader>ds :lua require"dap.ui.variables".scopes()<CR>
+nnoremap <silent> <leader>ds :lua require'dap.ui.variables'.scopes()<CR>
 
 " nvim-colorizer
 lua require'colorizer'.setup{ 'css', 'scss', 'javascript', 'html' }
