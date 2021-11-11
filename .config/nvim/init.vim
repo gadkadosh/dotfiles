@@ -6,7 +6,7 @@ set expandtab
 set smartindent
 set number relativenumber
 set scrolloff=3
-" Better completion experience for completion-nvim
+" Better for autocompletion
 set completeopt=menuone,noinsert,noselect
 set wildmode=longest,full
 set showbreak=>\ 
@@ -32,24 +32,27 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'jacoborus/tender.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'jiangmiao/auto-pairs'
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
-Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'KabbAmine/vCoolor.vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'norcalli/nvim-colorizer.lua'
-Plug 'nvim-lua/completion-nvim'
-Plug 'norcalli/snippets.nvim'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'onsails/lspkind-nvim'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'mfussenegger/nvim-dap'
 Plug 'mattn/emmet-vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'sbdchd/neoformat'
 Plug '~/Code/vim-pixem'
 call plug#end()
 
@@ -72,46 +75,84 @@ nnoremap <leader>, <C-^>
 
 " nvim-lsp
 lua << EOF
-local function custom_attach()
-  require'completion'.on_attach()
-  vim.api.nvim_buf_set_keymap(0, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true})
-  vim.api.nvim_buf_set_keymap(0, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true})
-  vim.api.nvim_buf_set_keymap(0, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', {noremap = true})
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', {noremap = true})
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', {noremap = true})
-  vim.api.nvim_buf_set_keymap(0, 'n', '<leader>]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', {noremap = true})
+local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  local opts = { noremap = true, silent = true }
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+  if client.resolved_capabilities.document_formatting then
+      vim.cmd [[
+      augroup Format
+          autocmd! * <buffer>
+          autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+      augroup END
+      ]]
+  end
 end
 
 local lspconfig = require'lspconfig'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
--- tsserver requires typescript to be installed, either locally or globally!
-lspconfig.tsserver.setup{ on_attach = custom_attach }
-lspconfig.jsonls.setup{ on_attach = custom_attach }
-lspconfig.html.setup{
-  filetypes = { "html", "htmldjango" },
-  on_attach = custom_attach,
-  capabilities = capabilities
-}
-lspconfig.cssls.setup{
-  on_attach = custom_attach,
-  capabilities = capabilities
-}
-lspconfig.vimls.setup{ on_attach = custom_attach }
-lspconfig.pyls.setup{ on_attach = custom_attach }
+local servers = { 'clangd', 'tsserver', 'jsonls', 'html', 'cssls', 'vimls' }
+for _, server in ipairs(servers) do
+    lspconfig[server].setup{ 
+        on_attach = on_attach,
+        capabilities = capabilities,
+    }
+end
 EOF
 
-" completion-nvim
-let g:completion_confirm_key = ""
-let g:completion_trigger_on_delete = 1
-let g:completion_enable_snippet = 'snippets.nvim'
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-let g:completion_auto_change_source = 1
+" completion
+lua << EOF
+local cmp = require'cmp'
 
-imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
-      \ "\<Plug>(completion_confirm_completion)"  :
-      \ "\<c-e>\<CR>" : "\<CR>"
+cmp.setup{
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end
+    },
+    mapping = {
+        ['<C-d>'] = cmp.mapping.scroll_docs(-1),
+        ['<C-f>'] = cmp.mapping.scroll_docs(1),
+    },
+    formatting = {
+        format = require'lspkind'.cmp_format{
+            menu = {
+                nvim_lsp = "[LSP]",
+                luasnip = "[Snippet]",
+                path = "[Path]",
+                buffer = "[Buffer]",
+            }
+        }
+    },
+    experimental = {
+        ghost_text = true
+    },
+    sources = {
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+        { name = 'path' },
+        { name = 'buffer', keyword_length = 2 },
+    },
+}
+EOF
+
+" luasnip
+imap <silent><expr> <c-k> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'
+inoremap <silent> <c-j> <cmd>lua require('luasnip').jump(-1)<CR>
+snoremap <silent> <c-k> <cmd>lua require('luasnip').jump(1)<CR>
+snoremap <silent> <c-j> <cmd>lua require('luasnip').jump(-1)<CR>
 
 " nvim-treesitter
 lua << EOF
@@ -122,46 +163,57 @@ require'nvim-treesitter.configs'.setup{
 }
 EOF
 
-" Neoformat
-nnoremap <leader>p :Neoformat<CR>
-augroup fmt
-  autocmd!
-  autocmd BufWritePre *.js,*.css,*.scss Neoformat
-augroup end
+" nvim-dap
+lua << EOF
+local dap = require'dap'
 
+vim.fn.sign_define('DapBreakpoint', { text='🛑', texthl='', linehl='', numhl='' })
+vim.fn.sign_define('DapBreakpointRejected', { text='🟦', texthl='', linehl='', numhl='' })
+vim.fn.sign_define('DapStopped', { text = '🟢', texthl = '', linehl = '', numhl = '' })
+
+dap.adapters.lldb = {
+    type = 'executable',
+    command = 'lldb-vscode',
+    name = 'lldb'
+}
+
+dap.configurations.cpp = {
+    {
+        name = 'Launch',
+        type = 'lldb',
+        request = 'launch',
+        program = function()
+            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+        end,
+        cwd = "${workspaceFolder}",
+    }
+}
+EOF
+
+nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
+nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
+nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
+nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
+nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
+nnoremap <silent> <leader>di :lua require'dap.ui.widgets'.hover()<CR>
+nnoremap <silent> <leader>ds :lua require"dap.ui.variables".scopes()<CR>
 
 " nvim-colorizer
 lua require'colorizer'.setup{ 'css', 'scss', 'javascript', 'html' }
 
-" FZF
-" nnoremap <leader><enter> :Buffers<CR>
-" nnoremap <leader>a :Rg<CR>
-" nnoremap <leader>t :Files<CR>
-" nnoremap <leader>? :Helptags<CR>
+" telescope
 nnoremap <leader><enter> <cmd>Telescope buffers<CR>
 nnoremap <leader>a <cmd>Telescope live_grep<CR>
 nnoremap <leader>t <cmd>Telescope find_files<CR>
+nnoremap <leader>f <cmd>Telescope file_browser<CR>
 nnoremap <leader>? <cmd>Telescope help_tags<CR>
 
 " Pixem
 let g:pixem_use_rem = 1
-
-" snippets.nvim
-lua << EOF
-local snips = require'snips'
-require'snippets'.snippets = {
-  _global = snips._global,
-  javascript = snips.javascript,
-  typescript = snips.javascript,
-  html = snips.html,
-  htmldjango = snips.html,
-  css = snips.css,
-  scss = snips.css,
-}
-require'snippets'.set_ux(require'snippets.inserters.text_markers')
-EOF
-inoremap <c-j> <cmd>lua return require'snippets'.expand_or_advance()<CR>
-inoremap <c-k> <cmd>lua return require'snippets'.advance_snippet(-1)<CR>
 
 augroup YankHighlight
   autocmd!

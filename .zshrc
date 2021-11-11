@@ -50,3 +50,6 @@ prompt pure
 
 # zsh syntax highlighting (brew install zsh-syntax-highlighting)
 [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# clangd
+export PATH="/usr/local/opt/llvm/bin:$PATH"
