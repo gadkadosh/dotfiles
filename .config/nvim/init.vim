@@ -15,7 +15,8 @@ set ignorecase
 set smartcase
 set inccommand=split
 set cursorline
-set foldmethod=indent
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
 set foldlevelstart=99
 set mouse=a
 set undofile
@@ -27,16 +28,15 @@ set grepformat=%f:%l:%c:%m
 
 " Plugins
 call plug#begin('~/.local/share/nvim/plugged')
-Plug 'joshdick/onedark.vim'
-Plug 'arcticicestudio/nord-vim'
-Plug 'jacoborus/tender.vim'
-Plug 'ayu-theme/ayu-vim'
-Plug 'jiangmiao/auto-pairs'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'JoosepAlviste/nvim-ts-context-commentstring'
+Plug 'terrortylor/nvim-comment'
+Plug 'windwp/nvim-autopairs'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'KabbAmine/vCoolor.vim'
 Plug 'neovim/nvim-lspconfig'
+Plug 'jose-elias-alvarez/null-ls.nvim'
 Plug 'ray-x/lsp_signature.nvim'
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'hrsh7th/nvim-cmp'
@@ -47,12 +47,15 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'saadparwaiz1/cmp_luasnip'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'mfussenegger/nvim-dap'
 Plug 'mattn/emmet-vim'
-Plug 'tpope/vim-commentary'
+Plug 'joshdick/onedark.vim'
+Plug 'arcticicestudio/nord-vim'
+Plug 'jacoborus/tender.vim'
+Plug 'ayu-theme/ayu-vim'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
+Plug 'lewis6991/gitsigns.nvim'
 Plug 'tpope/vim-surround'
 Plug '~/Code/vim-pixem'
 call plug#end()
@@ -74,30 +77,55 @@ nnoremap <C-l> <C-w>l
 nnoremap <leader><space> :nohlsearch<CR>
 nnoremap <leader>, <C-^>
 
-" nvim-lsp
 lua << EOF
+-- nvim-treesitter
+require'nvim-treesitter.configs'.setup{
+    ensure_installed= "maintained",
+    highlight = { enable = true },
+    indent = { enable = true },
+    context_commentstring = { enable = true },
+}
+
+require'nvim-autopairs'.setup()
+require'gitsigns'.setup()
+require('nvim_comment').setup({
+    hook = function()
+        require('ts_context_commentstring.internal').update_commentstring()
+    end,
+})
+
+-- nvim-lsp
 local on_attach = function(client, bufnr)
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+    vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local opts = { noremap = true, silent = true }
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>[', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>]', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    local opts = { noremap = true, silent = true }
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'i', '<C-s>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>p', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-  if client.resolved_capabilities.document_formatting then
-      vim.cmd [[
-      augroup Format
-          autocmd! * <buffer>
-          autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-      augroup END
-      ]]
-  end
+    require'lsp_signature'.on_attach({ hi_parameter = "IncSearch" })
+
+    if client.name == 'tsserver' or client.name =='jsonls' or client.name == 'html' or client.name == 'cssls' then
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+    end
+
+    if client.resolved_capabilities.document_formatting then
+        vim.cmd [[
+        augroup Format
+            autocmd! * <buffer>
+            autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
+        augroup END
+        ]]
+    end
 end
 
 local lspconfig = require'lspconfig'
@@ -112,13 +140,12 @@ for _, server in ipairs(servers) do
     }
 end
 
-require'lsp_signature'.setup()
-EOF
+local null_ls = require'null-ls'
+null_ls.config({ sources = { null_ls.builtins.formatting.prettierd }})
+lspconfig['null-ls'].setup({ on_attach = on_attach })
 
-" completion
-lua << EOF
+-- completion
 local cmp = require'cmp'
-
 cmp.setup{
     snippet = {
         expand = function(args)
@@ -126,8 +153,8 @@ cmp.setup{
         end
     },
     mapping = {
-        ['<C-d>'] = cmp.mapping.scroll_docs(-1),
-        ['<C-f>'] = cmp.mapping.scroll_docs(1),
+        ['<C-k>'] = cmp.mapping.scroll_docs(-1),
+        ['<C-j>'] = cmp.mapping.scroll_docs(1),
     },
     formatting = {
         format = require'lspkind'.cmp_format{
@@ -146,29 +173,11 @@ cmp.setup{
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'path' },
-        { name = 'buffer', keyword_length = 2 },
+        { name = 'buffer', keyword_length = 4 },
     },
 }
-EOF
 
-" luasnip
-lua require("luasnip/loaders/from_vscode").lazy_load()
-imap <silent><expr> <c-k> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-k>'
-inoremap <silent> <c-j> <cmd>lua require('luasnip').jump(-1)<CR>
-snoremap <silent> <c-k> <cmd>lua require('luasnip').jump(1)<CR>
-snoremap <silent> <c-j> <cmd>lua require('luasnip').jump(-1)<CR>
-
-" nvim-treesitter
-lua << EOF
-require'nvim-treesitter.configs'.setup{
-  ensure_installed= "maintained",
-  highlight = { enable = true },
-  indent = { enable = true }
-}
-EOF
-
-" nvim-dap
-lua << EOF
+-- nvim-dap
 local dap = require'dap'
 
 vim.fn.sign_define('DapBreakpoint', { text='🛑', texthl='', linehl='', numhl='' })
@@ -178,7 +187,7 @@ vim.fn.sign_define('DapStopped', { text = '🟢', texthl = '', linehl = '', numh
 dap.adapters.lldb = {
     type = 'executable',
     command = 'lldb-vscode',
-    name = 'lldb'
+    name = 'lldb',
 }
 
 dap.configurations.cpp = {
@@ -195,6 +204,7 @@ dap.configurations.cpp = {
 EOF
 
 nnoremap <silent> <F5> :lua require'dap'.continue()<CR>
+nnoremap <silent> <S-F5> :lua require'dap'.terminate()<CR>
 nnoremap <silent> <F10> :lua require'dap'.step_over()<CR>
 nnoremap <silent> <F11> :lua require'dap'.step_into()<CR>
 nnoremap <silent> <F12> :lua require'dap'.step_out()<CR>
@@ -202,12 +212,8 @@ nnoremap <silent> <leader>b :lua require'dap'.toggle_breakpoint()<CR>
 nnoremap <silent> <leader>B :lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
 nnoremap <silent> <leader>lp :lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
 nnoremap <silent> <leader>dr :lua require'dap'.repl.open()<CR>
-nnoremap <silent> <leader>dl :lua require'dap'.run_last()<CR>
 nnoremap <silent> <leader>di :lua require'dap.ui.widgets'.hover()<CR>
 nnoremap <silent> <leader>ds :lua require'dap.ui.variables'.scopes()<CR>
-
-" nvim-colorizer
-lua require'colorizer'.setup{ 'css', 'scss', 'javascript', 'html' }
 
 " telescope
 nnoremap <leader><enter> <cmd>Telescope buffers<CR>
@@ -215,6 +221,16 @@ nnoremap <leader>a <cmd>Telescope live_grep<CR>
 nnoremap <leader>t <cmd>Telescope find_files<CR>
 nnoremap <leader>f <cmd>Telescope file_browser<CR>
 nnoremap <leader>? <cmd>Telescope help_tags<CR>
+
+" luasnip
+lua require("luasnip/loaders/from_vscode").lazy_load()
+imap <silent><expr> <c-j> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<c-j>'
+inoremap <silent> <c-k> <cmd>lua require('luasnip').jump(-1)<CR>
+snoremap <silent> <c-j> <cmd>lua require('luasnip').jump(1)<CR>
+snoremap <silent> <c-k> <cmd>lua require('luasnip').jump(-1)<CR>
+
+" nvim-colorizer
+lua require'colorizer'.setup{ 'css', 'scss', 'javascript', 'html' }
 
 " Pixem
 let g:pixem_use_rem = 1
