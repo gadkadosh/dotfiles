@@ -29,7 +29,7 @@ vim.cmd([[
 call plug#begin('~/.local/share/nvim/plugged')
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'JoosepAlviste/nvim-ts-context-commentstring'
-Plug 'terrortylor/nvim-comment'
+Plug 'numToStr/Comment.nvim'
 Plug 'windwp/nvim-autopairs'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -49,6 +49,9 @@ Plug 'L3MON4D3/LuaSnip'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'mfussenegger/nvim-dap'
 Plug 'mattn/emmet-vim'
+Plug 'EdenEast/nightfox.nvim'
+Plug 'folke/tokyonight.nvim'
+Plug 'mhartington/oceanic-next'
 Plug 'joshdick/onedark.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'jacoborus/tender.vim'
@@ -65,10 +68,10 @@ vim.g.mapleader = " "
 vim.api.nvim_set_keymap("c", "<C-P>", "<Up>", { noremap = true })
 vim.api.nvim_set_keymap("c", "<C-N>", "<Down>", { noremap = true })
 vim.api.nvim_set_keymap("i", "jj", "<ESC>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>s", ':let @+=@"<CR>', { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>ev", ":e $MYVIMRC<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>sv", ":source $MYVIMRC<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader><space>", ":nohlsearch<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>s", '<cmd>let @+=@"<CR>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>ev", "<cmd>e $MYVIMRC<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>sv", "<cmd>source $MYVIMRC<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
 vim.api.nvim_set_keymap("n", "<leader>,", "<C-^>", { noremap = true })
 
 vim.api.nvim_set_keymap("n", "<C-h>", "<C-W>h", { noremap = true })
@@ -86,11 +89,7 @@ require("nvim-treesitter.configs").setup({
 
 require("nvim-autopairs").setup()
 require("gitsigns").setup()
-require("nvim_comment").setup({
-	hook = function()
-		require("ts_context_commentstring.internal").update_commentstring()
-	end,
-})
+require("Comment").setup()
 
 -- nvim-lsp
 local on_attach = function(client, bufnr)
@@ -115,7 +114,10 @@ local on_attach = function(client, bufnr)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)
 	vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>p", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
-	require("lsp_signature").on_attach({ hi_parameter = "IncSearch" })
+	require("lsp_signature").on_attach({
+		hint_enable = false,
+		-- hi_parameter = "IncSearch",
+	})
 
 	if client.name == "tsserver" or client.name == "jsonls" or client.name == "html" or client.name == "cssls" then
 		client.resolved_capabilities.document_formatting = false
@@ -146,12 +148,27 @@ local lspconfig = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-local servers = { "clangd", "tsserver", "jsonls", "html", "cssls", "vimls", "null-ls" }
+local servers = { "sumneko_lua", "clangd", "tsserver", "jsonls", "html", "cssls", "vimls", "null-ls" }
 for _, server in ipairs(servers) do
-	lspconfig[server].setup({
-		on_attach = on_attach,
-		capabilities = capabilities,
-	})
+	if server == "sumneko_lua" then
+		local sumneko_root_path = vim.fn.stdpath("data") .. "/lsp/lua-language-server"
+		local sumneko_binary = sumneko_root_path .. "/bin/macOS/lua-language-server"
+		lspconfig.sumneko_lua.setup({
+			cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
+			settings = {
+				Lua = {
+					diagnostics = {
+						globals = { "vim" },
+					},
+				},
+			},
+		})
+	else
+		lspconfig[server].setup({
+			on_attach = on_attach,
+			capabilities = capabilities,
+		})
+	end
 end
 
 -- completion
@@ -202,19 +219,19 @@ dap.adapters.lldb = {
 	name = "lldb",
 }
 
-local dapCppExePath
+local dap_exe_path
 dap.configurations.cpp = {
 	{
 		name = "Launch",
 		type = "lldb",
 		request = "launch",
 		program = function()
-			if dapCppExePath ~= nil then
-				print("Executing: " .. dapCppExePath)
-				return dapCppExePath
+			if dap_exe_path ~= nil then
+				print("Executing: " .. dap_exe_path)
+				return dap_exe_path
 			end
-			dapCppExePath = vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-			return dapCppExePath
+			dap_exe_path = vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+			return dap_exe_path
 		end,
 		cwd = "${workspaceFolder}",
 	},
@@ -276,4 +293,4 @@ augroup end
 ]])
 
 -- vim.g.vimsyn_embed = "l"
-vim.cmd("colorscheme tender")
+vim.cmd("colorscheme tokyonight")
