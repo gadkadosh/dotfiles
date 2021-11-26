@@ -58,6 +58,7 @@ require("packer").startup {
         --     enable = true,
         --     threshold = 0,
         -- },
+        log = { level = "debug" },
         display = {
             open_fn = function()
                 return require("packer.util").float { border = "single" }

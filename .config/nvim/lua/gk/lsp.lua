@@ -51,14 +51,14 @@ local lspconfig = require "lspconfig"
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-local null_ls = require "null-ls"
-null_ls.config {
+require("null-ls").config({
     sources = {
-        null_ls.builtins.formatting.prettierd,
-        null_ls.builtins.formatting.stylua,
-        null_ls.builtins.diagnostics.eslint_d,
+        require("null-ls").builtins.formatting.prettierd,
+        require("null-ls").builtins.formatting.stylua,
+        require("null-ls").builtins.formatting.black,
+        require("null-ls").builtins.diagnostics.eslint_d,
     },
-}
+})
 
 local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "vimls", "null-ls" }
 

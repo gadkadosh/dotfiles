@@ -1,15 +1,18 @@
-local exists, telescope = pcall(require, "telescope")
-if not exists then
-    return
-end
+require("telescope").setup {
+    defaults = {
+        layout_config = {
+            preview_width = 0.5,
+        },
+    },
+}
+pcall(require("telescope").load_extension, "fzf")
 
-pcall(telescope.load_extension, "fzf")
-
-vim.api.nvim_set_keymap("n", "<leader><enter>", "<cmd>Telescope buffers<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>Telescope live_grep<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>Telescope find_files<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>Telescope file_browser<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>Telescope help_tags<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader><enter>", "<cmd>lua require'telescope.builtin'.buffers()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>lua require'telescope.builtin'.live_grep()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>lua require'telescope.builtin'.find_files()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.file_browser()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>o", "<cmd>lua require'telescope.builtin'.oldfiles()<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>lua require'telescope.builtin'.help_tags()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>ev", "<cmd>lua require'gk.telescope'.neovim_config()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>ep", "<cmd>lua require'gk.telescope'.neovim_plugins()<CR>", { noremap = true })
 

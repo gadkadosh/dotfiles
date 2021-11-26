@@ -32,6 +32,8 @@ vim.api.nvim_set_keymap("i", "jj", "<ESC>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
 vim.api.nvim_set_keymap("n", "<leader>s", ':let @+=@"<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>,", "<C-^>", { noremap = true })
+vim.api.nvim_set_keymap("n", "[q", ":cprevious<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "]q", ":cnext<CR>", { noremap = true })
 
 -- Edit init.lua gets overridden by telescope
 vim.api.nvim_set_keymap("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true })
@@ -42,8 +44,8 @@ vim.api.nvim_set_keymap("n", "<C-j>", "<C-W>j", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-k>", "<C-W>k", { noremap = true })
 vim.api.nvim_set_keymap("n", "<C-l>", "<C-W>l", { noremap = true })
 
-require "gk.plugins"
 require "gk.globals"
+require "gk.plugins"
 
 vim.cmd [[
 augroup YankHighlight
