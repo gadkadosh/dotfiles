@@ -10,21 +10,40 @@ dap.adapters.lldb = {
     name = "lldb",
 }
 
-local dap_exe_path
+local cpp_program
 dap.configurations.cpp = {
     {
-        name = "Launch",
         type = "lldb",
         request = "launch",
+        name = "Launch",
         program = function()
-            if dap_exe_path ~= nil then
-                print("Executing: " .. dap_exe_path)
-                return dap_exe_path
+            if cpp_program ~= nil then
+                print("Executing: " .. cpp_program)
+                return cpp_program
             end
-            dap_exe_path = vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-            return dap_exe_path
+            cpp_program = vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+            return cpp_program
         end,
         cwd = "${workspaceFolder}",
+    },
+}
+
+dap.adapters.python = {
+    type = "executable",
+    command = "python3",
+    args = { "-m", "debugpy.adapter" },
+}
+
+dap.configurations.python = {
+    {
+        type = "python",
+        request = "launch",
+        name = "Launch",
+        program = "${file}",
+        pythonPath = function()
+            return "python3"
+        end,
+        console = "integratedTerminal",
     },
 }
 

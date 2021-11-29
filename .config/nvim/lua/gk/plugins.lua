@@ -1,17 +1,22 @@
 require("packer").startup {
     function(use)
-        use "wbthomason/packer.nvim"
+        -- use "wbthomason/packer.nvim"
+        use "~/Code/packer.nvim"
         use "lewis6991/impatient.nvim"
 
         use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[require "gk.treesitter"]] }
-        -- use("JoosepAlviste/nvim-ts-context-commentstring")
+        use "JoosepAlviste/nvim-ts-context-commentstring"
 
-        use { "numToStr/Comment.nvim", config = [[require("Comment").setup()]] }
+        use { "numToStr/Comment.nvim", config = [[require"gk.comment"]] }
         use { "windwp/nvim-autopairs", config = [[require("nvim-autopairs").setup()]] }
         use "tpope/vim-surround"
 
         -- Telescope
-        use { "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim", config = [[require "gk.telescope"]] }
+        use {
+            "nvim-telescope/telescope.nvim",
+            requires = "nvim-lua/plenary.nvim",
+            config = [[require "gk.telescope"]],
+        }
         use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
         use "kyazdani42/nvim-web-devicons"
 
@@ -44,7 +49,12 @@ require("packer").startup {
 
         use "tpope/vim-eunuch"
         use "tpope/vim-fugitive"
-        use { "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim", config = [[require("gitsigns").setup()]] }
+        use {
+            "lewis6991/gitsigns.nvim",
+            requires = "nvim-lua/plenary.nvim",
+            event = "BufReadPre",
+            config = [[require("gitsigns").setup()]],
+        }
 
         -- use "mattn/emmet-vim"
         use { "norcalli/nvim-colorizer.lua", config = [[require("colorizer").setup()]] }
@@ -58,7 +68,7 @@ require("packer").startup {
         --     enable = true,
         --     threshold = 0,
         -- },
-        log = { level = "debug" },
+        -- log = { level = "debug" },
         display = {
             open_fn = function()
                 return require("packer.util").float { border = "single" }

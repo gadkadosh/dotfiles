@@ -1,5 +1,6 @@
 require("telescope").setup {
     defaults = {
+        winblend = 10,
         layout_config = {
             preview_width = 0.5,
         },
@@ -22,6 +23,7 @@ function M.neovim_config()
     local opts = {
         prompt_title = "Neovim Config",
         cwd = vim.fn.stdpath "config",
+        hidden = true,
     }
     return require("telescope.builtin").find_files(opts)
 end
