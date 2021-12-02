@@ -1,5 +1,9 @@
+vim.api.nvim_set_keymap("c", "<C-A>", "<Home>", { noremap = true })
 vim.api.nvim_set_keymap("c", "<C-P>", "<Up>", { noremap = true })
 vim.api.nvim_set_keymap("c", "<C-N>", "<Down>", { noremap = true })
+vim.api.nvim_set_keymap("c", "<C-H>", "<Left>", { noremap = true })
+vim.api.nvim_set_keymap("c", "<C-L>", "<Right>", { noremap = true })
+
 vim.api.nvim_set_keymap("i", "jj", "<ESC>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
 vim.api.nvim_set_keymap("n", "<leader>s", ':let @+=@"<CR>', { noremap = true })

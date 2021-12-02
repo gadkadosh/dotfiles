@@ -1,7 +1,6 @@
 local indent = 4
 
 vim.g.mapleader = " "
-vim.opt.hidden = true
 vim.opt.tabstop = indent
 vim.opt.shiftwidth = indent
 vim.opt.expandtab = true
@@ -11,7 +10,7 @@ vim.opt.relativenumber = true
 vim.opt.scrolloff = 3
 vim.optcompleteopt = { "menu", "menuone", "noselect" }
 vim.opt.wildmode = { "longest:full", "full" }
-vim.opt.showbreak = "> "
+vim.opt.showbreak = "  > "
 vim.opt.listchars = { nbsp = "⦸", tab = "→ ", eol = "↵", extends = "»", precedes = "«", trail = "·" }
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -26,7 +25,8 @@ vim.opt.termguicolors = true
 vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.clipboard = "unnamedplus"
-vim.opt.winblend = 10
+vim.opt.pumblend = 10
+-- vim.opt.winblend = 10
 
 vim.cmd [[
 augroup YankHighlight

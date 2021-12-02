@@ -5,9 +5,10 @@ require("packer").startup {
         use "lewis6991/impatient.nvim"
 
         use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[require "gk.treesitter"]] }
+        use { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" }
         use "JoosepAlviste/nvim-ts-context-commentstring"
 
-        use { "numToStr/Comment.nvim", config = [[require"gk.comment"]] }
+        use { "numToStr/Comment.nvim", event = "BufRead", config = [[require"gk.comment"]] }
         use { "windwp/nvim-autopairs", config = [[require("nvim-autopairs").setup()]] }
         use "tpope/vim-surround"
 

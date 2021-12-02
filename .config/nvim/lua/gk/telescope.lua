@@ -5,6 +5,12 @@ require("telescope").setup {
             preview_width = 0.5,
         },
     },
+    pickers = {
+        find_files = {
+            -- fd 8.3.0 returns a prefix './' (telescope PR exists #1532)
+            find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+        },
+    },
 }
 pcall(require("telescope").load_extension, "fzf")
 
@@ -20,21 +26,19 @@ vim.api.nvim_set_keymap("n", "<leader>ep", "<cmd>lua require'gk.telescope'.neovi
 local M = {}
 
 function M.neovim_config()
-    local opts = {
+    return require("telescope.builtin").find_files {
         prompt_title = "Neovim Config",
         cwd = vim.fn.stdpath "config",
         hidden = true,
     }
-    return require("telescope.builtin").find_files(opts)
 end
 
 function M.neovim_plugins()
-    local opts = {
+    return require("telescope.builtin").find_files {
         prompt_title = "Neovim Plugins",
         path_display = { truncate = 3 },
         cwd = vim.fn.stdpath "data" .. "/site/pack/packer",
     }
-    return require("telescope.builtin").find_files(opts)
 end
 
 return M
