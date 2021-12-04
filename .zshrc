@@ -30,7 +30,9 @@ zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'l:|=* r:|=*'
 zstyle ':completion:*' list-colors 'di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
 
 # Frecency based directory switching
-[ -f /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
+# [ -f /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
+export _ZO_FZF_OPTS="--height 40% --reverse --no-sort"
+eval "$(zoxide init zsh)"
 
 # Load fzf tab completion and key bindings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -41,9 +43,12 @@ compinit
 source $HOME/.env
 source $HOME/.aliases
 
-# Pure prompt (npm install -g pure-prompt)
-autoload -U promptinit; promptinit
-prompt pure
+# Pure prompt
+# autoload -U promptinit; promptinit
+# prompt pure
+
+# Starship
+eval "$(starship init zsh)"
 
 # zsh autosuggestions (brew install zsh-autosuggestions)
 [ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh

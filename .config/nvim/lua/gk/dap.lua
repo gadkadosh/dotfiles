@@ -68,4 +68,9 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap("n", "<leader>lb", "<cmd>lua require'dap'.list_breakpoints()<CR>:copen<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.open()<CR>", { silent = true })
 vim.api.nvim_set_keymap("n", "<leader>di", "<cmd>lua require'dap.ui.widgets'.hover()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<leader>ds", "<cmd>lua require'dap.ui.variables'.scopes()<CR>", { silent = true })
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>ds",
+    "<cmd>lua require'dap.ui.widgets'.sidebar(require'dap.ui.widgets'.scopes).open()<CR>",
+    { silent = true }
+)

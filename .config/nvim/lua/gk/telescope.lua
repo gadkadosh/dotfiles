@@ -7,12 +7,13 @@ require("telescope").setup {
     },
     pickers = {
         find_files = {
-            -- fd 8.3.0 returns a prefix './' (telescope PR exists #1532)
             find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
         },
     },
 }
+
 pcall(require("telescope").load_extension, "fzf")
+pcall(require("telescope").load_extension, "zoxide")
 
 vim.api.nvim_set_keymap("n", "<leader><enter>", "<cmd>lua require'telescope.builtin'.buffers()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>lua require'telescope.builtin'.live_grep()<CR>", { noremap = true })
@@ -22,6 +23,12 @@ vim.api.nvim_set_keymap("n", "<leader>o", "<cmd>lua require'telescope.builtin'.o
 vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>lua require'telescope.builtin'.help_tags()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>ev", "<cmd>lua require'gk.telescope'.neovim_config()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>ep", "<cmd>lua require'gk.telescope'.neovim_plugins()<CR>", { noremap = true })
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>cd",
+    "<cmd>lua require'telescope'.extensions.zoxide.list()<CR>",
+    { noremap = true }
+)
 
 local M = {}
 
