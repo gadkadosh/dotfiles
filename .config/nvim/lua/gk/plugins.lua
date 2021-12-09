@@ -1,7 +1,7 @@
 require("packer").startup {
     function(use)
-        -- use "wbthomason/packer.nvim"
-        use "~/Code/packer.nvim"
+        use "wbthomason/packer.nvim"
+        -- use "~/Code/packer.nvim"
         use "lewis6991/impatient.nvim"
 
         use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[require "gk.treesitter"]] }
@@ -73,7 +73,7 @@ require("packer").startup {
         -- log = { level = "debug" },
         display = {
             open_fn = function()
-                return require("packer.util").float { border = "single" }
+                return require("packer.util").float { border = "rounded" }
             end,
         },
     },
