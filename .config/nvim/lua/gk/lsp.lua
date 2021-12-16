@@ -46,19 +46,20 @@ local handler_opts = { border = "rounded" }
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_opts)
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_opts)
 
-require("null-ls").config {
+require("null-ls").setup {
     sources = {
         require("null-ls").builtins.formatting.prettierd,
         require("null-ls").builtins.formatting.stylua,
         require("null-ls").builtins.formatting.black,
         require("null-ls").builtins.diagnostics.eslint_d,
     },
+    on_attach = on_attach,
 }
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "vimls", "null-ls" }
+local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "vimls" }
 
 for _, server in ipairs(servers) do
     require("lspconfig")[server].setup {
@@ -67,10 +68,7 @@ for _, server in ipairs(servers) do
     }
 end
 
-local sumneko_root_path = vim.fn.stdpath "data" .. "/lsp/lua-language-server"
-local sumneko_binary = sumneko_root_path .. "/bin/macOS/lua-language-server"
 require("lspconfig").sumneko_lua.setup {
-    cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
     settings = {
         Lua = {
             runtime = {
