@@ -11,6 +11,7 @@ require("packer").startup {
         use { "numToStr/Comment.nvim", event = "BufRead", config = [[require"gk.comment"]] }
         use { "windwp/nvim-autopairs", config = [[require("nvim-autopairs").setup()]] }
         use "tpope/vim-surround"
+        use { "lukas-reineke/indent-blankline.nvim", config = [[require("gk.indentline")]] }
 
         -- Telescope
         use {
@@ -50,6 +51,7 @@ require("packer").startup {
         use "jacoborus/tender.vim"
 
         use "tpope/vim-eunuch"
+        use "tpope/vim-sleuth"
         use "tpope/vim-fugitive"
         use {
             "lewis6991/gitsigns.nvim",
