@@ -25,7 +25,7 @@ vim.api.nvim_set_keymap("n", "<leader>ev", "<cmd>lua require'gk.telescope'.neovi
 vim.api.nvim_set_keymap("n", "<leader>ep", "<cmd>lua require'gk.telescope'.neovim_plugins()<CR>", { noremap = true })
 vim.api.nvim_set_keymap(
     "n",
-    "<leader>cd",
+    "<leader>z",
     "<cmd>lua require'telescope'.extensions.zoxide.list()<CR>",
     { noremap = true }
 )

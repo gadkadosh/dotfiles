@@ -6,7 +6,6 @@ vim.api.nvim_set_keymap("c", "<C-L>", "<Right>", { noremap = true })
 
 vim.api.nvim_set_keymap("i", "jj", "<ESC>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
-vim.api.nvim_set_keymap("n", "<leader>s", ':let @+=@"<CR>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>,", "<C-^>", { noremap = true })
 vim.api.nvim_set_keymap("n", "[q", ":cprevious<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "]q", ":cnext<CR>", { noremap = true })
