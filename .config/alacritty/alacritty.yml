@@ -10,6 +10,10 @@ font:
 
 key_bindings:
   - { key: Return, mods: Shift|Control, action: ToggleViMode }
+  - { key: LBracket, mods: Shift|Command, chars: "\x01\x70" }
+  - { key: RBracket, mods: Shift|Command, chars: "\x01\x6e" }
+  - { key: Space, mods: Shift|Command, chars: "\x01\x20" }
+  - { key: T, mods: Command, chars: "\x01\x63" }
 
 shell:
   program: /bin/zsh
