@@ -20,6 +20,7 @@ require("packer").startup {
             config = [[require "gk.telescope"]],
         }
         use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
+        use "nvim-telescope/telescope-file-browser.nvim"
         use "jvgrootveld/telescope-zoxide"
         use "kyazdani42/nvim-web-devicons"
 

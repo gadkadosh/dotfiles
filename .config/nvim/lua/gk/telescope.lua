@@ -14,11 +14,17 @@ require("telescope").setup {
 
 pcall(require("telescope").load_extension, "fzf")
 pcall(require("telescope").load_extension, "zoxide")
+pcall(require("telescope").load_extension, "file_browser")
 
 vim.api.nvim_set_keymap("n", "<leader><enter>", "<cmd>lua require'telescope.builtin'.buffers()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>lua require'telescope.builtin'.live_grep()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>t", "<cmd>lua require'telescope.builtin'.find_files()<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<leader>f", "<cmd>lua require'telescope.builtin'.file_browser()<CR>", { noremap = true })
+vim.api.nvim_set_keymap(
+    "n",
+    "<leader>f",
+    "<cmd>lua require'telescope'.extensions.file_browser.file_browser()<CR>",
+    { noremap = true }
+)
 vim.api.nvim_set_keymap("n", "<leader>o", "<cmd>lua require'telescope.builtin'.oldfiles()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>?", "<cmd>lua require'telescope.builtin'.help_tags()<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<leader>ev", "<cmd>lua require'gk.telescope'.neovim_config()<CR>", { noremap = true })
