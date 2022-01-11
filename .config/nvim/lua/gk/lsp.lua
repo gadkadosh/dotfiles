@@ -46,12 +46,14 @@ local handler_opts = { border = "rounded" }
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_opts)
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_opts)
 
-require("null-ls").setup {
+local null_ls = require "null-ls"
+null_ls.setup {
+    debug = true,
     sources = {
-        require("null-ls").builtins.formatting.prettierd,
-        require("null-ls").builtins.formatting.stylua,
-        require("null-ls").builtins.formatting.black,
-        require("null-ls").builtins.diagnostics.eslint_d,
+        null_ls.builtins.formatting.prettierd,
+        null_ls.builtins.formatting.stylua,
+        null_ls.builtins.formatting.black,
+        null_ls.builtins.diagnostics.flake8,
     },
     on_attach = on_attach,
 }
@@ -59,7 +61,7 @@ require("null-ls").setup {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 
-local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "vimls" }
+local servers = { "clangd", "pyright", "tsserver", "eslint", "jsonls", "html", "cssls", "vimls" }
 
 for _, server in ipairs(servers) do
     require("lspconfig")[server].setup {
