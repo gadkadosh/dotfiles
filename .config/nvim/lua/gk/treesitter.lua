@@ -6,6 +6,7 @@ require("nvim-treesitter.configs").setup {
         "cpp",
         "css",
         "glsl",
+        "graphql",
         "html",
         "javascript",
         "json",
@@ -21,7 +22,10 @@ require("nvim-treesitter.configs").setup {
         "yaml",
     },
     highlight = { enable = true },
-    indent = { enable = true },
+    indent = {
+        enable = true,
+        disable = { "python" },
+    },
     incremental_selection = { enable = true },
     playground = { enable = true },
     context_commentstring = {
