@@ -2,8 +2,8 @@
 alias dotfiles="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias d="dotfiles"
 alias ds="dotfiles status"
-# alias vim=nvim
-alias vim="~/neovim/bin/nvim"
+alias vim=nvim
+# alias vim="VIMRUNTIME=~/neovim/share/nvim/runtime ~/neovim/bin/nvim"
 alias top="top -u -s 2"
 alias grep="grep --color"
 alias la="ls -a"

@@ -26,7 +26,7 @@ vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.clipboard = "unnamedplus"
 vim.opt.pumblend = 5
--- vim.opt.winblend = 5
+vim.opt.laststatus = 3
 
 vim.cmd [[
 augroup YankHighlight

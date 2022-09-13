@@ -1,34 +1,39 @@
-local on_attach = function(client, bufnr)
+local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
+
+local on_attach = function(client)
     vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
 
-    local lsp_map = function(mode, lhs, rhs)
-        vim.api.nvim_buf_set_keymap(bufnr, mode, lhs, rhs, { noremap = true })
-    end
+    local opts = { noremap = true }
 
-    lsp_map("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>")
-    lsp_map("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>")
-    lsp_map("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>")
-    lsp_map("n", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-    lsp_map("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
-    lsp_map("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>")
-    lsp_map("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>")
-    lsp_map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>")
-    lsp_map("n", "<leader>p", "<cmd>lua vim.lsp.buf.formatting()<CR>")
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<C-s>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<leader>p", vim.lsp.buf.formatting, opts)
 
     require("lsp_signature").on_attach { hint_enable = false }
 
-    if client.name == "tsserver" or client.name == "jsonls" then
+    if
+        client.name == "tsserver"
+        or client.name == "jsonls"
+        or client.name == "html"
+        or client.name == "sumneko_lua"
+    then
         client.resolved_capabilities.document_formatting = false
         client.resolved_capabilities.document_range_formatting = false
     end
 
-    if client.resolved_capabilities.document_formatting then
-        vim.cmd [[
-            augroup Format
-                autocmd! * <buffer>
-                autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()
-            augroup END
-        ]]
+    if client.server_capabilities.documentFormattingProvider then
+        vim.api.nvim_clear_autocmds { buffer = 0, group = augroup_format }
+        vim.api.nvim_create_autocmd("BufWritePre", {
+            group = augroup_format,
+            buffer = 0,
+            callback = function()
+                vim.lsp.buf.formatting_sync()
+            end,
+        })
     end
 
     if client.resolved_capabilities.document_highlight then
@@ -48,7 +53,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 
 local null_ls = require "null-ls"
 null_ls.setup {
-    debug = true,
     sources = {
         null_ls.builtins.formatting.prettierd,
         null_ls.builtins.formatting.stylua,
@@ -58,14 +62,16 @@ null_ls.setup {
         null_ls.builtins.diagnostics.flake8.with {
             prefer_local = ".venv/bin",
         },
+        null_ls.builtins.diagnostics.stylelint.with {
+            prefer_local = "node_modules/.bin",
+        },
     },
     on_attach = on_attach,
 }
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
+local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-local servers = { "clangd", "pyright", "tsserver", "eslint", "jsonls", "html", "cssls", "vimls" }
+local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "eslint", "vimls" }
 
 for _, server in ipairs(servers) do
     require("lspconfig")[server].setup {
@@ -77,9 +83,6 @@ end
 require("lspconfig").sumneko_lua.setup {
     settings = {
         Lua = {
-            runtime = {
-                version = "LuaJIT",
-            },
             diagnostics = {
                 globals = { "vim" },
             },

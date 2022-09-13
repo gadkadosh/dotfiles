@@ -5,9 +5,11 @@ cmp.setup {
             require("luasnip").lsp_expand(args.body)
         end,
     },
-    mapping = {
+    mapping = cmp.mapping.preset.insert {
         ["<C-d>"] = cmp.mapping.scroll_docs(-1),
         ["<C-f>"] = cmp.mapping.scroll_docs(1),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<C-e>"] = cmp.mapping.abort(),
     },
     formatting = {
         format = require("lspkind").cmp_format {
@@ -24,11 +26,12 @@ cmp.setup {
     experimental = {
         ghost_text = true,
     },
-    sources = {
+    sources = cmp.config.sources({
         { name = "nvim_lsp" },
-        { name = "nvim_lua" },
         { name = "luasnip" },
-        { name = "path" },
+    }, {
         { name = "buffer", keyword_length = 4 },
-    },
+        { name = "nvim_lua" },
+        { name = "path" },
+    }),
 }

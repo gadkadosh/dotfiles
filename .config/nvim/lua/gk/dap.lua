@@ -29,11 +29,29 @@ dap.configurations.cpp = {
     },
 }
 
-dap.adapters.python = {
-    type = "executable",
-    command = "python3",
-    args = { "-m", "debugpy.adapter" },
-}
+local get_python_path = function()
+    local venv_path = os.getenv "VIRTUAL_ENV"
+    if venv_path then
+        return venv_path .. "/bin/python"
+    end
+    return "python3"
+end
+
+dap.adapters.python = function(cb, config)
+    if config.request == "launch" then
+        cb {
+            type = "executable",
+            command = get_python_path(),
+            args = { "-m", "debugpy.adapter" },
+        }
+    else
+        cb {
+            type = "server",
+            host = "127.0.0.1",
+            port = 5678,
+        }
+    end
+end
 
 dap.configurations.python = {
     {
@@ -41,11 +59,23 @@ dap.configurations.python = {
         request = "launch",
         name = "Launch",
         program = "${file}",
-        pythonPath = function()
-            return "python3"
-        end,
         console = "integratedTerminal",
     },
+    -- {
+    --     type = "python",
+    --     request = "launch",
+    --     name = "Django runserver",
+    --     program = vim.fn.getcwd() .. "/manage.py",
+    --     args = { "runserver" },
+    --     console = "integratedTerminal",
+    -- },
+    -- {
+    --     type = "python",
+    --     request = "attach",
+    --     name = "Attach to Django",
+    --     host = "127.0.0.1",
+    --     port = 5678,
+    -- },
 }
 
 vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require'dap'.continue()<CR>", { silent = true })
