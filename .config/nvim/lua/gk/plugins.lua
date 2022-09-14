@@ -3,47 +3,42 @@ require("packer").startup {
         use "wbthomason/packer.nvim"
         use "lewis6991/impatient.nvim"
 
-        use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate", config = [[require "gk.treesitter"]] }
+        use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
         use { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" }
         use "JoosepAlviste/nvim-ts-context-commentstring"
-
-        use { "numToStr/Comment.nvim", event = "BufRead", config = [[require"gk.comment"]] }
-        use {
-            "windwp/nvim-autopairs",
-            config = function()
-                require("nvim-autopairs").setup()
-            end,
-        }
+        use "numToStr/Comment.nvim"
+        use "windwp/nvim-autopairs"
         use "windwp/nvim-ts-autotag"
         use "tpope/vim-surround"
         use "lukas-reineke/indent-blankline.nvim"
 
         -- Telescope
-        use { "nvim-telescope/telescope.nvim", requires = "nvim-lua/plenary.nvim" }
-        use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
-        use "nvim-telescope/telescope-file-browser.nvim"
-        use "jvgrootveld/telescope-zoxide"
+        use "nvim-lua/plenary.nvim"
         use "kyazdani42/nvim-web-devicons"
+        use "nvim-telescope/telescope.nvim"
+        use "nvim-telescope/telescope-file-browser.nvim"
+
+        -- Statusline
+        use "nvim-lualine/lualine.nvim"
 
         -- LSP
-        use { "jose-elias-alvarez/null-ls.nvim", requires = { "neovim/nvim-lspconfig", "nvim-lua/plenary.nvim" } }
-        use { "neovim/nvim-lspconfig", config = [[require "gk.lsp"]] }
-        use "ray-x/lsp_signature.nvim"
+        use "neovim/nvim-lspconfig"
+        use "jose-elias-alvarez/null-ls.nvim"
         use "glepnir/lspsaga.nvim"
 
-        use { "hrsh7th/nvim-cmp", config = [[require "gk.completion"]] }
+        use "hrsh7th/nvim-cmp"
         use "onsails/lspkind-nvim"
         use "hrsh7th/cmp-nvim-lsp"
         use "hrsh7th/cmp-nvim-lua"
         use "hrsh7th/cmp-path"
         use "hrsh7th/cmp-buffer"
+        use "hrsh7th/cmp-nvim-lsp-signature-help"
         use "saadparwaiz1/cmp_luasnip"
-
-        use { "L3MON4D3/LuaSnip", config = [[require "gk.luasnip"]] }
+        use "L3MON4D3/LuaSnip"
         use "rafamadriz/friendly-snippets"
 
         -- DAP
-        use { "mfussenegger/nvim-dap", config = [[require "gk.dap"]] }
+        use "mfussenegger/nvim-dap"
 
         -- Colorschemes
         use "folke/tokyonight.nvim"
@@ -56,7 +51,7 @@ require("packer").startup {
         use "tpope/vim-eunuch"
         use "tpope/vim-sleuth"
         use "tpope/vim-fugitive"
-        use { "lewis6991/gitsigns.nvim", requires = "nvim-lua/plenary.nvim", event = "BufReadPre" }
+        use "lewis6991/gitsigns.nvim"
 
         use {
             "norcalli/nvim-colorizer.lua",

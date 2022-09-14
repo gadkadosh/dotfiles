@@ -7,4 +7,6 @@ require "gk.mappings"
 require "gk.diagnostic"
 require "gk.plugins"
 
-require("tokyonight").colorscheme()
+local tokyonight = require "tokyonight"
+tokyonight.setup { transparent = true }
+tokyonight.colorscheme()

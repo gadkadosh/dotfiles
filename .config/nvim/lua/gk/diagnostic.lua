@@ -1,5 +1,5 @@
 vim.diagnostic.config {
-    virtual_text = { source = "if_many" },
+    virtual_text = { source = "if_many", prefix = "●" },
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
 }

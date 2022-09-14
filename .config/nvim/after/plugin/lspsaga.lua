@@ -4,6 +4,9 @@ require("lspsaga").init_lsp_saga {
     code_action_lightbulb = {
         sign = false,
     },
+    finder_action_keys = {
+        open = "<CR>",
+    },
 }
 
 local opts = { noremap = true }

@@ -26,12 +26,12 @@ cmp.setup {
     experimental = {
         ghost_text = true,
     },
-    sources = cmp.config.sources({
+    sources = cmp.config.sources {
+        { name = "path" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
-    }, {
+        { name = "nvim_lsp_signature_help" },
         { name = "buffer", keyword_length = 4 },
         { name = "nvim_lua" },
-        { name = "path" },
-    }),
+    },
 }

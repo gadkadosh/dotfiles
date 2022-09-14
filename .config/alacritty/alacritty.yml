@@ -1,6 +1,10 @@
 window:
+  opacity: 0.9
   decorations: buttonless
   startup_mode: Maximized
+  padding:
+    x: 6
+    y: 6
 
 font:
   normal:
@@ -14,6 +18,9 @@ key_bindings:
   - { key: RBracket, mods: Shift|Command, chars: "\x01\x6e" }
   - { key: Space, mods: Shift|Command, chars: "\x01\x20" }
   - { key: T, mods: Command, chars: "\x01\x63" }
+  - { key: Comma, mods: Command, chars: "\x01\x2c" }
+  - { key: K, mods: Command, chars: "\x01\x73" }
+  - { key: L, mods: Command, chars: "\x01\x4c" }
 
 shell:
   program: /bin/zsh
