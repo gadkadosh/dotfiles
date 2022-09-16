@@ -13,14 +13,14 @@ font:
   size: 14
 
 key_bindings:
-  - { key: Return, mods: Shift|Control, action: ToggleViMode }
+  - { key: Return, mods: Command, chars: "\x01\x5b" }
   - { key: LBracket, mods: Shift|Command, chars: "\x01\x70" }
   - { key: RBracket, mods: Shift|Command, chars: "\x01\x6e" }
   - { key: Space, mods: Shift|Command, chars: "\x01\x20" }
   - { key: T, mods: Command, chars: "\x01\x63" }
   - { key: Comma, mods: Command, chars: "\x01\x2c" }
-  - { key: K, mods: Command, chars: "\x01\x73" }
-  - { key: L, mods: Command, chars: "\x01\x4c" }
+  - { key: L, mods: Command, chars: "\x01\x73" }
+  - { key: K, mods: Command, chars: "\x01\x4c" }
 
 shell:
   program: /bin/zsh
