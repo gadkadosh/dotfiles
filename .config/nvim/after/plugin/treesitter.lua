@@ -7,6 +7,7 @@ require("nvim-treesitter.configs").setup {
         "css",
         "glsl",
         "graphql",
+        "hcl",
         "html",
         "javascript",
         "json",
