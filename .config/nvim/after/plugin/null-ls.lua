@@ -1,20 +1,9 @@
-local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
+local lsp = require "gk.lsp"
 
 local null_ls = require "null-ls"
 
 null_ls.setup {
-    on_attach = function(client)
-        if client.server_capabilities.documentFormattingProvider then
-            vim.api.nvim_clear_autocmds { buffer = 0, group = augroup_format }
-            vim.api.nvim_create_autocmd("BufWritePre", {
-                group = augroup_format,
-                buffer = 0,
-                callback = function()
-                    vim.lsp.buf.formatting_sync()
-                end,
-            })
-        end
-    end,
+    on_attach = lsp.create_format_autocmd,
     sources = {
         null_ls.builtins.formatting.prettierd,
         null_ls.builtins.formatting.stylua,

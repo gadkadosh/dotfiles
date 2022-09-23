@@ -1,4 +1,5 @@
 local lspconfig = require "lspconfig"
+local lsp = require "gk.lsp"
 
 local on_attach = function(client)
     vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -23,6 +24,8 @@ local on_attach = function(client)
         client.resolved_capabilities.document_range_formatting = false
     end
 
+    lsp.create_format_autocmd(client)
+
     if client.resolved_capabilities.document_highlight then
         vim.cmd [[
             augroup lsp_document_highlight
@@ -40,7 +43,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "eslint", "vimls" }
+local servers = { "clangd", "pyright", "tsserver", "jsonls", "html", "cssls", "eslint", "vimls", "terraformls" }
 
 for _, server in ipairs(servers) do
     lspconfig[server].setup {

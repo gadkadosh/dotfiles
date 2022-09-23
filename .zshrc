@@ -51,3 +51,6 @@ eval "$(starship init zsh)"
 
 # zsh syntax highlighting (brew install zsh-syntax-highlighting)
 [ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/terraform terraform
