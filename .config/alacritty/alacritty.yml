@@ -10,7 +10,7 @@ font:
   normal:
     family: FiraCode Nerd Font
     style: Regular
-  size: 14
+  size: 13.5
 
 key_bindings:
   - { key: Return, mods: Command, chars: "\x01\x5b" }
