@@ -4,6 +4,8 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 bindkey '^[[Z' reverse-menu-complete    # Shift-tab
+bindkey -v
+bindkey jj vi-cmd-mode
 
 # Arrows search history
 autoload -U up-line-or-beginning-search

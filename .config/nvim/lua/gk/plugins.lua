@@ -17,6 +17,7 @@ require("packer").startup {
         use "kyazdani42/nvim-web-devicons"
         use "nvim-telescope/telescope.nvim"
         use "nvim-telescope/telescope-file-browser.nvim"
+        use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
 
         -- Statusline
         use "nvim-lualine/lualine.nvim"
@@ -29,7 +30,6 @@ require("packer").startup {
         use "hrsh7th/nvim-cmp"
         use "onsails/lspkind-nvim"
         use "hrsh7th/cmp-nvim-lsp"
-        use "hrsh7th/cmp-nvim-lua"
         use "hrsh7th/cmp-path"
         use "hrsh7th/cmp-buffer"
         use "hrsh7th/cmp-nvim-lsp-signature-help"

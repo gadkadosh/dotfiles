@@ -19,7 +19,6 @@ key_bindings:
   - { key: Space, mods: Shift|Command, chars: "\x01\x20" }
   - { key: T, mods: Command, chars: "\x01\x63" }
   - { key: Comma, mods: Command, chars: "\x01\x2c" }
-  - { key: L, mods: Command, chars: "\x01\x73" }
   - { key: K, mods: Command, chars: "\x01\x4c" }
 
 shell:
