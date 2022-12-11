@@ -1,4 +1,8 @@
-local dap = require "dap"
+local ok, dap = pcall( require, "dap")
+if not ok then
+    return
+end
+
 dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
 vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })

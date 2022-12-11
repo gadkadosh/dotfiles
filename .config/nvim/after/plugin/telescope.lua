@@ -1,4 +1,8 @@
-local telescope = require "telescope"
+local ok, telescope = pcall(require, "telescope")
+if not ok then
+    return
+end
+
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 
@@ -35,7 +39,8 @@ telescope.setup {
         },
     },
 }
-require("telescope").load_extension "fzf"
+
+pcall(telescope.load_extension, "fzf")
 pcall(telescope.load_extension, "file_browser")
 
 local neovim_config = function()
@@ -55,8 +60,8 @@ end
 
 local lsp_references = function()
     builtin.lsp_references {
-        fname_width = 50,
-        trim_text = true,
+        fname_width = 180,
+        show_line = false,
     }
 end
 

@@ -1,3 +1,7 @@
+if not pcall(require, "nvim-treesitter") then
+    return
+end
+
 require("nvim-treesitter.configs").setup {
     ensure_installed = {
         "bash",
@@ -14,6 +18,7 @@ require("nvim-treesitter.configs").setup {
         "lua",
         "python",
         "query",
+        "rust",
         "scss",
         "toml",
         "tsx",
@@ -23,11 +28,6 @@ require("nvim-treesitter.configs").setup {
         "yaml",
     },
     highlight = { enable = true },
-    indent = {
-        enable = true,
-        disable = { "python" },
-    },
-    incremental_selection = { enable = true },
     playground = { enable = true },
     context_commentstring = {
         enable = true,

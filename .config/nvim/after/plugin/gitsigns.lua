@@ -1,4 +1,9 @@
-require("gitsigns").setup {
+local ok, gitsigns = pcall(require, "gitsigns")
+if not ok then
+    return
+end
+
+gitsigns.setup {
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 
@@ -39,12 +44,12 @@ require("gitsigns").setup {
         map("n", "<leader>hb", function()
             gs.blame_line { full = true }
         end)
-        map("n", "<leader>cb", gs.toggle_current_line_blame)
+        map("n", "<leader>tb", gs.toggle_current_line_blame)
         map("n", "<leader>hd", gs.diffthis)
         map("n", "<leader>hD", function()
             gs.diffthis "~"
         end)
-        map("n", "<leader>cd", gs.toggle_deleted)
+        map("n", "<leader>td", gs.toggle_deleted)
 
         -- Text object
         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")

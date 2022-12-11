@@ -3,13 +3,17 @@ P = function(v)
     return v
 end
 
-if pcall(require, "plenary") then
-    RELOAD = function(...)
-        return require("plenary.reload").reload_module(...)
-    end
+local ok, plenary_reload = pcall(require, "plenary.reload")
 
-    R = function(name)
-        RELOAD(name)
-        return require(name)
-    end
+if not ok then
+    return
+end
+
+RELOAD = function(...)
+    return plenary_reload.reload_module(...)
+end
+
+R = function(name)
+    RELOAD(name)
+    return require(name)
 end

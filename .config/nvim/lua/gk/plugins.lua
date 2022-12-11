@@ -1,4 +1,9 @@
-require("packer").startup {
+local ok, packer = pcall(require, "packer")
+if not ok then
+    return
+end
+
+packer.startup {
     function(use)
         use "wbthomason/packer.nvim"
         use "lewis6991/impatient.nvim"
@@ -35,7 +40,6 @@ require("packer").startup {
         use "hrsh7th/cmp-nvim-lsp-signature-help"
         use "saadparwaiz1/cmp_luasnip"
         use "L3MON4D3/LuaSnip"
-        use "rafamadriz/friendly-snippets"
 
         -- DAP
         use "mfussenegger/nvim-dap"
@@ -45,20 +49,13 @@ require("packer").startup {
         use "EdenEast/nightfox.nvim"
         use "mhartington/oceanic-next"
         use "joshdick/onedark.vim"
-        use "arcticicestudio/nord-vim"
-        use "jacoborus/tender.vim"
 
         use "tpope/vim-eunuch"
         use "tpope/vim-sleuth"
         use "tpope/vim-fugitive"
         use "lewis6991/gitsigns.nvim"
 
-        use {
-            "norcalli/nvim-colorizer.lua",
-            config = function()
-                require("colorizer").setup()
-            end,
-        }
+        use "norcalli/nvim-colorizer.lua"
         use { "dstein64/vim-startuptime", cmd = "StartupTime" }
 
         -- My Plugins

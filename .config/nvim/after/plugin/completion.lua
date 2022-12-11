@@ -1,4 +1,8 @@
-local cmp = require "cmp"
+local ok, cmp = pcall(require, "cmp")
+if not ok then
+    return
+end
+
 cmp.setup {
     snippet = {
         expand = function(args)
@@ -27,10 +31,10 @@ cmp.setup {
         ghost_text = true,
     },
     sources = cmp.config.sources {
-        { name = "path" },
+        { name = "nvim_lsp_signature_help" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
-        { name = "nvim_lsp_signature_help" },
+        { name = "path" },
         { name = "buffer", keyword_length = 4 },
     },
 }

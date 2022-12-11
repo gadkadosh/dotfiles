@@ -7,6 +7,8 @@ require "gk.mappings"
 require "gk.diagnostic"
 require "gk.plugins"
 
-local tokyonight = require "tokyonight"
-tokyonight.setup { transparent = true }
-tokyonight.colorscheme()
+local ok, tokyonight = pcall(require, "tokyonight")
+if ok then
+    tokyonight.setup { transparent = true }
+    tokyonight.colorscheme()
+end

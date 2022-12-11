@@ -1,4 +1,7 @@
-local lspconfig = require "lspconfig"
+local ok, lspconfig = pcall(require, "lspconfig")
+if not ok then
+    return
+end
 
 local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
 
