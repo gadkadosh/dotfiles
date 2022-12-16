@@ -19,7 +19,7 @@ telescope.setup {
         },
         winblend = 10,
         sorting_strategy = "ascending",
-        path_display = { "smart" },
+        path_display = { truncate = 2 },
         layout_config = {
             horizontal = {
                 prompt_position = "top",
