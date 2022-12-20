@@ -18,7 +18,6 @@ key_bindings:
   - { key: RBracket, mods: Shift|Command, chars: "\x01\x6e" }
   - { key: Space, mods: Shift|Command, chars: "\x01\x20" }
   - { key: T, mods: Command, chars: "\x01\x63" }
-  - { key: Comma, mods: Command, chars: "\x01\x2c" }
   - { key: K, mods: Command, chars: "\x01\x4c" }
 
 shell:
