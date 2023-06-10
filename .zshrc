@@ -40,9 +40,8 @@ autoload -Uz compinit
 compinit
 
 # Frecency based directory switching
-# [ -f /usr/local/etc/profile.d/z.sh ] && source /usr/local/etc/profile.d/z.sh
+[ -f /opt/homebrew/etc/profile.d/z.sh ] && source /opt/homebrew/etc/profile.d/z.sh
 export _ZO_FZF_OPTS="--height 40% --reverse --no-sort"
-eval "$(zoxide init zsh)"
 
 # Load fzf tab completion and key bindings
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
