@@ -3,6 +3,26 @@ if not ok then
     return
 end
 
+require("mason").setup()
+
+local servers = {
+    "clangd",
+    "cssls",
+    "dockerls",
+    "eslint",
+    "graphql",
+    "html",
+    "jsonls",
+    "pyright",
+    "terraformls",
+    "tsserver",
+    "lua_ls",
+}
+
+require("mason-lspconfig").setup {
+    ensure_installed = servers,
+}
+
 local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
 
 local format_document = function()
@@ -14,16 +34,15 @@ local format_document = function()
     }
 end
 
-local on_attach = function(client)
+local on_attach = function(client, bufnr)
     vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
 
-    local opts = { noremap = true }
+    local opts = { buffer = bufnr }
 
     vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-    vim.keymap.set("n", "<C-s>", vim.lsp.buf.signature_help, opts)
-    vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
+    vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
     vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>p", format_document, opts)
 
@@ -52,20 +71,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-local servers = {
-    "clangd",
-    "pyright",
-    "tsserver",
-    "jsonls",
-    "html",
-    "cssls",
-    "eslint",
-    "vimls",
-    "terraformls",
-    "graphql",
-    "dockerls",
-}
-
 for _, server in ipairs(servers) do
     lspconfig[server].setup {
         on_attach = on_attach,
@@ -73,7 +78,7 @@ for _, server in ipairs(servers) do
     }
 end
 
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
     settings = {
         Lua = {
             diagnostics = {
@@ -95,7 +100,7 @@ null_ls.setup {
         null_ls.builtins.formatting.black,
         null_ls.builtins.diagnostics.flake8.with {
             cwd = function(params)
-                return require("lspconfig").util.root_pattern "setup.cfg"(params.bufname)
+                return require("lspconfig").util.root_pattern "setup.cfg" (params.bufname)
             end,
         },
         null_ls.builtins.diagnostics.stylelint.with {
@@ -103,3 +108,5 @@ null_ls.setup {
         },
     },
 }
+
+require("fidget").setup()

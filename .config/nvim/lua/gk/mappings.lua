@@ -22,6 +22,8 @@ vim.keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
 vim.keymap.set("n", "<leader>,", "<C-^>", { noremap = true })
+vim.keymap.set("n", "[b", ":bprevious<CR>", { noremap = true })
+vim.keymap.set("n", "]b", ":bnext<CR>", { noremap = true })
 vim.keymap.set("n", "[q", ":cprevious<CR>", { noremap = true })
 vim.keymap.set("n", "]q", ":cnext<CR>", { noremap = true })
 

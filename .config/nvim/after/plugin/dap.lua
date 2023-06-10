@@ -1,7 +1,9 @@
-local ok, dap = pcall( require, "dap")
+local ok, dap = pcall(require, "dap")
 if not ok then
     return
 end
+
+require "dapui".setup()
 
 dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
@@ -32,6 +34,8 @@ dap.configurations.cpp = {
         cwd = "${workspaceFolder}",
     },
 }
+
+dap.configurations.c = dap.configurations.cpp
 
 local get_python_path = function()
     local venv_path = os.getenv "VIRTUAL_ENV"
@@ -82,30 +86,20 @@ dap.configurations.python = {
     -- },
 }
 
-vim.api.nvim_set_keymap("n", "<F5>", "<cmd>lua require'dap'.continue()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<S-F5>", "<cmd>lua require'dap'.terminate()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<F10>", "<cmd>lua require'dap'.step_over()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<F11>", "<cmd>lua require'dap'.step_into()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<F12>", "<cmd>lua require'dap'.step_out()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<leader>b", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { silent = true })
-vim.api.nvim_set_keymap(
+vim.keymap.set("n", "<F5>", function() require 'dap'.continue() end)
+vim.keymap.set("n", "<S-F5>", function() require 'dap'.terminate() end)
+vim.keymap.set("n", "<F10>", function() require 'dap'.step_over() end)
+vim.keymap.set("n", "<F11>", function() require 'dap'.step_into() end)
+vim.keymap.set("n", "<F12>", function() require 'dap'.step_out() end)
+vim.keymap.set("n", "<leader>b", function() require 'dap'.toggle_breakpoint() end)
+vim.keymap.set(
     "n",
     "<leader>B",
-    "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>",
-    { silent = true }
+    function() require 'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: ')) end
 )
-vim.api.nvim_set_keymap(
+vim.keymap.set(
     "n",
     "<leader>lp",
-    '<cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',
-    { silent = true }
+    function() require "dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end
 )
-vim.api.nvim_set_keymap("n", "<leader>lb", "<cmd>lua require'dap'.list_breakpoints()<CR>:copen<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.open()<CR>", { silent = true })
-vim.api.nvim_set_keymap("n", "<leader>di", "<cmd>lua require'dap.ui.widgets'.hover()<CR>", { silent = true })
-vim.api.nvim_set_keymap(
-    "n",
-    "<leader>ds",
-    "<cmd>lua require'dap.ui.widgets'.sidebar(require'dap.ui.widgets'.scopes).open()<CR>",
-    { silent = true }
-)
+vim.keymap.set("n", "<leader>du", function() require 'dapui'.toggle() end)

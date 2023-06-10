@@ -3,14 +3,15 @@ if not ok then
     return
 end
 
-lspsaga.init_lsp_saga {
-    border_style = "rounded",
-    rename_in_select = false,
-    code_action_lightbulb = {
-        sign = false,
+lspsaga.setup {
+    ui = {
+        border = 'rounded'
     },
-    finder_action_keys = {
-        open = "<CR>",
+    rename = {
+        in_select = false
+    },
+    lightbulb = {
+        sign = false
     },
 }
 

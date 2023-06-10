@@ -29,7 +29,7 @@ vim.opt.pumblend = 5
 vim.opt.laststatus = 3
 vim.opt.winbar = "%f"
 
-local augroup_yank_highlight = vim.api.nvim_create_augroup("YankHighlight", { clear = true })
+local augroup_yank_highlight = vim.api.nvim_create_augroup("YankHighlight", {})
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = augroup_yank_highlight,
     callback = function()

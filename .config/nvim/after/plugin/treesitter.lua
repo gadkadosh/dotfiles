@@ -16,6 +16,8 @@ require("nvim-treesitter.configs").setup {
         "javascript",
         "json",
         "lua",
+        "markdown",
+        "markdown_inline",
         "python",
         "query",
         "rust",
@@ -28,6 +30,15 @@ require("nvim-treesitter.configs").setup {
         "yaml",
     },
     highlight = { enable = true },
+    incremental_selection = {
+        enable = true,
+        keymaps = {
+            init_selection = "<c-cr>",
+            node_incremental = "<c-cr>",
+            scope_incremental = "<c-s>",
+            node_decremental = "<c-backspace>",
+        },
+    },
     playground = { enable = true },
     context_commentstring = {
         enable = true,
