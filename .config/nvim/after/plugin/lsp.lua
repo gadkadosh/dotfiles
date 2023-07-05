@@ -14,6 +14,7 @@ local servers = {
     "html",
     "jsonls",
     "pyright",
+    "tailwindcss",
     "terraformls",
     "tsserver",
     "lua_ls",
