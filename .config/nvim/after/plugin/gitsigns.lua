@@ -7,49 +7,20 @@ gitsigns.setup {
     on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
 
-        local function map(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
-        end
-
         -- Navigation
-        map("n", "]c", function()
-            if vim.wo.diff then
-                return "]c"
-            end
-            vim.schedule(function()
-                gs.next_hunk()
-            end)
-            return "<Ignore>"
-        end, { expr = true })
-
-        map("n", "[c", function()
-            if vim.wo.diff then
-                return "[c"
-            end
-            vim.schedule(function()
-                gs.prev_hunk()
-            end)
-            return "<Ignore>"
-        end, { expr = true })
+        vim.keymap.set("n", "[c", gs.prev_hunk, { buffer = bufnr, desc = "Go to previous hunk" })
+        vim.keymap.set("n", "]c", gs.next_hunk, { buffer = bufnr, desc = "Go to next hunk" })
 
         -- Actions
-        map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
-        map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
-        map("n", "<leader>hS", gs.stage_buffer)
-        map("n", "<leader>hu", gs.undo_stage_hunk)
-        map("n", "<leader>hR", gs.reset_buffer)
-        map("n", "<leader>hp", gs.preview_hunk)
-        map("n", "<leader>hb", function()
+        vim.keymap.set({ "n", "v" }, "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "[H]unk [S]tage" })
+        vim.keymap.set({ "n", "v" }, "<leader>hr", gs.reset_hunk, { buffer = bufnr, desc = "[H]unk [R]eset" })
+        vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk, { buffer = bufnr, desc = "[H]unk [U]ndo stage" })
+        vim.keymap.set("n", "<leader>hS", gs.stage_buffer, { buffer = bufnr, desc = "Stage buffer" })
+        vim.keymap.set("n", "<leader>hR", gs.reset_buffer, { buffer = bufnr, desc = "Reset buffer" })
+        vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr, desc = "[H]unk [P]review" })
+        vim.keymap.set("n", "<leader>hb", function()
             gs.blame_line { full = true }
-        end)
-        map("n", "<leader>hd", gs.diffthis)
-        map("n", "<leader>hD", function()
-            gs.diffthis "~"
-        end)
-
-        -- Text object
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+        end, { buffer = bufnr, desc = "Blame line" })
+        vim.keymap.set("n", "<leader>hd", gs.diffthis, { buffer = bufnr, desc = "Diff this" })
     end,
 }

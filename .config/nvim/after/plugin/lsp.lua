@@ -40,12 +40,14 @@ local on_attach = function(client, bufnr)
 
     local opts = { buffer = bufnr }
 
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "[G]o to [D]efinition" })
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "[G]o to [D]eclaration" })
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
     vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, opts)
     vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
     vim.keymap.set("n", "<leader>p", format_document, opts)
+    vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { buffer = bufnr, desc = "[C]ode [Action]" })
+    vim.keymap.set({ "n", "v" }, "<leader>rn", vim.lsp.buf.rename, { buffer = bufnr, desc = "[R]e[n]ame" })
 
     if client.server_capabilities.documentHighlightProvider then
         vim.cmd [[
@@ -82,8 +84,17 @@ end
 lspconfig.lua_ls.setup {
     settings = {
         Lua = {
+            runtime = {
+                version = "LuaJIT",
+            },
             diagnostics = {
                 globals = { "vim" },
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file("", true),
+            },
+            telemetry = {
+                enable = false,
             },
         },
     },
@@ -101,7 +112,7 @@ null_ls.setup {
         null_ls.builtins.formatting.black,
         null_ls.builtins.diagnostics.flake8.with {
             cwd = function(params)
-                return require("lspconfig").util.root_pattern "setup.cfg" (params.bufname)
+                return require("lspconfig").util.root_pattern "setup.cfg"(params.bufname)
             end,
         },
         null_ls.builtins.diagnostics.stylelint.with {
@@ -109,5 +120,3 @@ null_ls.setup {
         },
     },
 }
-
-require("fidget").setup()

@@ -27,8 +27,8 @@ vim.keymap.set("n", "]b", ":bnext<CR>", { noremap = true })
 vim.keymap.set("n", "[q", ":cprevious<CR>", { noremap = true })
 vim.keymap.set("n", "]q", ":cnext<CR>", { noremap = true })
 
-vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true })
-vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true, desc = "[E]dit [V]im config" })
+vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { noremap = true, desc = "Source Vim config" })
 vim.keymap.set("n", "<leader>x", execute_file, { noremap = true })
 
 vim.keymap.set("n", "<C-h>", "<C-W>h", { noremap = true })

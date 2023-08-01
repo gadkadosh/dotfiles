@@ -7,4 +7,4 @@ require "gk.mappings"
 require "gk.diagnostic"
 require "gk.plugins"
 
-vim.cmd [[colorscheme tokyonight]]
+vim.cmd [[ colorscheme tokyonight]]

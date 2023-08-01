@@ -1,37 +1,68 @@
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
+    vim.fn.system {
         "git",
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
         "--branch=stable", -- latest stable release
         lazypath,
-    })
+    }
 end
 vim.opt.rtp:prepend(lazypath)
 
-require 'lazy'.setup({
+require("lazy").setup {
     "lewis6991/impatient.nvim",
-
-    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-    { "nvim-treesitter/playground",      cmd = "TSPlaygroundToggle" },
+    {
+        "nvim-treesitter/nvim-treesitter",
+        build = ":TSUpdate",
+    },
+    {
+        "nvim-treesitter/playground",
+        cmd = "TSPlaygroundToggle",
+    },
     "JoosepAlviste/nvim-ts-context-commentstring",
     "numToStr/Comment.nvim",
-    "windwp/nvim-autopairs",
+    {
+        "windwp/nvim-autopairs",
+        config = true,
+    },
     "windwp/nvim-ts-autotag",
     "tpope/vim-surround",
-    "lukas-reineke/indent-blankline.nvim",
+    {
+        "lukas-reineke/indent-blankline.nvim",
+        opts = {
+            char = "┊",
+            show_trailing_blankline_indent = false,
+        },
+    },
+    {
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {},
+    },
 
     -- Telescope
-    "nvim-lua/plenary.nvim",
     "kyazdani42/nvim-web-devicons",
-    "nvim-telescope/telescope.nvim",
+    {
+        "nvim-telescope/telescope.nvim",
+        dependencies = { "nvim-lua/plenary.nvim" },
+    },
     "nvim-telescope/telescope-file-browser.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 
     -- Statusline
-    "nvim-lualine/lualine.nvim",
+    {
+        "nvim-lualine/lualine.nvim",
+        opts = {
+            winbar = {
+                lualine_b = { { "filename", path = 1 } },
+            },
+            inactive_winbar = {
+                lualine_b = { { "filename", path = 1 } },
+            },
+        },
+    },
 
     -- LSP
     {
@@ -39,11 +70,10 @@ require 'lazy'.setup({
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
-            "j-hui/fidget.nvim",
+            { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
         },
     },
     "jose-elias-alvarez/null-ls.nvim",
-    "glepnir/lspsaga.nvim",
 
     "hrsh7th/nvim-cmp",
     "onsails/lspkind-nvim",
@@ -51,23 +81,19 @@ require 'lazy'.setup({
     "hrsh7th/cmp-path",
     "hrsh7th/cmp-buffer",
     "hrsh7th/cmp-nvim-lsp-signature-help",
-    "saadparwaiz1/cmp_luasnip",
+    { "saadparwaiz1/cmp_luasnip" },
     "L3MON4D3/LuaSnip",
 
     -- DAP
     "mfussenegger/nvim-dap",
     "rcarriga/nvim-dap-ui",
 
-    -- Colorschemes
     {
         "folke/tokyonight.nvim",
-        config = function()
-            require 'tokyonight'.setup { style = "moon", transparent = true }
-        end
+        lazy = false,
+        priority = 1000,
+        opts = { style = "moon", transparent = true },
     },
-    "EdenEast/nightfox.nvim",
-    "mhartington/oceanic-next",
-    "joshdick/onedark.vim",
 
     "tpope/vim-eunuch",
     "tpope/vim-sleuth",
@@ -81,14 +107,21 @@ require 'lazy'.setup({
             vim.fn["mkdp#util#install"]()
         end,
     },
-    "norcalli/nvim-colorizer.lua",
-    { "dstein64/vim-startuptime",                 cmd = "StartupTime" },
+    {
+        "norcalli/nvim-colorizer.lua",
+        config = function()
+            require("colorizer").setup()
+        end,
+    },
+    {
+        "dstein64/vim-startuptime",
+        cmd = "StartupTime",
+    },
 
     -- My Plugins
     {
         dir = "~/Code/vim-pixem",
         cmd = "Pixem",
-        config = [[vim.g.pixem_use_rem = 1]]
+        config = [[vim.g.pixem_use_rem = 1]],
     },
-
-})
+}

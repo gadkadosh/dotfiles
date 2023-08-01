@@ -30,13 +30,14 @@ require("nvim-treesitter.configs").setup {
         "yaml",
     },
     highlight = { enable = true },
+    indent = { enable = true },
     incremental_selection = {
         enable = true,
         keymaps = {
-            init_selection = "<c-cr>",
-            node_incremental = "<c-cr>",
-            scope_incremental = "<c-s>",
-            node_decremental = "<c-backspace>",
+            init_selection = '<c-space>',
+            node_incremental = '<c-space>',
+            scope_incremental = '<c-s>',
+            node_decremental = '<M-space>',
         },
     },
     playground = { enable = true },
