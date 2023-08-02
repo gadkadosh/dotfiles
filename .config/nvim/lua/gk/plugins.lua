@@ -16,24 +16,37 @@ require("lazy").setup {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
+        config = function()
+            require "gk.treesitter"
+        end,
+        dependencies = {
+            "JoosepAlviste/nvim-ts-context-commentstring",
+        },
     },
     {
         "nvim-treesitter/playground",
         cmd = "TSPlaygroundToggle",
     },
-    "JoosepAlviste/nvim-ts-context-commentstring",
-    "numToStr/Comment.nvim",
     {
-        "windwp/nvim-autopairs",
-        config = true,
+        "numToStr/Comment.nvim",
+        dependencies = {
+            "JoosepAlviste/nvim-ts-context-commentstring",
+        },
+        config = function()
+            require("Comment").setup {
+                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+            }
+        end,
     },
-    "windwp/nvim-ts-autotag",
+    { "windwp/nvim-autopairs", config = true },
+    { "windwp/nvim-ts-autotag", config = true },
     "tpope/vim-surround",
     {
         "lukas-reineke/indent-blankline.nvim",
         opts = {
             char = "┊",
             show_trailing_blankline_indent = false,
+            show_first_indent_level = false,
         },
     },
     {
@@ -68,9 +81,9 @@ require("lazy").setup {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "williamboman/mason.nvim",
+            { "williamboman/mason.nvim", config = true },
             "williamboman/mason-lspconfig.nvim",
-            { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", opts = {} },
+            { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", config = true },
         },
     },
     "jose-elias-alvarez/null-ls.nvim",
@@ -86,8 +99,15 @@ require("lazy").setup {
 
     -- DAP
     "mfussenegger/nvim-dap",
-    "rcarriga/nvim-dap-ui",
-
+    {
+        "rcarriga/nvim-dap-ui",
+        config = function()
+            require("dapui").setup()
+            vim.keymap.set("n", "<leader>du", function()
+                require("dapui").toggle()
+            end)
+        end,
+    },
     {
         "folke/tokyonight.nvim",
         lazy = false,
@@ -98,7 +118,27 @@ require("lazy").setup {
     "tpope/vim-eunuch",
     "tpope/vim-sleuth",
     "tpope/vim-fugitive",
-    "lewis6991/gitsigns.nvim",
+    {
+        "lewis6991/gitsigns.nvim",
+        opts = {
+            on_attach = function(bufnr)
+                local gs = package.loaded.gitsigns
+
+                -- Navigation
+                vim.keymap.set("n", "[c", gs.prev_hunk, { buffer = bufnr, desc = "Go to previous hunk" })
+                vim.keymap.set("n", "]c", gs.next_hunk, { buffer = bufnr, desc = "Go to next hunk" })
+
+                -- Actions
+                vim.keymap.set({ "n", "v" }, "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "[H]unk [S]tage" })
+                vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk, { buffer = bufnr, desc = "[H]unk [U]ndo stage" })
+                vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr, desc = "[H]unk [P]review" })
+                vim.keymap.set("n", "<leader>hb", function()
+                    gs.blame_line { full = true }
+                end, { buffer = bufnr, desc = "Blame line" })
+                vim.keymap.set("n", "<leader>hd", gs.diffthis, { buffer = bufnr, desc = "Diff this" })
+            end,
+        },
+    },
 
     {
         "iamcco/markdown-preview.nvim",
