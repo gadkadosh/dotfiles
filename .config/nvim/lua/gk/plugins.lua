@@ -98,15 +98,34 @@ require("lazy").setup {
     "L3MON4D3/LuaSnip",
 
     -- DAP
-    "mfussenegger/nvim-dap",
+    { "mfussenegger/nvim-dap" },
+    {
+        "jay-babu/mason-nvim-dap.nvim",
+        opts = {
+            ensure_installed = { "codelldb" },
+            handlers = {},
+        },
+        event = "VeryLazy",
+    },
     {
         "rcarriga/nvim-dap-ui",
         config = function()
-            require("dapui").setup()
+            local dap, dapui = require "dap", require "dapui"
+            dapui.setup()
             vim.keymap.set("n", "<leader>du", function()
-                require("dapui").toggle()
-            end)
+                dapui.toggle()
+            end, { desc = "[D]ebugger toggle [U]I" })
+            dap.listeners.after.event_initialized["dapui_config"] = function()
+                dapui.open()
+            end
+            dap.listeners.before.event_terminated["dapui_config"] = function()
+                dapui.close()
+            end
+            dap.listeners.before.event_exited["dapui_config"] = function()
+                dapui.close()
+            end
         end,
+        event = "VeryLazy",
     },
     {
         "folke/tokyonight.nvim",
