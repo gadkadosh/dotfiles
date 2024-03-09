@@ -4,6 +4,8 @@ if not ok then
 end
 
 local servers = {
+    "astro",
+    "bashls",
     "clangd",
     "cssls",
     "dockerls",
@@ -11,10 +13,11 @@ local servers = {
     "graphql",
     "html",
     "jsonls",
+    "lua_ls",
     "pyright",
+    "rust_analyzer",
     "tailwindcss",
     "tsserver",
-    "lua_ls",
 }
 
 require("mason-lspconfig").setup {
@@ -104,14 +107,26 @@ lspconfig.lua_ls.setup {
     capabilities = capabilities,
 }
 
+lspconfig.htmx.setup {
+    filetypes = { "astro" },
+    on_attach = on_attach,
+    capabilities = capabilities,
+}
+
 local null_ls = require "null-ls"
+
+table.insert(null_ls.builtins.formatting.prettierd.filetypes, "astro")
 
 null_ls.setup {
     on_attach = on_attach,
     sources = {
-        null_ls.builtins.formatting.prettierd,
+        null_ls.builtins.formatting.prettierd.with {
+            filetypes = null_ls.builtins.formatting.prettierd.filetypes,
+            -- filetypes = { "astro" },
+        },
         null_ls.builtins.formatting.stylua,
         null_ls.builtins.formatting.black,
+        null_ls.builtins.formatting.rustfmt,
         null_ls.builtins.diagnostics.flake8.with {
             cwd = function(params)
                 return require("lspconfig").util.root_pattern "setup.cfg"(params.bufname)
@@ -120,5 +135,7 @@ null_ls.setup {
         null_ls.builtins.diagnostics.stylelint.with {
             only_local = "node_modules/.bin",
         },
+        null_ls.builtins.formatting.sql_formatter,
+        null_ls.builtins.formatting.shfmt,
     },
 }

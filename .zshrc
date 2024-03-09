@@ -17,6 +17,11 @@ bindkey '^P' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search
 bindkey '^N' down-line-or-beginning-search
 
+# Edit command
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey '^X^E' edit-command-line
+
 # setopt appendhistory
 setopt incappendhistory
 setopt autocd
@@ -43,8 +48,15 @@ compinit
 [ -f /opt/homebrew/etc/profile.d/z.sh ] && source /opt/homebrew/etc/profile.d/z.sh
 export _ZO_FZF_OPTS="--height 40% --reverse --no-sort"
 
+unalias z 2> /dev/null
+z() {
+  [ $# -gt 0 ] && _z "$*" && return
+  cd "$(_z -l 2>&1 | fzf --height 40% --nth 2.. --reverse --inline-info +s --tac --query "${*##-* }" | sed 's/^[0-9,.]* *//')"
+}
+
 # Load fzf tab completion and key bindings
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+source /opt/homebrew/opt/fzf/shell/completion.zsh
 
 source $HOME/.env
 source $HOME/.aliases

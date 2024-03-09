@@ -19,14 +19,12 @@ require("lazy").setup {
         config = function()
             require "gk.treesitter"
         end,
-        dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
-        },
     },
     {
         "nvim-treesitter/playground",
         cmd = "TSPlaygroundToggle",
     },
+    "JoosepAlviste/nvim-ts-context-commentstring",
     {
         "numToStr/Comment.nvim",
         dependencies = {
@@ -41,19 +39,6 @@ require("lazy").setup {
     { "windwp/nvim-autopairs", config = true },
     { "windwp/nvim-ts-autotag", config = true },
     "tpope/vim-surround",
-    {
-        "lukas-reineke/indent-blankline.nvim",
-        opts = {
-            char = "┊",
-            show_trailing_blankline_indent = false,
-            show_first_indent_level = false,
-        },
-    },
-    {
-        "folke/which-key.nvim",
-        event = "VeryLazy",
-        opts = {},
-    },
 
     -- Telescope
     "kyazdani42/nvim-web-devicons",

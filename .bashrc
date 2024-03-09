@@ -30,3 +30,4 @@ PS1="
 
 source $HOME/.env
 source $HOME/.aliases
+. "$HOME/.cargo/env"

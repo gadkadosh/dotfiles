@@ -6,7 +6,6 @@ vim.opt.shiftwidth = indent
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.number = true
-vim.opt.relativenumber = true
 vim.opt.scrolloff = 3
 vim.optcompleteopt = { "menu", "menuone", "noselect" }
 vim.opt.wildmode = { "longest:full", "full" }
