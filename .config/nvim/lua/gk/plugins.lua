@@ -5,7 +5,7 @@ if not vim.loop.fs_stat(lazypath) then
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
+        "--branch=stable",
         lazypath,
     }
 end
@@ -17,37 +17,90 @@ require("lazy").setup {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
         config = function()
-            require "gk.treesitter"
-        end,
-    },
-    {
-        "nvim-treesitter/playground",
-        cmd = "TSPlaygroundToggle",
-    },
-    "JoosepAlviste/nvim-ts-context-commentstring",
-    {
-        "numToStr/Comment.nvim",
-        dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
-        },
-        config = function()
-            require("Comment").setup {
-                pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+            ---@diagnostic disable-next-line: missing-fields
+            require("nvim-treesitter.configs").setup {
+                ensure_installed = { "c", "css", "html", "javascript", "json", "lua", "python" },
+                auto_install = true,
+                highlight = { enable = true },
+                indent = { enable = true },
             }
         end,
     },
-    { "windwp/nvim-autopairs", config = true },
+    { "windwp/nvim-autopairs",  config = true },
     { "windwp/nvim-ts-autotag", config = true },
     "tpope/vim-surround",
 
     -- Telescope
-    "kyazdani42/nvim-web-devicons",
     {
         "nvim-telescope/telescope.nvim",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        event = "VimEnter",
+        branch = "0.1.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-telescope/telescope-file-browser.nvim",
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+            "kyazdani42/nvim-web-devicons",
+        },
+        config = function()
+            local actions = require "telescope.actions"
+
+            require("telescope").setup {
+                defaults = {
+                    mappings = {
+                        n = {
+                            ["q"] = actions.close,
+                            ["<c-k>"] = actions.delete_buffer,
+                        },
+                        i = {
+                            ["<c-k>"] = actions.delete_buffer,
+                        },
+                    },
+                    winblend = 10,
+                    sorting_strategy = "ascending",
+                    path_display = { truncate = 2 },
+                    layout_config = {
+                        horizontal = {
+                            prompt_position = "top",
+                            preview_width = 0.5,
+                        },
+                        height = 0.8,
+                    },
+                },
+                pickers = {
+                    find_files = {
+                        find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+                    },
+                },
+                extensions = {
+                    file_browser = {
+                        hijack_netrw = true,
+                    },
+                },
+            }
+            pcall(require("telescope").load_extension, "fzf")
+            pcall(require("telescope").load_extension, "file_browser")
+
+            local builtin = require "telescope.builtin"
+
+            vim.keymap.set("n", "<leader><enter>", builtin.buffers)
+            vim.keymap.set("n", "<leader>a", builtin.live_grep)
+            vim.keymap.set("n", "<leader>ga", builtin.grep_string)
+            vim.keymap.set("n", "<leader>t", builtin.find_files)
+            vim.keymap.set("n", "<leader>ev", function()
+                return builtin.find_files {
+                    prompt_title = "Neovim Config",
+                    cwd = vim.fn.stdpath "config",
+                }
+            end)
+            vim.keymap.set("n", "<leader>o", builtin.oldfiles)
+            vim.keymap.set("n", "<leader>?", builtin.help_tags)
+            vim.keymap.set("n", "<leader>f", function()
+                require("telescope").extensions.file_browser.file_browser {
+                    path = "%:p:h",
+                }
+            end)
+        end,
     },
-    "nvim-telescope/telescope-file-browser.nvim",
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 
     -- Statusline
     {
@@ -66,34 +119,113 @@ require("lazy").setup {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            { "williamboman/mason.nvim", config = true },
+            "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
-            { "j-hui/fidget.nvim", tag = "legacy", event = "LspAttach", config = true },
+            { "j-hui/fidget.nvim", opts = {} },
         },
     },
-    "jose-elias-alvarez/null-ls.nvim",
 
-    "hrsh7th/nvim-cmp",
-    "onsails/lspkind-nvim",
-    "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-path",
-    "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-nvim-lsp-signature-help",
-    { "saadparwaiz1/cmp_luasnip" },
-    "L3MON4D3/LuaSnip",
-
-    -- DAP
-    { "mfussenegger/nvim-dap" },
     {
-        "jay-babu/mason-nvim-dap.nvim",
+        "stevearc/conform.nvim",
         opts = {
-            ensure_installed = { "codelldb" },
-            handlers = {},
+            format_on_save = {
+                timeout_ms = 500,
+                lsp_fallback = true,
+            },
+            formatters_by_ft = {
+                css = { { "prettierd" } },
+                html = { "prettierd" },
+                htmldjango = { "prettierd" },
+                javascript = { { "prettierd" } },
+                javascriptreact = { { "prettierd" } },
+                typescriptreact = { { "prettierd" } },
+                python = { "black" },
+            },
         },
-        event = "VeryLazy",
     },
+
+    {
+        "hrsh7th/nvim-cmp",
+        -- event = "InsertEnter",
+        dependencies = {
+            "L3MON4D3/LuaSnip",
+            "saadparwaiz1/cmp_luasnip",
+            "onsails/lspkind-nvim",
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-nvim-lsp-signature-help",
+        },
+        config = function()
+            local cmp = require "cmp"
+            local luasnip = require "luasnip"
+            luasnip.config.setup {}
+
+            cmp.setup {
+                snippet = {
+                    expand = function(args)
+                        require("luasnip").lsp_expand(args.body)
+                    end,
+                },
+                completion = { completeopt = "menu,menuone,noinsert" },
+                mapping = cmp.mapping.preset.insert {
+                    ["<C-n>"] = cmp.mapping.select_next_item(),
+                    ["<C-p>"] = cmp.mapping.select_prev_item(),
+                    ["<C-y>"] = cmp.mapping.confirm { select = true },
+                    ["<C-d>"] = cmp.mapping.scroll_docs(-1),
+                    ["<C-f>"] = cmp.mapping.scroll_docs(1),
+                    ["<C-Space>"] = cmp.mapping.complete(),
+                    ["<C-e>"] = cmp.mapping.abort(),
+                    ["<C-l>"] = cmp.mapping(function()
+                        if luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        end
+                    end, { "i", "s" }),
+                    ["<C-h>"] = cmp.mapping(function()
+                        if luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        end
+                    end, { "i", "s" }),
+                },
+                formatting = {
+                    format = require("lspkind").cmp_format {
+                        maxwidth = 40,
+                        menu = {
+                            nvim_lsp = "[LSP]",
+                            nvim_lua = "[NVIM]",
+                            luasnip = "[Snippet]",
+                            path = "[Path]",
+                            buffer = "[Buffer]",
+                        },
+                    },
+                },
+                experimental = {
+                    ghost_text = true,
+                },
+                sources = cmp.config.sources {
+                    { name = "nvim_lsp_signature_help" },
+                    { name = "nvim_lsp" },
+                    { name = "path" },
+                    { name = "buffer",                 keyword_length = 3 },
+                },
+            }
+        end,
+    },
+    -- DAP
     {
         "rcarriga/nvim-dap-ui",
+        dependencies = {
+            "mfussenegger/nvim-dap",
+            "nvim-neotest/nvim-nio",
+            {
+                "jay-babu/mason-nvim-dap.nvim",
+                opts = {
+                    ensure_installed = { "codelldb" },
+                    handlers = {},
+                },
+                event = "VeryLazy",
+            },
+        },
         config = function()
             local dap, dapui = require "dap", require "dapui"
             dapui.setup()
@@ -116,7 +248,13 @@ require("lazy").setup {
         "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
-        opts = { style = "moon", transparent = true },
+        config = function()
+            require("tokyonight").setup {
+                style = "moon",
+                transparent = true,
+            }
+            vim.cmd.colorscheme "tokyonight"
+        end,
     },
 
     "tpope/vim-eunuch",
@@ -154,6 +292,7 @@ require("lazy").setup {
     {
         "norcalli/nvim-colorizer.lua",
         config = function()
+            vim.opt.termguicolors = true
             require("colorizer").setup()
         end,
     },
