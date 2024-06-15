@@ -4,8 +4,7 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 bindkey '^[[Z' reverse-menu-complete    # Shift-tab
-bindkey -v
-bindkey jj vi-cmd-mode
+# bindkey -v
 
 # Arrows search history
 autoload -U up-line-or-beginning-search
@@ -73,4 +72,3 @@ eval "$(starship init zsh)"
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/terraform terraform
