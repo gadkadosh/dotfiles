@@ -2,31 +2,21 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        config = function()
-            ---@diagnostic disable-next-line: missing-fields
-            require("nvim-treesitter.configs").setup {
-                ensure_installed = { "c", "css", "html", "javascript", "json", "lua", "python" },
-                auto_install = true,
-                highlight = { enable = true },
-                indent = { enable = true },
-            }
+        opts = {
+            ensure_installed = { "c", "css", "html", "javascript", "json", "lua", "python", "vim", "vimdoc", "query", "typescript" },
+            auto_install = true,
+            highlight = { enable = true },
+            indent = { enable = true },
+        },
+        config = function(_, opts)
+            require("nvim-treesitter.configs").setup(opts)
         end,
     },
-    { "windwp/nvim-autopairs",  config = true },
-    { "windwp/nvim-ts-autotag", config = true },
-    "tpope/vim-surround",
 
     -- Statusline
     {
         "nvim-lualine/lualine.nvim",
-        opts = {
-            winbar = {
-                lualine_b = { { "filename", path = 1 } },
-            },
-            inactive_winbar = {
-                lualine_b = { { "filename", path = 1 } },
-            },
-        },
+        opts = {},
     },
 
     {
@@ -46,6 +36,10 @@ return {
                 python = { "black" },
             },
         },
+        config = function(_, opts)
+            require("conform").setup(opts)
+            vim.keymap.set({ "n", "v" }, "<leader>f", function() require("conform").format({ lsp_fallback = true }) end)
+        end,
     },
 
     {
@@ -53,14 +47,15 @@ return {
         lazy = false,
         priority = 1000,
         config = function()
-            require("tokyonight").setup {
+            require("tokyonight").setup({
                 style = "moon",
                 transparent = true,
-            }
+            })
             vim.cmd.colorscheme "tokyonight"
         end,
     },
 
+    "tpope/vim-surround",
     "tpope/vim-eunuch",
     "tpope/vim-sleuth",
     "tpope/vim-fugitive",
@@ -101,15 +96,13 @@ return {
             require("colorizer").setup()
         end,
     },
-    {
-        "dstein64/vim-startuptime",
-        cmd = "StartupTime",
-    },
 
     -- My Plugins
     {
         dir = "~/Code/vim-pixem",
         cmd = "Pixem",
-        config = [[vim.g.pixem_use_rem = 1]],
+        config = function()
+            vim.g.pixem_use_rem = 1
+        end
     }
 }

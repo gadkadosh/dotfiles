@@ -1,8 +1,4 @@
--- Faster startup (caching lua modules)
-pcall(require, "impatient")
-
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 vim.opt.number = true
 vim.opt.mouse = "a"
@@ -62,8 +58,8 @@ vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true, desc =
 vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { noremap = true, desc = "Source Vim config" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-    desc = "Highlight when yanking (copying) text",
-    group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+    desc = "Highlight when yanking text",
+    group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),
     callback = function()
         vim.highlight.on_yank()
     end,

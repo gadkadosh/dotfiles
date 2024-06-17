@@ -8,7 +8,7 @@ return {
         "kyazdani42/nvim-web-devicons",
     },
     config = function()
-        local actions = require "telescope.actions"
+        local actions = require("telescope.actions")
 
         require("telescope").setup {
             defaults = {
@@ -37,14 +37,8 @@ return {
                     find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
                 },
             },
-            extensions = {
-                file_browser = {
-                    hijack_netrw = true,
-                },
-            },
         }
         pcall(require("telescope").load_extension, "fzf")
-        pcall(require("telescope").load_extension, "file_browser")
 
         local builtin = require "telescope.builtin"
 
@@ -60,10 +54,5 @@ return {
         end)
         vim.keymap.set("n", "<leader>o", builtin.oldfiles)
         vim.keymap.set("n", "<leader>?", builtin.help_tags)
-        vim.keymap.set("n", "<leader>f", function()
-            require("telescope").extensions.file_browser.file_browser {
-                path = "%:p:h",
-            }
-        end)
     end,
 }
