@@ -24,7 +24,7 @@ return {
         opts = {
             format_on_save = {
                 timeout_ms = 500,
-                lsp_fallback = true,
+                lsp_format = "fallback",
             },
             formatters_by_ft = {
                 css = { { "prettierd" } },
@@ -38,7 +38,8 @@ return {
         },
         config = function(_, opts)
             require("conform").setup(opts)
-            vim.keymap.set({ "n", "v" }, "<leader>f", function() require("conform").format({ lsp_fallback = true }) end)
+            vim.keymap.set({ "n", "v" }, "<leader>f",
+                function() require("conform").format({ lsp_format = "fallback" }) end)
         end,
     },
 

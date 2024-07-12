@@ -39,8 +39,6 @@ vim.keymap.set("c", "<C-N>", "<Down>", { noremap = true })
 vim.keymap.set("c", "<C-H>", "<Left>", { noremap = true })
 vim.keymap.set("c", "<C-L>", "<Right>", { noremap = true })
 
--- vim.keymap.set("i", "jj", "<ESC>", { noremap = true })
--- vim.keymap.set("t", "jj", "<C-\\><C-n>", { noremap = true })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
 -- vim.keymap.set("n", "<leader>,", "<C-^>", { noremap = true })

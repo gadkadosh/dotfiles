@@ -8,19 +8,8 @@ return {
         "kyazdani42/nvim-web-devicons",
     },
     config = function()
-        local actions = require("telescope.actions")
-
         require("telescope").setup {
             defaults = {
-                mappings = {
-                    n = {
-                        ["q"] = actions.close,
-                        ["<c-k>"] = actions.delete_buffer,
-                    },
-                    i = {
-                        ["<c-k>"] = actions.delete_buffer,
-                    },
-                },
                 winblend = 10,
                 sorting_strategy = "ascending",
                 path_display = { truncate = 2 },
@@ -36,21 +25,28 @@ return {
                 find_files = {
                     find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
                 },
+                buffers = {
+                    mappings = {
+                        i = {
+                            ["<c-k>"] = require("telescope.actions").delete_buffer,
+                        },
+                    }
+                },
             },
         }
         pcall(require("telescope").load_extension, "fzf")
 
-        local builtin = require "telescope.builtin"
+        local builtin = require("telescope.builtin")
 
         vim.keymap.set("n", "<leader><enter>", builtin.buffers)
         vim.keymap.set("n", "<leader>a", builtin.live_grep)
         vim.keymap.set("n", "<leader>ga", builtin.grep_string)
         vim.keymap.set("n", "<leader>t", builtin.find_files)
         vim.keymap.set("n", "<leader>ev", function()
-            return builtin.find_files {
+            return builtin.find_files({
                 prompt_title = "Neovim Config",
                 cwd = vim.fn.stdpath "config",
-            }
+            })
         end)
         vim.keymap.set("n", "<leader>o", builtin.oldfiles)
         vim.keymap.set("n", "<leader>?", builtin.help_tags)
