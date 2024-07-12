@@ -1,59 +1,8 @@
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
-        opts = {
-            ensure_installed = { "c", "css", "html", "javascript", "json", "lua", "python", "vim", "vimdoc", "query", "typescript" },
-            auto_install = true,
-            highlight = { enable = true },
-            indent = { enable = true },
-        },
-        config = function(_, opts)
-            require("nvim-treesitter.configs").setup(opts)
-        end,
-    },
-
     -- Statusline
     {
         "nvim-lualine/lualine.nvim",
         opts = {},
-    },
-
-    {
-        "stevearc/conform.nvim",
-        opts = {
-            format_on_save = {
-                timeout_ms = 500,
-                lsp_format = "fallback",
-            },
-            formatters_by_ft = {
-                css = { { "prettierd" } },
-                html = { "prettierd" },
-                htmldjango = { "prettierd" },
-                javascript = { { "prettierd" } },
-                javascriptreact = { { "prettierd" } },
-                typescriptreact = { { "prettierd" } },
-                python = { "black" },
-            },
-        },
-        config = function(_, opts)
-            require("conform").setup(opts)
-            vim.keymap.set({ "n", "v" }, "<leader>f",
-                function() require("conform").format({ lsp_format = "fallback" }) end)
-        end,
-    },
-
-    {
-        "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require("tokyonight").setup({
-                style = "moon",
-                transparent = true,
-            })
-            vim.cmd.colorscheme "tokyonight"
-        end,
     },
 
     "tpope/vim-surround",
@@ -92,10 +41,7 @@ return {
     },
     {
         "norcalli/nvim-colorizer.lua",
-        config = function()
-            vim.opt.termguicolors = true
-            require("colorizer").setup()
-        end,
+        opts = {},
     },
 
     -- My Plugins
