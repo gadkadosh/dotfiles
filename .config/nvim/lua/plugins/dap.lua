@@ -16,7 +16,7 @@ return {
         },
     },
     config = function()
-        local dap, dapui = require "dap", require "dapui"
+        local dap, dapui = require("dap"), require("dapui")
         dapui.setup()
         dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 

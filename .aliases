@@ -3,7 +3,6 @@ alias dotfiles="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias d="dotfiles"
 alias ds="dotfiles status"
 alias vim=nvim
-# alias vim="VIMRUNTIME=~/neovim/share/nvim/runtime ~/neovim/bin/nvim"
 alias top="top -u -s 2"
 alias grep="grep --color"
 alias la="ls -a"
@@ -37,18 +36,3 @@ hstats() {
     CMD[a]/count*100 "% " a;}' | grep -v "./" | \
     column -c3 -s " " -t | sort -nr | nl | head -n20
 }
-
-# Use fzf with z , if it's installed
-# if [ $(command -v fzf) ]; then
-#   if command -v z > /dev/null 2>&1; then
-#     unalias z 2> /dev/null
-#
-#     function z() {
-#       [ $# -gt 0 ] && _z "$*" && return
-#         cd "$(_z -l 2>&1 |
-#           fzf --height 40% --nth 2.. --reverse --inline-info +s --tac \
-#           --query "${*##-* }" |
-#           sed 's/^[0-9,.]* *//')"
-#     }
-#   fi
-# fi

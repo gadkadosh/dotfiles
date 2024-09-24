@@ -6,46 +6,43 @@ return {
         { "j-hui/fidget.nvim", opts = {} },
     },
     config = function()
-        local servers = {
-            astro = {},
-            bashls = {},
-            clangd = {},
-            cssls = {},
-            dockerls = {},
-            eslint = {},
-            html = {},
-            jsonls = {},
-            lua_ls = {
-                settings = {
-                    Lua = {
-                        runtime = {
-                            version = "LuaJIT",
-                        },
-                        diagnostics = {
-                            globals = { "vim" },
-                        },
-                        workspace = {
-                            checkThirdParty = false,
-                            library = {
-                                "${3rd}/luv/library",
-                                "${3rd}/love2d/library",
-                                unpack(vim.api.nvim_get_runtime_file("", true)),
+        local capabilities = vim.tbl_deep_extend("force",
+            {},
+            vim.lsp.protocol.make_client_capabilities(),
+            require("cmp_nvim_lsp").default_capabilities())
+
+        require("mason").setup()
+        require("mason-lspconfig").setup({
+            handlers = {
+                function(server_name)
+                    require("lspconfig")[server_name].setup({
+                        capabilities = capabilities
+                    })
+                end,
+                ["lua_ls"] = function()
+                    require("lspconfig").lua_ls.setup({
+                        settings = {
+                            Lua = {
+                                runtime = {
+                                    version = "LuaJIT",
+                                },
+                                diagnostics = {
+                                    globals = { "vim" },
+                                },
+                                workspace = {
+                                    checkThirdParty = false,
+                                    library = {
+                                        "${3rd}/luv/library",
+                                        "${3rd}/love2d/library",
+                                        unpack(vim.api.nvim_get_runtime_file("", true)),
+                                    },
+                                },
                             },
                         },
-                    },
-                },
-            },
-            pyright = {},
-            rust_analyzer = {},
-            tailwindcss = {},
-            tsserver = {},
-        }
-
-        local lspconfig = require "lspconfig"
-        require("mason").setup()
-        require("mason-lspconfig").setup {
-            automatic_installation = true
-        }
+                    })
+                end,
+            }
+        })
 
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("LspConfig", { clear = true }),
@@ -86,18 +83,5 @@ return {
         local handler_opts = { border = "rounded" }
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, handler_opts)
         vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, handler_opts)
-
-        local capabilities = vim.tbl_deep_extend("force",
-            {},
-            vim.lsp.protocol.make_client_capabilities(),
-            require("cmp_nvim_lsp").default_capabilities())
-
-        for server, config in pairs(servers) do
-            lspconfig[server].setup {
-                settings = config["settings"],
-                filetypes = config["filetypes"],
-                capabilities = capabilities,
-            }
-        end
     end
 }
