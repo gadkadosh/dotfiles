@@ -25,11 +25,11 @@ vim.opt.showbreak = "   > "
 vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 
-vim.diagnostic.config {
+vim.diagnostic.config({
     virtual_text = { source = "if_many", prefix = "●" },
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
-}
+})
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic Quickfix list" })
 

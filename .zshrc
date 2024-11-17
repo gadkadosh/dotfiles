@@ -4,7 +4,6 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 bindkey '^[[Z' reverse-menu-complete    # Shift-tab
-# bindkey -v
 
 # Arrows search history
 autoload -U up-line-or-beginning-search
@@ -57,7 +56,27 @@ z() {
 source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 source /opt/homebrew/opt/fzf/shell/completion.zsh
 
-source $HOME/.env
+# Environment variables
+export EDITOR=nvim
+
+# i: case-insensitive searches, unless uppercase characters in search string
+# R: raw output, to allow ANSI colors
+# M: verbose prompt, line numbers/percentage
+export LESS='-iRM'
+# Colors for man pages
+export LESS_TERMCAP_md=$'\e[01;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;44;33m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[01;32m'
+export LESS_TERMCAP_ue=$'\e[0m'
+
+# Man pages with vim
+export MANPAGER='nvim +Man!'
+
+# FZF using fd instead of find (respects .gitignore)
+export FZF_DEFAULT_COMMAND='fd --type f'
+
 source $HOME/.aliases
 
 # Starship

@@ -45,7 +45,7 @@ return {
         vim.keymap.set("n", "<leader>ev", function()
             return builtin.find_files({
                 prompt_title = "Neovim Config",
-                cwd = vim.fn.stdpath "config",
+                cwd = vim.fn.stdpath("config"),
             })
         end)
         vim.keymap.set("n", "<leader>o", builtin.oldfiles)
