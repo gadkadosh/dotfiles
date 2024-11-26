@@ -26,7 +26,8 @@ vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 
 vim.diagnostic.config({
-    virtual_text = { source = "if_many", prefix = "●" },
+    -- virtual_text = { source = "if_many", prefix = "●" },
+    virtual_text = false,
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
 })
@@ -78,7 +79,7 @@ vim.keymap.set("n", "<leader>x", function()
     end
 end, { noremap = true })
 
-function SumTimes()
+local getColumn = function()
     local lstart = vim.fn.line("v")
     local lend = vim.fn.line(".")
     if lstart > lend then
@@ -86,21 +87,29 @@ function SumTimes()
         lend = lstart
         lstart = tmp
     end
-    local times = vim.fn.getline(lstart, lend)
+    local nums = vim.fn.getline(lstart, lend)
+    if type(nums) == "string" then
+        return {}, 0, 0
+    end
+
+    return nums, lstart, lend
+end
+
+function SumTimes()
+    local times, lstart, lend = getColumn()
     local hours = 0
     local minutes = 0
-    if type(times) == "string" then
-        return
-    end
     for _, i in pairs(times) do
         local len = string.len(i)
-        local h = string.sub(i, 1, len - 2)
-        local m = string.sub(i, len - 1, len)
-        if h == "" then
-            h = "00"
+        local m = tonumber(string.sub(i, len - 1, len))
+        local h
+        if len > 2 then
+            h = tonumber(string.sub(i, 1, len - 2))
+        else
+            h = 0
         end
-        hours = hours + tonumber(h)
-        minutes = minutes + tonumber(m)
+        hours = hours + h
+        minutes = minutes + m
     end
 
     hours = hours + math.floor(minutes / 60)
@@ -110,3 +119,21 @@ function SumTimes()
 end
 
 vim.keymap.set("v", "<leader>st", SumTimes)
+
+function SumColumn()
+    local nums, lstart, lend = getColumn()
+    local total = 0
+    for _, i in pairs(nums) do
+        total = total + tonumber(i)
+    end
+    vim.fn.append(lend, lstart .. "-" .. lend .. " Sum: " .. total)
+end
+
+vim.keymap.set("v", "<leader>sc", SumColumn)
+
+function OpenParentDir()
+    local parent_dir = vim.fn.expand("%:p:h")
+    vim.fn.execute("e " .. parent_dir)
+end
+
+vim.keymap.set("n", "-", OpenParentDir)
