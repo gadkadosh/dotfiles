@@ -28,6 +28,5 @@ PS1="
 
 [ $(command -v fzf) ] && [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
-source $HOME/.env
 source $HOME/.aliases
 . "$HOME/.cargo/env"

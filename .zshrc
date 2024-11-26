@@ -3,7 +3,8 @@ export CLICOLOR=true            # Enable colors for 'ls' (macOS)
 export HISTSIZE=10000
 export SAVEHIST=10000
 
-bindkey '^[[Z' reverse-menu-complete    # Shift-tab
+# Shift-tab
+bindkey '^[[Z' reverse-menu-complete
 
 # Arrows search history
 autoload -U up-line-or-beginning-search
@@ -39,13 +40,10 @@ then
     FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 fi
 
-autoload -Uz compinit
-compinit
+autoload -Uz compinit; compinit
 
 # Frecency based directory switching
 [ -f /opt/homebrew/etc/profile.d/z.sh ] && source /opt/homebrew/etc/profile.d/z.sh
-export _ZO_FZF_OPTS="--height 40% --reverse --no-sort"
-
 unalias z 2> /dev/null
 z() {
   [ $# -gt 0 ] && _z "$*" && return
@@ -55,6 +53,9 @@ z() {
 # Load fzf tab completion and key bindings
 source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 source /opt/homebrew/opt/fzf/shell/completion.zsh
+export _ZO_FZF_OPTS="--height 40% --reverse --no-sort"
+# FZF using fd instead of find (respects .gitignore)
+export FZF_DEFAULT_COMMAND='fd --type f'
 
 # Environment variables
 export EDITOR=nvim
@@ -63,19 +64,9 @@ export EDITOR=nvim
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/percentage
 export LESS='-iRM'
-# Colors for man pages
-export LESS_TERMCAP_md=$'\e[01;31m'
-export LESS_TERMCAP_me=$'\e[0m'
-export LESS_TERMCAP_so=$'\e[01;44;33m'
-export LESS_TERMCAP_se=$'\e[0m'
-export LESS_TERMCAP_us=$'\e[01;32m'
-export LESS_TERMCAP_ue=$'\e[0m'
 
 # Man pages with vim
 export MANPAGER='nvim +Man!'
-
-# FZF using fd instead of find (respects .gitignore)
-export FZF_DEFAULT_COMMAND='fd --type f'
 
 source $HOME/.aliases
 
@@ -83,11 +74,7 @@ source $HOME/.aliases
 eval "$(starship init zsh)"
 
 # zsh autosuggestions (brew install zsh-autosuggestions)
-[ -f /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # zsh syntax highlighting (brew install zsh-syntax-highlighting)
-[ -f /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-autoload -U +X bashcompinit && bashcompinit

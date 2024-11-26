@@ -9,18 +9,6 @@ alias la="ls -a"
 alias ll="ls -lh"
 alias gs="git status"
 
-# File management
-if [ -n "$ZSH_VERSION" ]; then
-  alias -g ...='../..'
-  alias -g ....='../../..'
-  alias -g .....='../../../..'
-else
-  alias ..="cd .."
-  alias ...="cd ../.."
-  alias ....="cd ../../.."
-  alias .....="cd ../../../.."
-fi
-
 # IP addresses
 alias globalip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias localip="ipconfig getifaddr en0"
