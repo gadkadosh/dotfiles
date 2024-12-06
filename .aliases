@@ -1,7 +1,4 @@
 # Aliases
-alias dotfiles="git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
-alias d="dotfiles"
-alias ds="dotfiles status"
 alias vim=nvim
 alias top="top -u -s 2"
 alias grep="grep --color"
