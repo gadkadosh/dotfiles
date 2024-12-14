@@ -55,6 +55,7 @@ vim.keymap.set("n", "<C-l>", "<C-W>l", { noremap = true })
 vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true, desc = "[E]dit [V]im config" })
 vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { noremap = true, desc = "Source Vim config" })
 vim.keymap.set("n", "<leader>so", ":source %<CR>", { noremap = true })
+vim.keymap.set("n", "-", function() vim.fn.execute("Explore") end)
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking text",
@@ -67,7 +68,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 require("gk.lazy")
 
 vim.keymap.set("n", "<leader>x", function()
-    local ft = vim.api.nvim_buf_get_option(0, "filetype")
+    local ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
     local filename = vim.api.nvim_buf_get_name(0)
     print([[executing ]] .. filename)
     if ft == "lua" then
@@ -130,10 +131,3 @@ function SumColumn()
 end
 
 vim.keymap.set("v", "<leader>sc", SumColumn)
-
-function OpenParentDir()
-    local parent_dir = vim.fn.expand("%:p:h")
-    vim.fn.execute("e " .. parent_dir)
-end
-
-vim.keymap.set("n", "-", OpenParentDir)
