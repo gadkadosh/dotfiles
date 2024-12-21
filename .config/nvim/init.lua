@@ -42,10 +42,10 @@ vim.keymap.set("c", "<C-L>", "<Right>", { noremap = true })
 
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
 vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
-vim.keymap.set("n", "[b", ":bprevious<CR>", { noremap = true })
-vim.keymap.set("n", "]b", ":bnext<CR>", { noremap = true })
-vim.keymap.set("n", "[q", ":cprevious<CR>", { noremap = true })
-vim.keymap.set("n", "]q", ":cnext<CR>", { noremap = true })
+vim.keymap.set("n", "[b", "<cmd>bprevious<CR>", { noremap = true })
+vim.keymap.set("n", "]b", "<cmd>bnext<CR>", { noremap = true })
+vim.keymap.set("n", "[q", "<cmd>cprevious<CR>", { noremap = true })
+vim.keymap.set("n", "]q", "<cmd>cnext<CR>", { noremap = true })
 
 vim.keymap.set("n", "<C-h>", "<C-W>h", { noremap = true })
 vim.keymap.set("n", "<C-j>", "<C-W>j", { noremap = true })
@@ -54,8 +54,8 @@ vim.keymap.set("n", "<C-l>", "<C-W>l", { noremap = true })
 
 vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true, desc = "[E]dit [V]im config" })
 vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { noremap = true, desc = "Source Vim config" })
-vim.keymap.set("n", "<leader>so", ":source %<CR>", { noremap = true })
-vim.keymap.set("n", "-", function() vim.fn.execute("Explore") end)
+vim.keymap.set("n", "<leader>so", "<cmd>source %<CR>", { noremap = true })
+vim.keymap.set("n", "-", "<cmd>Explore<CR>")
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking text",
@@ -79,6 +79,15 @@ vim.keymap.set("n", "<leader>x", function()
         vim.cmd([[source ]] .. filename)
     end
 end, { noremap = true })
+
+vim.keymap.set("n", "<leader>z",
+    function()
+        vim.ui.input({ prompt = "Module name: " }, function(input)
+            package.loaded[input] = nil
+            print("Unloading module: " .. input)
+        end)
+    end,
+    { noremap = true })
 
 local getColumn = function()
     local lstart = vim.fn.line("v")
