@@ -30,10 +30,6 @@ size = 13.5
 family = "FiraCode Nerd Font"
 style = "Regular"
 
-[terminal.shell]
-args = ["-l", "-c", "tmux attach || tmux"]
-program = "/bin/zsh"
-
 [window]
 decorations = "buttonless"
 startup_mode = "Maximized"
