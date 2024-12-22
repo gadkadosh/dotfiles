@@ -2,6 +2,7 @@ vim.g.mapleader = " "
 
 vim.opt.number = true
 vim.opt.mouse = "a"
+vim.opt.mousescroll = "ver:1,hor:1"
 vim.opt.laststatus = 3
 vim.opt.pumblend = 5
 vim.opt.clipboard = "unnamedplus"
@@ -34,27 +35,27 @@ vim.diagnostic.config({
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic Quickfix list" })
 
-vim.keymap.set("c", "<C-A>", "<Home>", { noremap = true })
-vim.keymap.set("c", "<C-P>", "<Up>", { noremap = true })
-vim.keymap.set("c", "<C-N>", "<Down>", { noremap = true })
-vim.keymap.set("c", "<C-H>", "<Left>", { noremap = true })
-vim.keymap.set("c", "<C-L>", "<Right>", { noremap = true })
+vim.keymap.set("c", "<C-A>", "<Home>")
+vim.keymap.set("c", "<C-P>", "<Up>")
+vim.keymap.set("c", "<C-N>", "<Down>")
+vim.keymap.set("c", "<C-H>", "<Left>")
+vim.keymap.set("c", "<C-L>", "<Right>")
 
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
-vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { noremap = true, expr = true })
-vim.keymap.set("n", "[b", "<cmd>bprevious<CR>", { noremap = true })
-vim.keymap.set("n", "]b", "<cmd>bnext<CR>", { noremap = true })
-vim.keymap.set("n", "[q", "<cmd>cprevious<CR>", { noremap = true })
-vim.keymap.set("n", "]q", "<cmd>cnext<CR>", { noremap = true })
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
+vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { expr = true })
+vim.keymap.set("n", "[b", "<cmd>bprevious<CR>")
+vim.keymap.set("n", "]b", "<cmd>bnext<CR>")
+vim.keymap.set("n", "[q", "<cmd>cprevious<CR>")
+vim.keymap.set("n", "]q", "<cmd>cnext<CR>")
 
-vim.keymap.set("n", "<C-h>", "<C-W>h", { noremap = true })
-vim.keymap.set("n", "<C-j>", "<C-W>j", { noremap = true })
-vim.keymap.set("n", "<C-k>", "<C-W>k", { noremap = true })
-vim.keymap.set("n", "<C-l>", "<C-W>l", { noremap = true })
+vim.keymap.set("n", "<C-h>", "<C-W>h")
+vim.keymap.set("n", "<C-j>", "<C-W>j")
+vim.keymap.set("n", "<C-k>", "<C-W>k")
+vim.keymap.set("n", "<C-l>", "<C-W>l")
 
-vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { noremap = true, desc = "[E]dit [V]im config" })
-vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { noremap = true, desc = "Source Vim config" })
-vim.keymap.set("n", "<leader>so", "<cmd>source %<CR>", { noremap = true })
+vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { desc = "[E]dit [V]im config" })
+vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { desc = "Source Vim config" })
+vim.keymap.set("n", "<leader>so", "<cmd>source %<CR>")
 vim.keymap.set("n", "-", "<cmd>Explore<CR>")
 
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -78,18 +79,33 @@ vim.keymap.set("n", "<leader>x", function()
     elseif ft == "vim" then
         vim.cmd([[source ]] .. filename)
     end
-end, { noremap = true })
+end)
 
-vim.keymap.set("n", "<leader>z",
-    function()
-        vim.ui.input({ prompt = "Module name: " }, function(input)
-            package.loaded[input] = nil
-            print("Unloading module: " .. input)
-        end)
-    end,
-    { noremap = true })
+local function unload_module(mod)
+    mod = mod or vim.fn.input({ prompt = "Module name: " })
+    if not mod then return end
+    package.loaded[mod] = nil
+    print("Unloading module: " .. mod)
+end
 
-local getColumn = function()
+vim.api.nvim_create_user_command("Unload", function(opts)
+    unload_module(opts.fargs[1])
+end, {
+    nargs = "?",
+    complete = function(ArgLead)
+        local mods = {}
+        for k, _ in pairs(package.loaded) do
+            if string.find(k, ArgLead) then
+                table.insert(mods, k)
+            end
+        end
+        return mods
+    end
+})
+
+vim.keymap.set("n", "<leader>z", unload_module)
+
+local function getColumn()
     local lstart = vim.fn.line("v")
     local lend = vim.fn.line(".")
     if lstart > lend then
