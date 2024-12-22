@@ -53,17 +53,15 @@ return {
                     require("telescope.builtin").lsp_definitions { fname_width = 180 }
                 end, { buffer = event.buf, desc = "[G]o to [D]efinition" })
                 vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = event.buf, desc = "[G]o to [D]eclaration" })
-                vim.keymap.set("n", "gr", function()
+                vim.keymap.set("n", "grr", function()
                     require("telescope.builtin").lsp_references { fname_width = 180 }
                 end, { buffer = event.buf })
-                vim.keymap.set(
-                    { "n", "v" },
-                    "<leader>ca",
-                    vim.lsp.buf.code_action,
-                    { buffer = event.buf, desc = "[C]ode [Action]" }
-                )
-                vim.keymap.set({ "n", "v" }, "<leader>rn", vim.lsp.buf.rename,
-                    { buffer = event.buf, desc = "[R]e[n]ame" })
+                vim.keymap.set('n', 'grn', function()
+                    vim.lsp.buf.rename()
+                end, { desc = 'LSP Rename' })
+                vim.keymap.set({ 'n', 'x' }, 'gra', function()
+                    vim.lsp.buf.code_action()
+                end, { desc = 'LSP Code Actions' })
 
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
                 if client and client.server_capabilities.documentHighlightProvider then
