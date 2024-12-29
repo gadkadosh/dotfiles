@@ -45,10 +45,10 @@ return {
 
     -- My Plugins
     {
-        dir = "~/Code/vim-pixem",
+        dir = "~/Code/pixem.nvim",
         cmd = "Pixem",
         config = function()
-            vim.g.pixem_use_rem = 1
+            require("pixem").setup()
         end
     }
 }

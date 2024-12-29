@@ -3,6 +3,7 @@ vim.g.mapleader = " "
 vim.opt.number = true
 vim.opt.mouse = "a"
 vim.opt.mousescroll = "ver:1,hor:1"
+vim.opt.signcolumn = "yes"
 vim.opt.laststatus = 3
 vim.opt.pumblend = 5
 vim.opt.clipboard = "unnamedplus"
