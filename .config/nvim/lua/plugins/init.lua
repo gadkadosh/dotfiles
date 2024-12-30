@@ -50,5 +50,13 @@ return {
         config = function()
             require("pixem").setup()
         end
+    },
+    {
+        dir = "~/Code/vimsum.nvim",
+        config = function()
+            require("vimsum").setup()
+            vim.keymap.set("v", "<leader>st", ":SumTimes<cr>")
+            vim.keymap.set("v", "<leader>sc", ":SumColumn<cr>")
+        end
     }
 }
