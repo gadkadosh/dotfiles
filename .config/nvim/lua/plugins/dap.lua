@@ -10,7 +10,8 @@ return {
                 handlers = {
                     function(config)
                         require('mason-nvim-dap').default_setup(config)
-                    end, }
+                    end
+                }
             },
             event = "VeryLazy",
         },
@@ -23,7 +24,6 @@ return {
         vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
         vim.fn.sign_define("DapBreakpointRejected", { text = "🟦", texthl = "", linehl = "", numhl = "" })
         vim.fn.sign_define("DapStopped", { text = "🟢", texthl = "", linehl = "", numhl = "" })
-
 
         dap.listeners.before.attach.dapui_config = function()
             dapui.open()

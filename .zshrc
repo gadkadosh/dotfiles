@@ -78,13 +78,3 @@ eval "$(starship init zsh)"
 
 # zsh syntax highlighting (brew install zsh-syntax-highlighting)
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-if [ -z "${TMUX+x}" ];
-then
-  if [ "$(tmux ls | wc -l)" -eq "1" ];
-  then
-    tmux attach-session
-  else
-    tmux attach-session \; choose-tree -s
-  fi
-fi
