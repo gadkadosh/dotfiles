@@ -2,6 +2,9 @@ keybind = ctrl+a>h=goto_split:left
 keybind = ctrl+a>j=goto_split:bottom
 keybind = ctrl+a>k=goto_split:top
 keybind = ctrl+a>l=goto_split:right
+keybind = ctrl+enter=text:\r
 
 window-height = 2000
 window-width = 2000
+
+macos-titlebar-style = tabs
