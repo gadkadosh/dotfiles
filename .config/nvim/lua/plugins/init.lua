@@ -7,7 +7,10 @@ return {
     "tpope/vim-surround",
     "tpope/vim-eunuch",
     "tpope/vim-sleuth",
-    "tpope/vim-fugitive",
+    {
+        "tpope/vim-fugitive",
+        enabled = false,
+    },
     {
         "lewis6991/gitsigns.nvim",
         opts = {
@@ -15,18 +18,16 @@ return {
                 local gs = package.loaded.gitsigns
 
                 -- Navigation
-                vim.keymap.set("n", "[c", gs.prev_hunk, { buffer = bufnr, desc = "Go to previous hunk" })
-                vim.keymap.set("n", "]c", gs.next_hunk, { buffer = bufnr, desc = "Go to next hunk" })
+                vim.keymap.set("n", "[c", gs.prev_hunk, { buffer = bufnr })
+                vim.keymap.set("n", "]c", gs.next_hunk, { buffer = bufnr })
 
                 -- Actions
                 vim.keymap.set({ "n", "v" }, "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "[H]unk [S]tage" })
                 vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk,
                     { buffer = bufnr, desc = "[H]unk [U]ndo stage" })
-                vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr, desc = "[H]unk [P]review" })
-                vim.keymap.set("n", "<leader>hb", function()
-                    gs.blame_line { full = true }
-                end, { buffer = bufnr, desc = "Blame line" })
-                vim.keymap.set("n", "<leader>hd", gs.diffthis, { buffer = bufnr, desc = "Diff this" })
+                vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr })
+                vim.keymap.set("n", "<leader>gb", gs.blame_line, { buffer = bufnr })
+                vim.keymap.set("n", "<leader>gB", gs.blame, { buffer = bufnr })
             end,
         },
     },
@@ -47,9 +48,7 @@ return {
     {
         dir = "~/Code/pixem.nvim",
         cmd = "Pixem",
-        config = function()
-            require("pixem").setup()
-        end
+        opts = {},
     },
     {
         dir = "~/Code/vimsum.nvim",
