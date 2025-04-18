@@ -7,13 +7,17 @@ return {
                 lsp_format = "fallback",
             },
             formatters_by_ft = {
-                css = { "prettierd", stop_after_first = true },
-                html = { "prettierd" },
-                htmldjango = { "prettierd" },
-                javascript = { "prettierd", stop_after_first = true },
-                javascriptreact = { "prettierd", stop_after_first = true },
-                typescriptreact = { "prettierd", stop_after_first = true },
+                css = { "prettier", stop_after_first = true },
+                html = { "prettier" },
+                htmldjango = { "prettier" },
+                javascript = { "prettier", stop_after_first = true },
+                javascriptreact = { "prettier", stop_after_first = true },
+                json = { "prettier", stop_after_first = true },
+                jsonc = { "prettier", stop_after_first = true },
+                typescript = { "prettier", stop_after_first = true },
+                typescriptreact = { "prettier", stop_after_first = true },
                 python = { "black" },
+                yaml = { "prettier" }
             },
         },
         config = function(_, opts)

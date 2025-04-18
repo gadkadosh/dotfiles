@@ -26,9 +26,10 @@ vim.opt.wildmode = { "longest:full", "full" }
 vim.opt.showbreak = "   > "
 vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
+vim.opt.winborder = "rounded"
 
 vim.diagnostic.config({
-    virtual_text = { source = "if_many", prefix = "●" },
+    -- virtual_text = { source = "if_many", prefix = "●" },
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
 })
@@ -43,10 +44,6 @@ vim.keymap.set("c", "<C-L>", "<Right>")
 
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { expr = true })
-vim.keymap.set("n", "[b", "<cmd>bprevious<CR>")
-vim.keymap.set("n", "]b", "<cmd>bnext<CR>")
-vim.keymap.set("n", "[q", "<cmd>cprevious<CR>")
-vim.keymap.set("n", "]q", "<cmd>cnext<CR>")
 
 vim.keymap.set("n", "<C-h>", "<C-W>h")
 vim.keymap.set("n", "<C-j>", "<C-W>j")

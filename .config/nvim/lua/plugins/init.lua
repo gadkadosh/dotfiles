@@ -1,7 +1,16 @@
 return {
     {
         "nvim-lualine/lualine.nvim",
+        opts = {
+            sections = {
+                lualine_c = { { 'filename', path = 1 } }
+            }
+        },
+    },
+    {
+        "folke/ts-comments.nvim",
         opts = {},
+        event = "VeryLazy",
     },
 
     "tpope/vim-surround",
