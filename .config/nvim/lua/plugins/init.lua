@@ -1,11 +1,11 @@
 return {
     {
-        "nvim-lualine/lualine.nvim",
-        opts = {
-            sections = {
-                lualine_c = { { 'filename', path = 1 } }
-            }
-        },
+        'echasnovski/mini.nvim',
+        version = false,
+        config = function()
+            require('mini.surround').setup()
+            require('mini.statusline').setup()
+        end
     },
     {
         "folke/ts-comments.nvim",
@@ -13,7 +13,7 @@ return {
         event = "VeryLazy",
     },
 
-    "tpope/vim-surround",
+    -- "tpope/vim-surround",
     "tpope/vim-eunuch",
     "tpope/vim-sleuth",
     {
@@ -43,10 +43,9 @@ return {
 
     {
         "iamcco/markdown-preview.nvim",
-        ft = "markdown",
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
     },
     {
         "norcalli/nvim-colorizer.lua",

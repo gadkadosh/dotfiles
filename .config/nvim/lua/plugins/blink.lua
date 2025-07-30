@@ -1,6 +1,7 @@
 return {
     "saghen/blink.cmp",
-    version = "*",
+    version = "1.*",
+
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
@@ -18,5 +19,13 @@ return {
             },
         },
         signature = { enabled = true },
+        sources = {
+            per_filetype = {
+                sql = { 'snippets', 'dadbod', 'buffer' },
+            },
+            providers = {
+                dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+            },
+        }
     },
 }

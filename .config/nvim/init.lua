@@ -32,6 +32,27 @@ vim.diagnostic.config({
     -- virtual_text = { source = "if_many", prefix = "●" },
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = '󰅚 ',
+            [vim.diagnostic.severity.WARN] = '󰀪 ',
+            [vim.diagnostic.severity.INFO] = '󰋽 ',
+            [vim.diagnostic.severity.HINT] = '󰌶 ',
+        },
+    },
+    virtual_text = {
+        source = 'if_many',
+        spacing = 2,
+        format = function(diagnostic)
+            local diagnostic_message = {
+                [vim.diagnostic.severity.ERROR] = diagnostic.message,
+                [vim.diagnostic.severity.WARN] = diagnostic.message,
+                [vim.diagnostic.severity.INFO] = diagnostic.message,
+                [vim.diagnostic.severity.HINT] = diagnostic.message,
+            }
+            return diagnostic_message[diagnostic.severity]
+        end,
+    },
 })
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic Quickfix list" })
@@ -42,8 +63,9 @@ vim.keymap.set("c", "<C-N>", "<Down>")
 vim.keymap.set("c", "<C-H>", "<Left>")
 vim.keymap.set("c", "<C-L>", "<Right>")
 
+vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+-- vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { expr = true })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
-vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { expr = true })
 
 vim.keymap.set("n", "<C-h>", "<C-W>h")
 vim.keymap.set("n", "<C-j>", "<C-W>j")
@@ -59,12 +81,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking text",
     group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),
     callback = function()
-        vim.highlight.on_yank()
+        vim.hl.on_yank()
     end,
 })
 
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system {
         "git",
         "clone",

@@ -1,4 +1,3 @@
-#!/usr/bin/env zsh
 export CLICOLOR=true            # Enable colors for 'ls' (macOS)
 export HISTSIZE=10000
 export SAVEHIST=10000
@@ -15,6 +14,8 @@ bindkey '^[[A' up-line-or-beginning-search
 bindkey '^P' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search
 bindkey '^N' down-line-or-beginning-search
+bindkey -M viins '^[b' backward-word
+bindkey -M viins '^[f' forward-word
 
 # Edit command
 autoload -U edit-command-line

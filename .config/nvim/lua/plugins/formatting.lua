@@ -17,13 +17,19 @@ return {
                 typescript = { "prettier", stop_after_first = true },
                 typescriptreact = { "prettier", stop_after_first = true },
                 python = { "black" },
-                yaml = { "prettier" }
+                yaml = { "prettier" },
+                sql = { "sql-formatter" }
             },
         },
         config = function(_, opts)
             require("conform").setup(opts)
             vim.keymap.set({ "n", "v" }, "<leader>f",
-                function() require("conform").format({ lsp_format = "fallback" }) end)
+                function()
+                    local start = vim.loop.hrtime()
+                    require("conform").format({ lsp_format = "fallback" })
+                    local elapsed = (vim.loop.hrtime() - start) / 1e6
+                    print(string.format("Format took %.2fms", elapsed))
+                end)
         end,
     },
 }
