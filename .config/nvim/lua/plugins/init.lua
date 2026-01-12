@@ -1,20 +1,20 @@
 return {
     {
-        'echasnovski/mini.nvim',
+        "echasnovski/mini.nvim",
         version = false,
         config = function()
-            require('mini.surround').setup()
-            require('mini.statusline').setup()
-        end
+            require("mini.surround").setup()
+            require("mini.statusline").setup()
+        end,
     },
     {
         "folke/ts-comments.nvim",
         opts = {},
         event = "VeryLazy",
+        enabled = vim.fn.has("nvim-0.10.0") == 1,
     },
 
     -- "tpope/vim-surround",
-    "tpope/vim-eunuch",
     "tpope/vim-sleuth",
     {
         "tpope/vim-fugitive",
@@ -32,8 +32,7 @@ return {
 
                 -- Actions
                 vim.keymap.set({ "n", "v" }, "<leader>hs", gs.stage_hunk, { buffer = bufnr, desc = "[H]unk [S]tage" })
-                vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk,
-                    { buffer = bufnr, desc = "[H]unk [U]ndo stage" })
+                vim.keymap.set("n", "<leader>hu", gs.undo_stage_hunk, { buffer = bufnr, desc = "[H]unk [U]ndo stage" })
                 vim.keymap.set("n", "<leader>hp", gs.preview_hunk, { buffer = bufnr })
                 vim.keymap.set("n", "<leader>gb", gs.blame_line, { buffer = bufnr })
                 vim.keymap.set("n", "<leader>gB", gs.blame, { buffer = bufnr })
@@ -45,7 +44,9 @@ return {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
-        build = function() vim.fn["mkdp#util#install"]() end,
+        build = function()
+            vim.fn["mkdp#util#install"]()
+        end,
     },
     {
         "norcalli/nvim-colorizer.lua",
@@ -64,6 +65,6 @@ return {
             require("vimsum").setup()
             vim.keymap.set("v", "<leader>st", ":SumTimes<cr>")
             vim.keymap.set("v", "<leader>sc", ":SumColumn<cr>")
-        end
-    }
+        end,
+    },
 }

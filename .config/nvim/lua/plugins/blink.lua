@@ -6,26 +6,26 @@ return {
     ---@type blink.cmp.Config
     opts = {
         cmdline = {
-            enabled = false
+            enabled = false,
         },
         completion = {
             accept = {
                 auto_brackets = {
-                    enabled = false
-                }
+                    enabled = false,
+                },
             },
             documentation = {
-                auto_show = true
+                auto_show = true,
             },
         },
         signature = { enabled = true },
         sources = {
             per_filetype = {
-                sql = { 'snippets', 'dadbod', 'buffer' },
+                sql = { "snippets", "dadbod", "buffer" },
             },
             providers = {
                 dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
             },
-        }
+        },
     },
 }
