@@ -79,3 +79,6 @@ eval "$(starship init zsh)"
 
 # zsh syntax highlighting (brew install zsh-syntax-highlighting)
 [ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# opencode
+export PATH=/Users/gadkadosh/.opencode/bin:$PATH

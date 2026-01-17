@@ -13,8 +13,8 @@ return {
         event = "VeryLazy",
         enabled = vim.fn.has("nvim-0.10.0") == 1,
     },
+    { "dmmulroy/ts-error-translator.nvim" },
 
-    -- "tpope/vim-surround",
     "tpope/vim-sleuth",
     {
         "tpope/vim-fugitive",

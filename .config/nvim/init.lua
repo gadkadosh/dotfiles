@@ -10,8 +10,6 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
 vim.opt.listchars = { nbsp = "␣", tab = "→ ", eol = "↵", extends = "»", precedes = "«", trail = "·" }
 vim.opt.inccommand = "split"
 vim.opt.cursorline = true
@@ -34,14 +32,14 @@ vim.diagnostic.config({
     severity_sort = true,
     signs = {
         text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚 ',
-            [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
+            [vim.diagnostic.severity.ERROR] = "󰅚 ",
+            [vim.diagnostic.severity.WARN] = "󰀪 ",
+            [vim.diagnostic.severity.INFO] = "󰋽 ",
+            [vim.diagnostic.severity.HINT] = "󰌶 ",
         },
     },
     virtual_text = {
-        source = 'if_many',
+        source = "if_many",
         spacing = 2,
         format = function(diagnostic)
             local diagnostic_message = {
@@ -85,16 +83,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
-    vim.fn.system {
+    vim.fn.system({
         "git",
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
         "--branch=stable",
         lazypath,
-    }
+    })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -115,7 +113,9 @@ end)
 
 local function unload_module(mod)
     mod = mod or vim.fn.input({ prompt = "Module name: " })
-    if not mod then return end
+    if not mod then
+        return
+    end
     package.loaded[mod] = nil
     print("Unloading module: " .. mod)
 end
@@ -132,7 +132,7 @@ end, {
             end
         end
         return mods
-    end
+    end,
 })
 
 vim.keymap.set("n", "<leader>z", unload_module)
