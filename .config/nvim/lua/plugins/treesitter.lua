@@ -6,7 +6,6 @@ return {
         config = function()
             require("nvim-treesitter").install({
                 "c",
-                "comment",
                 "css",
                 "html",
                 "http",

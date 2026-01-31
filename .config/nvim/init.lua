@@ -26,6 +26,8 @@ vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.winborder = "rounded"
 
+vim.cmd("cabbrev W w")
+
 vim.diagnostic.config({
     -- virtual_text = { source = "if_many", prefix = "●" },
     float = { border = "rounded", source = "if_many" },
