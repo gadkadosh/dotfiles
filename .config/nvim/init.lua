@@ -29,7 +29,6 @@ vim.opt.winborder = "rounded"
 vim.cmd("cabbrev W w")
 
 vim.diagnostic.config({
-    -- virtual_text = { source = "if_many", prefix = "●" },
     float = { border = "rounded", source = "if_many" },
     severity_sort = true,
     signs = {
@@ -64,7 +63,6 @@ vim.keymap.set("c", "<C-H>", "<Left>")
 vim.keymap.set("c", "<C-L>", "<Right>")
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
--- vim.keymap.set("n", "<CR>", "v:hlsearch ? ':nohlsearch<CR>' : '<CR>'", { expr = true })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 
 vim.keymap.set("n", "<C-h>", "<C-W>h")
@@ -99,6 +97,9 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup("plugins")
+vim.keymap.set("n", "<leader>l", function()
+    require("lazy").home()
+end)
 
 vim.keymap.set("n", "<leader>x", function()
     local ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })

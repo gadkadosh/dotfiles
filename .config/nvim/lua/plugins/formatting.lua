@@ -14,22 +14,22 @@ return {
                 javascriptreact = { "prettier", stop_after_first = true },
                 json = { "prettier", stop_after_first = true },
                 jsonc = { "prettier", stop_after_first = true },
+                lua = { "stylua" },
                 typescript = { "prettier", stop_after_first = true },
                 typescriptreact = { "prettier", stop_after_first = true },
                 python = { "black" },
                 yaml = { "prettier" },
-                sql = { "sql-formatter" }
+                sql = { "sql-formatter" },
             },
         },
         config = function(_, opts)
             require("conform").setup(opts)
-            vim.keymap.set({ "n", "v" }, "<leader>f",
-                function()
-                    local start = vim.loop.hrtime()
-                    require("conform").format({ lsp_format = "fallback" })
-                    local elapsed = (vim.loop.hrtime() - start) / 1e6
-                    print(string.format("Format took %.2fms", elapsed))
-                end)
+            vim.keymap.set({ "n", "v" }, "<leader>f", function()
+                local start = vim.loop.hrtime()
+                require("conform").format({ lsp_format = "fallback" })
+                local elapsed = (vim.loop.hrtime() - start) / 1e6
+                print(string.format("Format took %.2fms", elapsed))
+            end)
         end,
     },
 }
