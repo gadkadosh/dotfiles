@@ -65,6 +65,7 @@ export EDITOR=nvim
 # R: raw output, to allow ANSI colors
 # M: verbose prompt, line numbers/percentage
 export LESS='-iRM'
+export PSQL_PAGER="pspg -X -b"
 
 # Man pages with vim
 export MANPAGER='nvim +Man!'
@@ -107,4 +108,3 @@ else
   compdef _opencode_yargs_completions opencode
 fi
 ###-end-opencode-completions-###
-

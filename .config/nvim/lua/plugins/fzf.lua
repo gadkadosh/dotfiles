@@ -5,8 +5,6 @@ return {
         require("fzf-lua").setup({
             defaults = {
                 formatter = "path.dirname_first",
-            },
-            grep = {
                 actions = {
                     ["ctrl-q"] = {
                         fn = require("fzf-lua").actions.file_edit_or_qf,
@@ -71,6 +69,13 @@ return {
                 require("fzf-lua").helptags()
             end,
             desc = "Help tags",
+        },
+        {
+            "<leader>gs",
+            function()
+                require("fzf-lua").git_status()
+            end,
+            desc = "Git status",
         },
     },
 }

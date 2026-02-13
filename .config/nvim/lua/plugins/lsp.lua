@@ -18,7 +18,7 @@ return {
         {
             "mason-org/mason-lspconfig.nvim",
             opts = {
-                ensure_installed = { "pyright", "lua_ls", "eslint", "ts_ls" },
+                ensure_installed = { "pyright", "lua_ls", "eslint", "ts_ls", "tailwindcss" },
             },
         },
         { "j-hui/fidget.nvim", opts = {} },

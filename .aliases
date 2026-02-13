@@ -21,3 +21,30 @@ hstats() {
     CMD[a]/count*100 "% " a;}' | grep -v "./" | \
     column -c3 -s " " -t | sort -nr | nl | head -n20
 }
+
+# Use fzf to connect psql to a specific service from .pg_service.conf
+psqls() {
+  local svcfile="${PGSERVICEFILE:-$HOME/.pg_service.conf}"
+  local statefile="$HOME/.psqls_last"
+  [[ -r "$svcfile" ]] || { echo "No readable service file: $svcfile"; return 1; }
+
+  local last=""
+  [[ -r "$statefile" ]] && last="$(cat "$statefile")"
+
+  local svc
+  svc="$(
+    awk -F'[][]' '/^\[.*\]$/ {print $2}' "$svcfile" |
+      awk -v last="$last" 'BEGIN{if(last!="") print last} {if($0!=last) print $0}' |
+      fzf --prompt='psql service> ' --height=40% --reverse \
+          --preview="awk -v s='{}' '
+            BEGIN{p=0}
+            /^\[.*\]$/{p=0}
+            \$0==\"[\"s\"]\"{p=1}
+            p{print}
+          ' \"$svcfile\"" \
+          --preview-window=right:60%
+  )" || return 1
+
+  echo "$svc" > "$statefile"
+  psql "service=$svc" "$@"
+}
