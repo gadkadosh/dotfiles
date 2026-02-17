@@ -1,5 +1,4 @@
 # Aliases
-alias vim=nvim
 alias top="top -u -s 2"
 alias grep="grep --color"
 alias la="ls -a"
@@ -23,7 +22,7 @@ hstats() {
 }
 
 # Use fzf to connect psql to a specific service from .pg_service.conf
-psqls() {
+_psql_picker() {
   local svcfile="${PGSERVICEFILE:-$HOME/.pg_service.conf}"
   local statefile="$HOME/.psqls_last"
   [[ -r "$svcfile" ]] || { echo "No readable service file: $svcfile"; return 1; }
@@ -47,4 +46,12 @@ psqls() {
 
   echo "$svc" > "$statefile"
   psql "service=$svc" "$@"
+}
+
+psql() {
+  if (( $# == 0 )); then
+    _psql_picker
+  else
+    command psql "$@"
+  fi
 }
