@@ -3,12 +3,7 @@ return {
         "folke/tokyonight.nvim",
         lazy = false,
         priority = 1000,
-        config = function()
-            require("tokyonight").setup({
-                style = "moon",
-                transparent = true,
-            })
-            vim.cmd.colorscheme("tokyonight")
-        end,
+        opts = { style = "moon", transparent = true },
     },
+    { "catppuccin/nvim", name = "catppuccin", priority = 1000, opts = { transparent_background = true } },
 }

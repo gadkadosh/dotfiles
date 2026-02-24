@@ -12,6 +12,15 @@ return {
         opts = {},
         event = "VeryLazy",
     },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
+    },
     { "dmmulroy/ts-error-translator.nvim" },
 
     "tpope/vim-sleuth",
@@ -60,10 +69,11 @@ return {
     },
     {
         dir = "~/Code/vimsum.nvim",
-        config = function()
-            require("vimsum").setup()
-            vim.keymap.set("v", "<leader>st", ":SumTimes<cr>")
-            vim.keymap.set("v", "<leader>sc", ":SumColumn<cr>")
-        end,
+        cmd = { "SumTimes", "SumColumn" },
+        keys = {
+            { "<leader>st", ":SumTimes<CR>", mode = "v" },
+            { "<leader>sc", ":SumColumn<CR>", mode = "v" },
+        },
+        opts = {},
     },
 }

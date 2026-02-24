@@ -17,6 +17,9 @@ return {
             documentation = {
                 auto_show = true,
             },
+            menu = {
+                auto_show = false,
+            },
         },
         signature = { enabled = true },
         sources = {

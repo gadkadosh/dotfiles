@@ -5,6 +5,7 @@
 - Neovim
 - tmux
 - alacritty
+- Ghostty
 
 ## Installation
 

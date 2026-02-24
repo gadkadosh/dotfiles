@@ -25,6 +25,7 @@ vim.opt.showbreak = "   > "
 vim.opt.grepprg = "rg --vimgrep --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.winborder = "rounded"
+vim.opt.termguicolors = true
 
 vim.cmd("cabbrev W w")
 
@@ -139,3 +140,5 @@ end, {
 })
 
 vim.keymap.set("n", "<leader>z", unload_module)
+
+vim.cmd.colorscheme("catppuccin")

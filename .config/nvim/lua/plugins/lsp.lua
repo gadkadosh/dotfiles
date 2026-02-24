@@ -1,16 +1,3 @@
-local function get_python_path()
-    local possible_paths = { "backend/venv", "venv", ".venv" }
-
-    for _, path in ipairs(possible_paths) do
-        local python_path = vim.fn.getcwd() .. "/" .. path .. "/bin/python"
-        if vim.fn.executable(python_path) == 1 then
-            return python_path
-        end
-    end
-
-    return vim.fn.exepath("python3") or vim.fn.exepath("python")
-end
-
 return {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -18,27 +5,29 @@ return {
         {
             "mason-org/mason-lspconfig.nvim",
             opts = {
-                ensure_installed = { "pyright", "lua_ls", "eslint", "ts_ls", "tailwindcss", "bash_language_server" },
+                ensure_installed = { "pyright", "lua_ls", "eslint", "ts_ls", "tailwindcss" },
             },
         },
         { "j-hui/fidget.nvim", opts = {} },
-        {
-            "folke/lazydev.nvim",
-            ft = "lua",
-            opts = {
-                library = {
-                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-                },
-            },
-        },
     },
     config = function()
         vim.lsp.config("pyright", {
-            settings = {
-                python = {
-                    pythonPath = get_python_path(),
-                },
-            },
+            before_init = function(_, config)
+                local root = config.root_dir
+
+                local function get_python_path()
+                    local possible_paths = { "backend/venv", "venv", ".venv" }
+                    for _, path in ipairs(possible_paths) do
+                        local python_path = root .. "/" .. path .. "/bin/python"
+                        if vim.fn.executable(python_path) == 1 then
+                            return python_path
+                        end
+                    end
+                    return vim.fn.exepath("python3") or vim.fn.exepath("python")
+                end
+
+                config.settings.python.pythonPath = get_python_path()
+            end,
         })
 
         vim.api.nvim_create_autocmd("LspAttach", {

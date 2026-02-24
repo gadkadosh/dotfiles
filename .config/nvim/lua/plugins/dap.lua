@@ -3,18 +3,7 @@ return {
     dependencies = {
         "mfussenegger/nvim-dap",
         "nvim-neotest/nvim-nio",
-        {
-            "jay-babu/mason-nvim-dap.nvim",
-            opts = {
-                ensure_installed = {},
-                handlers = {
-                    function(config)
-                        require('mason-nvim-dap').default_setup(config)
-                    end
-                }
-            },
-            event = "VeryLazy",
-        },
+        "jay-babu/mason-nvim-dap.nvim",
     },
     config = function()
         local dap, dapui = require("dap"), require("dapui")
@@ -37,14 +26,56 @@ return {
         dap.listeners.before.event_exited.dapui_config = function()
             dapui.close()
         end
-
-        vim.keymap.set("n", "<F5>", dap.continue, { desc = "Debugger start or Continue" })
-        vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Debugger step over" })
-        vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Debugger step into" })
-        vim.keymap.set("n", "<F12>", dap.step_out, { desc = "Debugger step out" })
-        vim.keymap.set("n", "<F6>", dap.terminate, { desc = "Debugger Stop" })
-        vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Toggle Debugger [B]reakpoint" })
-        vim.keymap.set("n", "<leader>du", dapui.toggle, { desc = "[D]ebugger toggle [U]I" })
     end,
-    event = "VeryLazy",
+    keys = {
+        {
+            "<F5>",
+            function()
+                require("dap").continue()
+            end,
+            { desc = "Debugger start or Continue" },
+        },
+        {
+            "<F10>",
+            function()
+                require("dap").step_over()
+            end,
+            { desc = "Debugger step over" },
+        },
+        {
+            "<F11>",
+            function()
+                require("dap").step_into()
+            end,
+            { desc = "Debugger step into" },
+        },
+        {
+            "<F12>",
+            function()
+                require("dap").step_out()
+            end,
+            { desc = "Debugger step out" },
+        },
+        {
+            "<F6>",
+            function()
+                require("dap").terminate()
+            end,
+            { desc = "Debugger Stop" },
+        },
+        {
+            "<leader>b",
+            function()
+                require("dap").toggle_breakpoint()
+            end,
+            { desc = "Toggle Debugger [B]reakpoint" },
+        },
+        {
+            "<leader>du",
+            function()
+                require("dapui").toggle()
+            end,
+            { desc = "[D]ebugger toggle [U]I" },
+        },
+    },
 }
