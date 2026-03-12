@@ -37,7 +37,6 @@ setopt histfindnodups
 setopt histignoredups
 setopt histignorespace
 setopt histverify
-setopt sharehistory
 
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{[:lower:]}={[:upper:]}' 'l:|=* r:|=*'
@@ -46,8 +45,7 @@ zstyle ':completion:*' list-colors 'di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34
 autoload -Uz compinit; compinit
 
 # Load fzf tab completion and key bindings
-source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
-source /opt/homebrew/opt/fzf/shell/completion.zsh
+source <(fzf --zsh)
 # FZF using fd instead of find (respects .gitignore)
 export FZF_DEFAULT_COMMAND='fd --type f'
 
