@@ -55,12 +55,6 @@ source $HOME/.aliases
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
-# zsh autosuggestions (brew install zsh-autosuggestions)
-[ -f /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# zsh syntax highlighting (brew install zsh-syntax-highlighting)
-[ -f /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] && source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 #compdef opencode
 ###-begin-opencode-completions-###
 #

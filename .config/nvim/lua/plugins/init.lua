@@ -90,10 +90,6 @@ return {
             vim.fn["mkdp#util#install"]()
         end,
     },
-    {
-        "norcalli/nvim-colorizer.lua",
-        opts = {},
-    },
 
     -- My Plugins
     {

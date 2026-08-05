@@ -7,8 +7,9 @@ return {
         {
             "igorlfs/nvim-dap-view",
             opts = {
-                winbar = {
-                    controls = { enabled = true },
+                windows = {
+                    size = 0.45,
+                    position = "right",
                 },
             },
         },
@@ -19,14 +20,6 @@ return {
         -- dapui.setup()
         dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
-        dap.adapters.python = function(callback, config)
-            callback({
-                type = "server",
-                host = config.connect.host,
-                port = config.connect.port,
-            })
-        end
-
         dap.adapters.debugpy = function(callback, config)
             callback({
                 type = "server",
@@ -35,9 +28,82 @@ return {
             })
         end
 
-        vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "", linehl = "", numhl = "" })
-        vim.fn.sign_define("DapBreakpointRejected", { text = "🟦", texthl = "", linehl = "", numhl = "" })
-        vim.fn.sign_define("DapStopped", { text = "🟢", texthl = "", linehl = "", numhl = "" })
+        dap.adapters.codelldb = {
+            type = "server",
+            port = "${port}",
+            executable = {
+                command = "codelldb",
+                args = { "--port", "${port}" },
+            },
+        }
+
+        dap.configurations.cpp = {
+            {
+                name = "Debug current file",
+                type = "codelldb",
+                request = "launch",
+                program = function()
+                    local file = vim.fn.expand("%:p")
+                    local executable = vim.fn.expand("%:p:r")
+
+                    local cmd = {
+                        "clang++",
+                        "-g",
+                        file,
+                        "-o",
+                        executable,
+                    }
+
+                    local result = vim.system(cmd):wait()
+                    if result.code ~= 0 then
+                        error("Compilation failed:\n" .. (result.stderr or ""))
+                    end
+
+                    return executable
+                end,
+                cwd = "${workspaceFolder}",
+                stopOnEntry = false,
+                args = {},
+            },
+        }
+
+        -- dap.configurations.objc = {
+        --     {
+        --         name = "Debug current file",
+        --         type = "codelldb",
+        --         request = "launch",
+        --         program = function()
+        --             local file = vim.fn.expand("%:p")
+        --             local executable = vim.fn.expand("%:p:r")
+        --
+        --             local cmd = {
+        --                 "clang",
+        --                 "-framework",
+        --                 "Foundation",
+        --                 "-g",
+        --                 file,
+        --                 "-o",
+        --                 executable,
+        --             }
+        --
+        --             local result = vim.system(cmd):wait()
+        --             if result.code ~= 0 then
+        --                 error("Compilation failed:\n" .. (result.stderr or ""))
+        --             end
+        --
+        --             return executable
+        --         end,
+        --         cwd = "${workspaceFolder}",
+        --         stopOnEntry = false,
+        --         args = {},
+        --     },
+        -- }
+
+        -- vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "DapBreakpoint" })
+        vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })
+        vim.fn.sign_define("DapBreakpointRejected", { text = "🟦", texthl = "DapBreakpointRejected" })
+        -- vim.fn.sign_define("DapStopped", { text = "🟢", texthl = "", linehl = "", numhl = "" })
+        vim.fn.sign_define("DapStopped", { text = "", texthl = "DapStopped", linehl = "debugPC", numhl = "debugPC" })
 
         -- dap.listeners.before.attach.dapui_config = function()
         --     dapui.open()
@@ -81,6 +147,15 @@ return {
                 require("dap").toggle_breakpoint()
             end,
             desc = "Debug: Toggle [B]reakpoint",
+        },
+        {
+            "<F21>",
+            function()
+                vim.ui.input({ prompt = "Condition? " }, function(input)
+                    require("dap").set_breakpoint(input)
+                end)
+            end,
+            desc = "Debug: Set Breakpoint",
         },
         {
             "<F10>",

@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 
-vim.opt.number = true
+vim.opt.number = false
 vim.opt.mouse = "a"
 vim.opt.mousescroll = "ver:1,hor:1"
 vim.opt.signcolumn = "yes"
@@ -10,6 +10,7 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
+vim.opt.hlsearch = false
 vim.opt.listchars = { nbsp = "␣", tab = "→ ", eol = "↵", extends = "»", precedes = "«", trail = "·" }
 vim.opt.inccommand = "split"
 vim.opt.cursorline = true
@@ -56,6 +57,7 @@ vim.diagnostic.config({
 })
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic Quickfix list" })
+vim.keymap.set("n", "<leader>D", vim.diagnostic.setqflist, { desc = "Open diagnostic Quickfix list" })
 
 vim.keymap.set("c", "<C-A>", "<Home>")
 vim.keymap.set("c", "<C-P>", "<Up>")

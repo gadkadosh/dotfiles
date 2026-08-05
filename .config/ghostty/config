@@ -2,3 +2,5 @@ window-height = 2000
 window-width = 2000
 
 macos-titlebar-style = tabs
+
+font-family = Mononoki Nerd Font

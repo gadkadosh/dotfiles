@@ -7,6 +7,7 @@ return {
             require("nvim-treesitter").install({
                 "c",
                 "css",
+                "graphql",
                 "html",
                 "http",
                 "javascript",

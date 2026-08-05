@@ -13,8 +13,12 @@ return {
                 },
             },
             winopts = {
+                number = false,
                 preview = {
                     horizontal = "right:50%",
+                    winopts = {
+                        number = false,
+                    },
                 },
             },
         })
