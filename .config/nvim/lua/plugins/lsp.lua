@@ -5,7 +5,7 @@ return {
         {
             "mason-org/mason-lspconfig.nvim",
             opts = {
-                ensure_installed = { "pyright", "pyrefly", "lua_ls", "eslint", "ts_ls", "tailwindcss" },
+                ensure_installed = { "pyrefly", "lua_ls", "eslint", "tailwindcss", "tsc" },
                 automatic_enable = {
                     exclude = { "pyright" },
                 },

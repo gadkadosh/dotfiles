@@ -2,6 +2,8 @@ export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=50000
 export SAVEHIST=50000
 
+export PATH=$PATH:$HOME/go/bin
+
 export EDITOR=nvim
 # i: case-insensitive searches, unless uppercase characters in search string
 # R: raw output, to allow ANSI colors
@@ -82,3 +84,6 @@ else
   compdef _opencode_yargs_completions opencode
 fi
 ###-end-opencode-completions-###
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /opt/homebrew/bin/terraform terraform

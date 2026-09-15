@@ -1,5 +1,6 @@
 window-height = 2000
 window-width = 2000
+adjust-cell-height = +14%
 
 macos-titlebar-style = tabs
 
