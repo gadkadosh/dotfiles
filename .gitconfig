@@ -1,0 +1,10 @@
+[user]
+	email = 32033534+gadkadosh@users.noreply.github.com
+
+[alias]
+	co = checkout
+	st = status
+[merge]
+	tool = nvimdiff
+[init]
+	defaultBranch = main
