@@ -2,7 +2,7 @@ export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=50000
 export SAVEHIST=50000
 
-export PATH=$PATH:$HOME/go/bin
+export PATH="$PATH:$HOME/go/bin:$HOME/Code/scripts"
 
 export EDITOR=nvim
 # i: case-insensitive searches, unless uppercase characters in search string

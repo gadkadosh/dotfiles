@@ -4,7 +4,6 @@
 - Homebrew
 - Neovim
 - tmux
-- alacritty
 - Ghostty
 
 ## Installation

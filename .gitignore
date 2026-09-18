@@ -1,0 +1,12 @@
+# macOS and editor clutter
+.DS_Store
+*.swp
+*.swo
+*~
+*.bak
+
+# Secrets and machine-local overrides
+.env
+.env.*
+!.env.example
+*.local
