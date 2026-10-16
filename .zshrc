@@ -14,6 +14,9 @@ export MANPAGER='nvim +Man!' # Man pages with vim
 
 export CLICOLOR=1            # Enable colors for 'ls' (macOS)
 
+# Use Emacs-style shell shortcuts, regardless of $EDITOR.
+bindkey -e
+
 # Shift-tab
 bindkey '^[[Z' reverse-menu-complete
 

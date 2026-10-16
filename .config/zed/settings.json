@@ -7,6 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "disable_ai": true,
   "hard_tabs": false,
   "buffer_font_size": 13.0,
   "use_smartcase_search": true,
@@ -17,7 +18,7 @@
   "inline_code_actions": false,
   "gutter": {
     "runnables": true,
-    "line_numbers": false,
+    "line_numbers": true,
   },
   "relative_line_numbers": "disabled",
   "cursor_blink": false,
