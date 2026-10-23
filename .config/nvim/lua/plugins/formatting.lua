@@ -57,6 +57,7 @@ return {
                 json = { "biome", "prettier" },
                 jsonc = { "biome", "prettier" },
                 lua = { "stylua" },
+                swift = { "swift" },
                 terraform = { "terraform_fmt" },
                 typescript = { "biome", "biome-organize-imports", "prettier" },
                 typescriptreact = { "biome", "biome-organize-imports", "prettier" },

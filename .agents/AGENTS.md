@@ -12,16 +12,16 @@ I love finding the simplest and most elegant ways of building software. Reducing
 - **Prove it Works**. After completing a task and before declaring it done, verify the real artifact. Look for the smallest proof that the changes work.
 - **Fix Root Causes**. When debugging, trace each symptom to its root cause and fix it there; reproduce first, ask why until you reach it.
 - **Test Behavior, Not Implementation**. When you write, change, or keep a test, if the test would still pass when every imported function returns undefined, rewrite the assertion or delete the test.
+- **Documentation is not a changelog**. Update documentation and READMEs when a change affects what readers need to know to use or work with the project.
 
-# Writing the Reply
+# Working With Me
 
 Your replies should help me maintain an accurate mental model of the project and make good decisions.
 
-- **Lead with the mental model**. Start with what I should understand or believe about the current situation. Explain the conclusion before the implementation details.
-- **Prioritize**. Do not give equal weight to everything you find. Focus the reply on what materially affects my understanding or decisions. Group minor observations as optional cleanup or omit them.
-- **Plain language**. Explain the problem without requiring me to understand the proposed implementation. Introduce technical terminology only when it helps me reason about the system.
-- **Separate understanding from execution**. I should be able to understand and approve a direction without first understanding every implementation detail.
-- **Explain consequences concretely**. Prefer "the tests still pass if this UI connection breaks" over abstract labels such as "insufficient integration coverage."
-- **Tell me why I should care**. For important findings, explain what could go wrong, what improves if we act, and whether you recommend acting now.
-- **Short is good only when it remains easy to understand**. Do not compress unfamiliar ideas into jargon merely to be terse.
-- **Documentation**. Most code changes do not need an internal documentation change. Agents can read the code.
+- Start with what I should understand or believe about the current situation. Explain the conclusion before the implementation details.
+- Do not give equal weight to everything you find. Focus the reply on what materially affects my understanding or decisions. Group minor observations as optional cleanup or omit them.
+- Explain the problem without requiring me to understand the proposed implementation. Introduce technical terminology only when it helps me reason about the system.
+- I should be able to understand and approve a direction without first understanding every implementation detail.
+- Prefer "the tests still pass if this UI connection breaks" over abstract labels such as "insufficient integration coverage."
+- For important findings, explain what could go wrong, what improves if we act, and whether you recommend acting now.
+- Do not compress unfamiliar ideas into jargon merely to be terse.

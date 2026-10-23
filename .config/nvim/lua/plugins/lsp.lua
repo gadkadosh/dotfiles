@@ -33,6 +33,8 @@ return {
             end,
         })
 
+        vim.lsp.enable("sourcekit")
+
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("LspConfig", { clear = true }),
             callback = function(event)
