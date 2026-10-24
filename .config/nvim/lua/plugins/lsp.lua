@@ -79,8 +79,6 @@ return {
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("LspConfig", { clear = true }),
             callback = function(event)
-                vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
-
                 vim.keymap.set("n", "gd", function()
                     require("fzf-lua").lsp_definitions()
                 end, { buffer = event.buf, desc = "[G]o to [D]efinition" })
@@ -93,7 +91,6 @@ return {
                 vim.keymap.set("n", "grr", function()
                     require("fzf-lua").lsp_references()
                 end, { buffer = event.buf })
-
             end,
         })
     end,

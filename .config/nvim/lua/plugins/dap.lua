@@ -1,8 +1,6 @@
 return {
     "mfussenegger/nvim-dap",
     dependencies = {
-        -- "nvim-neotest/nvim-nio",
-        -- "rcarriga/nvim-dap-ui",
         {
             "igorlfs/nvim-dap-view",
             opts = {
@@ -15,8 +13,6 @@ return {
     },
     config = function()
         local dap = require("dap")
-        -- local dap, dapui = require("dap"), require("dapui")
-        -- dapui.setup()
         dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
         dap.adapters.debugpy = function(callback, config)
@@ -66,56 +62,9 @@ return {
             },
         }
 
-        -- dap.configurations.objc = {
-        --     {
-        --         name = "Debug current file",
-        --         type = "codelldb",
-        --         request = "launch",
-        --         program = function()
-        --             local file = vim.fn.expand("%:p")
-        --             local executable = vim.fn.expand("%:p:r")
-        --
-        --             local cmd = {
-        --                 "clang",
-        --                 "-framework",
-        --                 "Foundation",
-        --                 "-g",
-        --                 file,
-        --                 "-o",
-        --                 executable,
-        --             }
-        --
-        --             local result = vim.system(cmd):wait()
-        --             if result.code ~= 0 then
-        --                 error("Compilation failed:\n" .. (result.stderr or ""))
-        --             end
-        --
-        --             return executable
-        --         end,
-        --         cwd = "${workspaceFolder}",
-        --         stopOnEntry = false,
-        --         args = {},
-        --     },
-        -- }
-
-        -- vim.fn.sign_define("DapBreakpoint", { text = "🔴", texthl = "DapBreakpoint" })
         vim.fn.sign_define("DapBreakpoint", { text = "●", texthl = "DapBreakpoint" })
         vim.fn.sign_define("DapBreakpointRejected", { text = "🟦", texthl = "DapBreakpointRejected" })
-        -- vim.fn.sign_define("DapStopped", { text = "🟢", texthl = "", linehl = "", numhl = "" })
         vim.fn.sign_define("DapStopped", { text = "", texthl = "DapStopped", linehl = "debugPC", numhl = "debugPC" })
-
-        -- dap.listeners.before.attach.dapui_config = function()
-        --     dapui.open()
-        -- end
-        -- dap.listeners.before.launch.dapui_config = function()
-        --     dapui.open()
-        -- end
-        -- dap.listeners.before.event_terminated.dapui_config = function()
-        --     dapui.close()
-        -- end
-        -- dap.listeners.before.event_exited.dapui_config = function()
-        --     dapui.close()
-        -- end
     end,
     keys = {
         {
@@ -188,9 +137,6 @@ return {
         {
             "<leader>du",
             "<cmd>DapViewToggle<CR>",
-            -- function()
-            --     require("dapui").toggle()
-            -- end,
             desc = "Debug: Toggle UI",
         },
     },

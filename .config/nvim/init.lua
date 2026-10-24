@@ -10,7 +10,6 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.opt.hlsearch = false
 vim.opt.listchars = { nbsp = "␣", tab = "→ ", eol = "↵", extends = "»", precedes = "«", trail = "·" }
 vim.opt.inccommand = "split"
 vim.opt.cursorline = true
@@ -41,19 +40,7 @@ vim.diagnostic.config({
             [vim.diagnostic.severity.HINT] = "󰌶 ",
         },
     },
-    virtual_text = {
-        source = "if_many",
-        spacing = 2,
-        format = function(diagnostic)
-            local diagnostic_message = {
-                [vim.diagnostic.severity.ERROR] = diagnostic.message,
-                [vim.diagnostic.severity.WARN] = diagnostic.message,
-                [vim.diagnostic.severity.INFO] = diagnostic.message,
-                [vim.diagnostic.severity.HINT] = diagnostic.message,
-            }
-            return diagnostic_message[diagnostic.severity]
-        end,
-    },
+    virtual_text = { source = "if_many", spacing = 2 },
 })
 
 vim.keymap.set("n", "<leader>d", vim.diagnostic.setloclist, { desc = "Open diagnostic Quickfix list" })
@@ -74,7 +61,6 @@ vim.keymap.set("n", "<C-k>", "<C-W>k")
 vim.keymap.set("n", "<C-l>", "<C-W>l")
 
 vim.keymap.set("n", "<leader>ev", ":edit $MYVIMRC<CR>", { desc = "[E]dit [V]im config" })
-vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { desc = "Source Vim config" })
 vim.keymap.set("n", "<leader>so", "<cmd>source %<CR>")
 vim.keymap.set("n", "-", "<cmd>Explore<CR>")
 
@@ -120,15 +106,22 @@ vim.keymap.set("n", "<leader>l", function()
 end)
 
 vim.keymap.set("n", "<leader>x", function()
-    local ft = vim.api.nvim_get_option_value("filetype", { buf = 0 })
     local filename = vim.api.nvim_buf_get_name(0)
-    print([[executing ]] .. filename)
-    if ft == "lua" then
-        vim.cmd([[luafile ]] .. filename)
-    elseif ft == "python" then
-        vim.cmd([[!python3 ]] .. filename)
-    elseif ft == "vim" then
-        vim.cmd([[source ]] .. filename)
+    if filename == "" then
+        return
+    end
+
+    local opts = {
+        args = { filename },
+        magic = { file = false },
+    }
+
+    if vim.bo.filetype == "lua" then
+        vim.cmd.luafile(opts)
+    elseif vim.bo.filetype == "vim" then
+        vim.cmd.source(opts)
+    elseif vim.bo.filetype == "python" then
+        vim.cmd("!python3 " .. vim.fn.shellescape(filename, true))
     end
 end)
 
