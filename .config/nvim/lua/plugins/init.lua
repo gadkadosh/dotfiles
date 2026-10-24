@@ -16,12 +16,17 @@ return {
 
     "tpope/vim-sleuth",
     {
+        "MeanderingProgrammer/render-markdown.nvim",
+        ft = "markdown",
+        cmd = "RenderMarkdown",
+        dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" },
+        opts = {},
+    },
+    {
         "iamcco/markdown-preview.nvim",
         cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
         ft = { "markdown" },
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
+        build = ":call mkdp#util#install_sync()",
     },
 
     -- My Plugins
