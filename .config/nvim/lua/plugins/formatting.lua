@@ -83,26 +83,10 @@ return {
                     end,
                 },
                 prettier = {
+                    require_cwd = true,
                     condition = function(_, ctx)
                         local filetype = vim.bo[ctx.buf].filetype
-                        if biome_filetypes[filetype] and has_biome_config(ctx) then
-                            return false
-                        end
-
-                        return vim.fs.find({
-                            ".prettierrc",
-                            ".prettierrc.json",
-                            ".prettierrc.yml",
-                            ".prettierrc.yaml",
-                            ".prettierrc.json5",
-                            ".prettierrc.js",
-                            ".prettierrc.cjs",
-                            "prettier.config.js",
-                            "prettier.config.cjs",
-                        }, {
-                            path = ctx.filename,
-                            upward = true,
-                        })[1] ~= nil
+                        return not (biome_filetypes[filetype] and has_biome_config(ctx))
                     end,
                 },
             },

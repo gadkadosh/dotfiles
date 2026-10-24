@@ -6,9 +6,7 @@ return {
             "mason-org/mason-lspconfig.nvim",
             opts = {
                 ensure_installed = { "pyrefly", "lua_ls", "eslint", "tailwindcss", "tsc" },
-                automatic_enable = {
-                    exclude = { "pyright" },
-                },
+                automatic_enable = false,
             },
         },
         { "j-hui/fidget.nvim", opts = {} },
@@ -33,7 +31,50 @@ return {
             end,
         })
 
-        vim.lsp.enable("sourcekit")
+        vim.lsp.config("clangd", {
+            root_dir = function(bufnr, on_dir)
+                if vim.fs.root(bufnr, "Package.swift") then
+                    return -- Let SourceKit-LSP handle this package.
+                end
+
+                on_dir(
+                    vim.fs.root(bufnr, vim.lsp.config.clangd.root_markers)
+                        or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+                )
+            end,
+        })
+
+        vim.lsp.enable({
+            "pyrefly",
+            "lua_ls",
+            "eslint",
+            "tailwindcss",
+            "tsc",
+            "sourcekit",
+            "clangd",
+        })
+
+        local highlight_group = vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
+
+        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+            group = highlight_group,
+            callback = function(event)
+                local clients = vim.lsp.get_clients({
+                    bufnr = event.buf,
+                    method = "textDocument/documentHighlight",
+                })
+                if #clients > 0 then
+                    vim.lsp.buf.document_highlight()
+                end
+            end,
+        })
+
+        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "LspDetach" }, {
+            group = highlight_group,
+            callback = function(event)
+                vim.lsp.util.buf_clear_references(event.buf)
+            end,
+        })
 
         vim.api.nvim_create_autocmd("LspAttach", {
             group = vim.api.nvim_create_augroup("LspConfig", { clear = true }),
@@ -53,18 +94,6 @@ return {
                     require("fzf-lua").lsp_references()
                 end, { buffer = event.buf })
 
-                local client = vim.lsp.get_client_by_id(event.data.client_id)
-                if client and client.server_capabilities.documentHighlightProvider then
-                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                        buffer = event.buf,
-                        callback = vim.lsp.buf.document_highlight,
-                    })
-
-                    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-                        buffer = event.buf,
-                        callback = vim.lsp.buf.clear_references,
-                    })
-                end
             end,
         })
     end,

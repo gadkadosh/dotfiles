@@ -3,7 +3,6 @@ return {
     dependencies = {
         -- "nvim-neotest/nvim-nio",
         -- "rcarriga/nvim-dap-ui",
-        "jay-babu/mason-nvim-dap.nvim",
         {
             "igorlfs/nvim-dap-view",
             opts = {
@@ -173,7 +172,7 @@ return {
         },
 
         {
-            "<S23>", -- <S-F11>
+            "<F23>", -- <S-F11>
             function()
                 require("dap").step_out()
             end,

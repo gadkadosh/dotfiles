@@ -78,6 +78,21 @@ vim.keymap.set("n", "<leader>el", ":source $MYVIMRC<CR>", { desc = "Source Vim c
 vim.keymap.set("n", "<leader>so", "<cmd>source %<CR>")
 vim.keymap.set("n", "-", "<cmd>Explore<CR>")
 
+local default_gx = vim.fn.maparg("gx", "n", false, true).callback
+vim.keymap.set("n", "gx", function()
+    if vim.bo.filetype == "lua" then
+        local line = vim.api.nvim_get_current_line()
+        local col = vim.api.nvim_win_get_cursor(0)[2] + 1
+        for start, _, repo, finish in line:gmatch("()(['\"])([%w_.-]+/[%w_.-]+)%2()") do
+            if col > start and col < finish - 1 then
+                vim.ui.open("https://github.com/" .. repo)
+                return
+            end
+        end
+    end
+    default_gx()
+end, { desc = "Open filepath, URI, or plugin repository" })
+
 vim.api.nvim_create_autocmd("TextYankPost", {
     desc = "Highlight when yanking text",
     group = vim.api.nvim_create_augroup("HighlightYank", { clear = true }),
