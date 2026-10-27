@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
 
-vim.opt.number = false
+vim.opt.number = true
 vim.opt.mouse = "a"
 vim.opt.mousescroll = "ver:1,hor:1"
 vim.opt.signcolumn = "yes"
@@ -8,6 +8,7 @@ vim.opt.laststatus = 3
 vim.opt.pumblend = 5
 vim.opt.clipboard = "unnamedplus"
 vim.opt.undofile = true
+vim.opt.updatetime = 300
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.listchars = { nbsp = "␣", tab = "→ ", eol = "↵", extends = "»", precedes = "«", trail = "·" }
