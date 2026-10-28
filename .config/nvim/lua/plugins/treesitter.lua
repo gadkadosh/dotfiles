@@ -7,6 +7,8 @@ return {
             require("nvim-treesitter").install({
                 "c",
                 "css",
+                "go",
+                "gomod",
                 "graphql",
                 "html",
                 "http",

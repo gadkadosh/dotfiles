@@ -5,7 +5,7 @@ return {
         {
             "mason-org/mason-lspconfig.nvim",
             opts = {
-                ensure_installed = { "pyrefly", "lua_ls", "eslint", "tailwindcss", "tsc" },
+                ensure_installed = { "pyrefly", "lua_ls", "eslint", "tailwindcss", "tsc", "gopls" },
                 automatic_enable = false,
             },
         },
@@ -45,13 +45,14 @@ return {
         })
 
         vim.lsp.enable({
-            "pyrefly",
-            "lua_ls",
+            "clangd",
             "eslint",
+            "gopls",
+            "lua_ls",
+            "pyrefly",
+            "sourcekit",
             "tailwindcss",
             "tsc",
-            "sourcekit",
-            "clangd",
         })
 
         local highlight_group = vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
