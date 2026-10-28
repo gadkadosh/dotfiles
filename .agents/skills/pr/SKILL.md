@@ -11,3 +11,4 @@ description: Use when writing a PR body.
 - Keep the PR focused on one concern.
 - Write for a reviewer who can see the diff.
 - If the change has non-obvious risk, migration impact, or a meaningful blast radius, call it out explicitly.
+- Mention at the end of a PR description or a comment by you the exact model and harness, for example: `Generated with <model> in <harness>.`
