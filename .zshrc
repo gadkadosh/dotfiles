@@ -56,6 +56,14 @@ export FZF_DEFAULT_COMMAND='fd --type f'
 
 source $HOME/.aliases
 
+wt() {
+  local dir
+  dir=$(git worktree list --porcelain |
+    sed -n 's/^worktree //p' |
+    fzf --height=40% --reverse --border) || return
+  cd "$dir"
+}
+
 # Starship
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
