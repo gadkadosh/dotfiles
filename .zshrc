@@ -59,9 +59,22 @@ source $HOME/.aliases
 wt() {
   local dir
   dir=$(git worktree list --porcelain |
-    sed -n 's/^worktree //p' |
-    fzf --height=40% --reverse --border) || return
-  cd "$dir"
+    awk '
+      /^worktree / { dir = substr($0, 10); branch = "(detached HEAD)" }
+      /^branch / { branch = substr($0, 8); sub(/^refs\/heads\//, "", branch) }
+      /^bare$/ { branch = "(bare)" }
+      /^$/ {
+        dirs[++count] = dir
+        branches[count] = branch
+        if (length(dir) > width) width = length(dir)
+      }
+      END {
+        for (i = 1; i <= count; i++)
+          printf "%s\t%-*s  %s\n", dirs[i], width, dirs[i], branches[i]
+      }
+    ' |
+    fzf --delimiter=$'\t' --with-nth=2 --height=40% --reverse --border) || return
+  cd "${dir%%$'\t'*}"
 }
 
 # Starship
